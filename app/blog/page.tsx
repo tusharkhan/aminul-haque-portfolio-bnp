@@ -1,215 +1,174 @@
 "use client";
-import type { Metadata } from 'next';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import BlogCard from '../components/BlogCard';
-import { FaSearch, FaTags } from 'react-icons/fa';
-import { useState } from 'react';
-
-const posts = [
-  {
-    title: 'সবার জন্য শিক্ষা সংস্কার',
-    excerpt: 'গ্রামীণ অঞ্চল জুড়ে আধুনিক শিক্ষার প্রবেশাধিকার প্রসারিত করছি।',
-    date: 'নভেম্বর ১, ২০২৫',
-    author: 'অ্যাডমিন',
-    category: 'শিক্ষা',
-    href: '/blog/education-reform',
-  },
-  {
-    title: 'কৃষিকে ক্ষমতায়ন',
-    excerpt: 'কৃষকদের জন্য স্মার্ট সেচ এবং সমবায় মডেল।',
-    date: 'অক্টোবর ২৫, ২০২৫',
-    author: 'অ্যাডমিন',
-    category: 'কৃষি',
-    href: '/blog/agriculture',
-  },
-  {
-    title: 'শিল্প ও সংস্কৃতি উদ্যোগ',
-    excerpt: 'ঐতিহ্য উদযাপন এবং তরুণ সৃজনশীলদের ক্ষমতায়ন।',
-    date: 'অক্টোবর ১০, ২০২৫',
-    author: 'অ্যাডমিন',
-    category: 'সংস্কৃতি',
-    href: '/blog/arts-culture',
-  },
-  {
-    title: 'শক্তিশালী সম্প্রদায় গড়া',
-    excerpt: 'কীভাবে তৃণমূল উদ্যোগগুলি স্থানীয় পাড়াকে রূপান্তরিত করছে।',
-    date: 'অক্টোবর ৫, ২০২৫',
-    author: 'অ্যাডমিন',
-    category: 'সম্প্রদায়',
-    href: '/blog/community-building',
-  },
-  {
-    title: 'গ্রামীণ এলাকায় ডিজিটাল রূপান্তর',
-    excerpt: 'প্রতিটি গ্রামে প্রযুক্তি এবং সংযোগ নিয়ে আসা।',
-    date: 'সেপ্টেম্বর ২৮, ২০২৫',
-    author: 'অ্যাডমিন',
-    category: 'প্রযুক্তি',
-    href: '/blog/digital-transformation',
-  },
-  {
-    title: 'টেকসই উন্নয়ন লক্ষ্য',
-    excerpt: 'বাংলাদেশ জুড়ে জাতিসংঘের এসডিজি অর্জনে আমাদের প্রতিশ্রুতি।',
-    date: 'সেপ্টেম্বর ২০, ২০২৫',
-    author: 'অ্যাডমিন',
-    category: 'নীতি',
-    href: '/blog/sdg-commitment',
-  },
-];
-
-const categories = ['সব', 'শিক্ষা', 'কৃষি', 'সংস্কৃতি', 'সম্প্রদায়', 'প্রযুক্তি', 'নীতি'];
+import { FaNewspaper, FaFilter } from 'react-icons/fa';
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('সব');
 
-  const filteredPosts = selectedCategory === 'সব' 
-    ? posts 
-    : posts.filter(post => post.category === selectedCategory);
+  const categories = ['সব', 'শিক্ষা', 'কৃষি', 'সংস্কৃতি', 'যুব উন্নয়ন', 'সম্প্রদায়'];
+
+  const blogPosts = [
+    {
+      title: 'গ্রামীণ বাংলাদেশে শিক্ষায় রূপান্তর',
+      excerpt: 'প্রত্যন্ত গ্রামীণ এলাকায় আমাদের শিক্ষা কর্মসূচি কীভাবে শিশুদের জীবন পরিবর্তন করছে তা আবিষ্কার করুন।',
+      author: 'আমিনুল হক',
+      date: '১৫ অক্টোবর ২০২৩',
+      category: 'শিক্ষা',
+      image: '/aminul_haque.jpg',
+    },
+    {
+      title: 'কৃষক ক্ষমতায়ন: একটি সাফল্যের গল্প',
+      excerpt: 'আমাদের কৃষি সমবায় কীভাবে ফলন বৃদ্ধি করছে এবং কৃষক পরিবারের জীবিকা উন্নত করছে।',
+      author: 'আমিনুল হক',
+      date: '২ অক্টোবর ২০২৩',
+      category: 'কৃষি',
+      image: '/aminul_haque.jpg',
+    },
+    {
+      title: 'সাংস্কৃতিক ঐতিহ্য সংরক্ষণ',
+      excerpt: 'আমাদের শিল্প ও সংস্কৃতি উদ্যোগের মাধ্যমে ঐতিহ্যগত শিল্পরূপ এবং স্থানীয় কারিগরদের পুনরুজ্জীবন।',
+      author: 'আমিনুল হক',
+      date: '২০ সেপ্টেম্বর ২০২৩',
+      category: 'সংস্কৃতি',
+      image: '/aminul_haque.jpg',
+    },
+    {
+      title: 'যুব নেতৃত্ব: ভবিষ্যত গড়া',
+      excerpt: 'আমাদের যুব ক্ষমতায়ন প্রোগ্রাম কীভাবে সামাজিক পরিবর্তনের জন্য পরবর্তী প্রজন্মের নেতা তৈরি করছে।',
+      author: 'আমিনুল হক',
+      date: '৮ সেপ্টেম্বর ২০২৩',
+      category: 'যুব উন্নয়ন',
+      image: '/aminul_haque.jpg',
+    },
+    {
+      title: 'সম্প্রদায় সম্পৃক্ততা মাঠ থেকে',
+      excerpt: 'স্থানীয় সম্প্রদায়ে আমাদের সাম্প্রতিক পরিদর্শন এবং তাদের গল্প ভাগাভাগি করা।',
+      author: 'আমিনুল হক',
+      date: '২৫ আগস্ট ২০২৩',
+      category: 'সম্প্রদায়',
+      image: '/aminul_haque.jpg',
+    },
+    {
+      title: 'টেকসই উন্নয়ন লক্ষ্য এবং আমাদের কাজ',
+      excerpt: 'আমাদের প্রোগ্রাম কীভাবে জাতিসংঘের টেকসই উন্নয়ন লক্ষ্যের সাথে সামঞ্জস্যপূর্ণ।',
+      author: 'আমিনুল হক',
+      date: '১০ আগস্ট ২০২৩',
+      category: 'সব',
+      image: '/aminul_haque.jpg',
+    },
+  ];
+
+  const filteredPosts = selectedCategory === 'সব'
+    ? blogPosts
+    : blogPosts.filter(post => post.category === selectedCategory);
 
   return (
-    <main className="overflow-hidden">
+    <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 px-4 bg-gradient-to-br from-slate-900 via-green-900 to-red-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-        
-        <div className="relative z-10 mx-auto max-w-7xl">
+      <section className="relative py-32 px-4 bg-gradient-to-br from-purple-50 via-white to-pink-50">
+        <div className="mx-auto max-w-7xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center"
           >
-            <span className="text-green-300 font-bold text-sm md:text-base uppercase tracking-wider">সর্বশেষ আপডেট</span>
-            <h1 className="text-5xl md:text-7xl font-black mt-3 mb-6">
-              অন্তর্দৃষ্টি ও গল্প
+            <span className="inline-block px-6 py-2 bg-purple-100 text-purple-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
+              <FaNewspaper className="inline mr-2" />
+              আমাদের ব্লগ
+            </span>
+            <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                গল্প ও অন্তর্দৃষ্টি
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-              বাংলাদেশ জুড়ে আমাদের কাজ থেকে আপডেট, অন্তর্দৃষ্টি এবং গল্প
+            <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
+              মাঠ থেকে সর্বশেষ আপডেট, গল্প এবং অন্তর্দৃষ্টি
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="py-8 px-4 bg-white border-b border-slate-200 sticky top-0 z-20">
+      {/* Filter Section */}
+      <section className="py-12 px-4">
         <div className="mx-auto max-w-7xl">
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            <FaTags className="text-slate-400 flex-shrink-0" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-wrap justify-center gap-3"
+          >
+            <div className="flex items-center gap-2 text-purple-700 font-bold">
+              <FaFilter />
+              <span>ফিল্টার:</span>
+            </div>
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap transition-all ${
+                className={`px-6 py-3 rounded-xl font-bold transition-all transform hover:scale-105 ${
                   selectedCategory === category
-                    ? 'bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-xl'
+                    : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-purple-500 hover:text-purple-600 shadow-lg'
                 }`}
               >
                 {category}
               </button>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Blog Posts Grid */}
-      <section className="py-20 px-4">
+      <section className="py-12 px-4">
         <div className="mx-auto max-w-7xl">
-          {filteredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.map((post, idx) => (
-                <motion.div
-                  key={post.href}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                >
-                  <BlogCard {...post} />
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20">
-              <p className="text-xl text-slate-600">এই বিভাগে কোন পোস্ট পাওয়া যায়নি।</p>
-            </div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredPosts.map((post, idx) => (
+              <motion.div
+                key={post.title}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+              >
+                <BlogCard {...post} href="#" />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-green-50 to-red-50">
+      {/* <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
         <div className="mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-white rounded-3xl p-10 md:p-16 shadow-xl text-center"
+            className="relative"
           >
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4">
-              আপডেট থাকুন
-            </h2>
-            <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
-              আমাদের নিউজলেটারে সাবস্ক্রাইব করুন সর্বশেষ আপডেট, গল্প এবং অন্তর্দৃষ্টির জন্য।
-            </p>
-            <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-              <input
-                type="email"
-                placeholder="আপনার ইমেইল লিখুন"
-                className="flex-1 px-6 py-4 border-2 border-slate-200 rounded-full focus:border-green-500 focus:outline-none text-slate-900"
-              />
-              <button
-                type="submit"
-                className="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white font-bold rounded-full hover:from-green-700 hover:to-green-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
-              >
-                সাবস্ক্রাইব
-              </button>
-            </form>
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-30"></div>
+            <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
+                নিউজলেটার সাবস্ক্রাইব করুন
+              </h2>
+              <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
+                আমাদের কাজ, আসন্ন ইভেন্ট এবং আরও অনেক কিছু সম্পর্কে সর্বশেষ আপডেট পান
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                <input
+                  type="email"
+                  placeholder="আপনার ইমেইল লিখুন"
+                  className="flex-1 px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-purple-500 transition-all"
+                />
+                <button className="px-10 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-purple-600 hover:to-pink-700 transition-all transform hover:scale-105">
+                  সাবস্ক্রাইব
+                </button>
+              </div>
+            </div>
           </motion.div>
         </div>
-      </section>
-
-      {/* Featured Topics */}
-      <section className="py-20 px-4 bg-slate-900 text-white">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <span className="text-green-400 font-bold text-sm md:text-base uppercase tracking-wider">আমরা যে বিষয়গুলি কভার করি</span>
-            <h2 className="text-4xl md:text-6xl font-black mt-3 mb-6">
-              আমাদের ফোকাস এলাকা
-            </h2>
-            <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
-              আমরা যে মূল বিষয়গুলি সম্পর্কে লিখি তা অন্বেষণ করুন
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.filter(c => c !== 'সব').map((category, idx) => (
-              <motion.button
-                key={category}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                onClick={() => {
-                  setSelectedCategory(category);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="bg-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/20 transition-all transform hover:-translate-y-2 text-center"
-              >
-                <h3 className="text-lg font-bold">{category}</h3>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
+      </section> */}
     </main>
   );
 }
-
-

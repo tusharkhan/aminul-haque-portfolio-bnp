@@ -1,34 +1,35 @@
 "use client";
-import type { Metadata } from 'next';
 import { motion } from 'framer-motion';
-import { FaGraduationCap, FaBullseye, FaTrophy, FaCheckCircle } from 'react-icons/fa';
+import { FaFutbol, FaTrophy, FaMedal, FaFlag, FaStar, FaAward } from 'react-icons/fa';
 
 export default function AboutPage() {
   return (
-    <main className="overflow-hidden">
+    <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 px-4 bg-gradient-to-br from-green-900 via-green-800 to-red-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-        
-        <div className="relative z-10 mx-auto max-w-7xl">
+      <section className="relative py-32 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50">
+        <div className="mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <span className="text-green-300 font-bold text-sm md:text-base uppercase tracking-wider">জানুন</span>
-            <h1 className="text-5xl md:text-7xl font-black mt-3 mb-6">
-              আমিনুল হক সম্পর্কে
+            <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
+              আমাদের সম্পর্কে
+            </span>
+            <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
+              <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                আমিনুল হক
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-              অন্তর্ভুক্তিমূলক উন্নয়ন এবং সমাজ ক্ষমতায়নের মাধ্যমে বাংলাদেশকে রূপান্তরে নিবেদিত একজন নেতা
+            <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
+              বাংলাদেশের কিংবদন্তি গোলরক্ষক
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Biography Section with Image */}
+      {/* Personal Info Section */}
       <section className="py-20 px-4">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -38,20 +39,39 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-green-600 font-bold text-sm uppercase tracking-wider">জীবনী</span>
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
-                সেবার জীবন
+              <span className="text-emerald-600 font-bold text-sm uppercase tracking-wider">ব্যক্তিগত তথ্য</span>
+              <h2 className="text-5xl font-black text-slate-900 mt-3 mb-6">
+                মোহাম্মদ আমিনুল হক
               </h2>
-              <div className="space-y-4 text-lg text-slate-700 leading-relaxed">
-                <p>
-                  আমিনুল হক একজন জনসেবক যিনি বাংলাদেশ জুড়ে অন্তর্ভুক্তিমূলক উন্নয়ন এবং সমাজ ক্ষমতায়নে নিবেদিত। জনগণের প্রতি তার অটুট প্রতিশ্রুতি শিক্ষা, কৃষি, শিল্প ও সংস্কৃতিতে অর্থবহ সংস্কার চালিয়েছে।
-                </p>
-                <p>
-                  জনপ্রশাসন এবং সমাজ উন্নয়নে পটভূমি নিয়ে, তিনি দশকের পর দশক ধরে যাদের কণ্ঠস্বর প্রায়ই শোনা যায় না তাদের পক্ষে সওয়াল করেছেন। তার পদ্ধতি তৃণমূল সংযুক্তি এবং কৌশলগত নীতি উদ্যোগকে একত্রিত করে দীর্ঘস্থায়ী পরিবর্তন সৃষ্টি করতে।
-                </p>
-                <p>
-                  গ্রামীণ গ্রাম থেকে শহুরে কেন্দ্র পর্যন্ত, আমিনুল একটি আরও ন্যায়সংগত এবং সমৃদ্ধ বাংলাদেশ গড়ার জন্য তার নিবেদনের মাধ্যমে অসংখ্য জীবন স্পর্শ করেছেন।
-                </p>
+              <div className="space-y-4 text-lg text-slate-700">
+                <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
+                  <FaFlag className="text-2xl text-emerald-600" />
+                  <div>
+                    <p className="font-bold text-slate-900">জন্ম তারিখ</p>
+                    <p>৫ অক্টোবর ১৯৮০ (বয়স ৪৫)</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
+                  <FaFlag className="text-2xl text-emerald-600" />
+                  <div>
+                    <p className="font-bold text-slate-900">জন্মস্থান</p>
+                    <p>ভোলা, বাংলাদেশ</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
+                  <FaFutbol className="text-2xl text-emerald-600" />
+                  <div>
+                    <p className="font-bold text-slate-900">অবস্থান</p>
+                    <p>গোলরক্ষক</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
+                  <FaMedal className="text-2xl text-emerald-600" />
+                  <div>
+                    <p className="font-bold text-slate-900">উচ্চতা</p>
+                    <p>১.৮৫ মিটার (৬ ফুট ১ ইঞ্চি)</p>
+                  </div>
+                </div>
               </div>
             </motion.div>
 
@@ -62,203 +82,351 @@ export default function AboutPage() {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl blur-2xl opacity-20"></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <img
                   src="/aminul_haque.jpg"
                   alt="আমিনুল হক"
                   className="w-full h-[500px] object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-green-900/50 to-transparent" />
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Vision & Mission Cards */}
-      <section className="py-20 px-4 bg-slate-50">
+      {/* Biography Section */}
+      <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
         <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
+              জীবনী
+            </h2>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="max-w-4xl mx-auto"
           >
-            <span className="text-red-600 font-bold text-sm md:text-base uppercase tracking-wider">আমাদের দিকনির্দেশনা</span>
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 mt-3 mb-6">
-              রূপকল্প ও লক্ষ্য
-            </h2>
+            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
+              <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
+                <p>
+                  <strong>আমিনুল হক</strong> (জন্ম ৫ অক্টোবর ১৯৮০) একজন প্রাক্তন বাংলাদেশী পেশাদার ফুটবলার যিনি গোলরক্ষক হিসেবে খেলেছেন। তাকে বাংলাদেশের অন্যতম সেরা ফুটবলার হিসেবে বিবেচনা করা হয় এবং <strong>"বাংলাদেশের প্রতিনিধিত্বকারী সর্বশ্রেষ্ঠ গোলরক্ষক"</strong> হিসেবে চিহ্নিত করা হয়েছে।
+                </p>
+                <p>
+                  বাংলাদেশ জাতীয় দলের প্রাক্তন কোচ গিওর্গি কোটানের মতে, আমিনুল তার দেখা সেরা গোলরক্ষকদের একজন। আমিনুলের অবস্থানগত বোধ এবং খেলা বোঝার ক্ষমতা তাকে দক্ষিণ এশিয়ার ফুটবল ইতিহাসের অন্যতম সেরা গোলরক্ষক করে তুলেছে।
+                </p>
+                <p>
+                  ইএসপিএন স্টারের শেবি সিং পরামর্শ দিয়েছিলেন যে আমিনুল সঠিক প্রশিক্ষণের মাধ্যমে ইংল্যান্ডেও আরও ভালো লীগে খেলার যোগ্য। আমিনুল এমএসপিসিসি সিটি ক্লাবের একজন খেলোয়াড় এবং ১৯৯৪ সালে মোহামেডান এসসি-র হয়ে ঢাকা প্রিমিয়ার ডিভিশন লীগে তার ক্যারিয়ার শুরু করেন।
+                </p>
+              </div>
+            </div>
           </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0 }}
-              className="group relative bg-white rounded-3xl p-10 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 opacity-10 rounded-full blur-3xl group-hover:w-64 group-hover:h-64 transition-all duration-500" />
-              
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center mb-6">
-                  <FaBullseye className="text-3xl text-white" />
-                </div>
-                <h3 className="text-3xl font-bold text-slate-900 mb-4">আমাদের রূপকল্প</h3>
-                <p className="text-lg text-slate-600 leading-relaxed">
-                  শিক্ষা-প্রথম একটি জাতি গড়া যেখানে সকল নাগরিকের জন্য সমান সুযোগ রয়েছে, যেখানে প্রতিটি ব্যক্তি পটভূমি নির্বিশেষে মানসম্পন্ন সম্পদে প্রবেশাধিকার পায় এবং তাদের পূর্ণ সম্ভাবনায় পৌঁছাতে পারে।
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="group relative bg-white rounded-3xl p-10 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500 to-green-700 opacity-10 rounded-full blur-3xl group-hover:w-64 group-hover:h-64 transition-all duration-500" />
-              
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-700 rounded-2xl flex items-center justify-center mb-6">
-                  <FaGraduationCap className="text-3xl text-white" />
-                </div>
-                <h3 className="text-3xl font-bold text-slate-900 mb-4">আমাদের লক্ষ্য</h3>
-                <p className="text-lg text-slate-600 leading-relaxed">
-                  বাস্তবসম্মত, প্রভাবশালী কর্মসূচি সরবরাহ করা যা সরাসরি বাংলাদেশ জুড়ে প্রতিটি সম্প্রদায়কে উপকৃত করে। আমরা শিক্ষা, কৃষি, সাংস্কৃতিক সংরক্ষণ এবং সুশাসনের মাধ্যমে টেকসই উন্নয়নে মনোনিবেশ করি।
-                </p>
-              </div>
-            </motion.div>
-          </div>
         </div>
       </section>
 
-      {/* Timeline of Achievements */}
+      {/* Career Stats */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <span className="text-green-600 font-bold text-sm md:text-base uppercase tracking-wider">যাত্রা</span>
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 mt-3 mb-6">
-              অর্জনের সময়রেখা
-            </h2>
-            <p className="text-lg md:text-xl text-slate-600">
-              বাংলাদেশকে রূপান্তরের যাত্রায় মূল মাইলফলক
-            </p>
-          </motion.div>
-
-          <div className="space-y-8">
-            {[
-              {
-                year: '২০১৮',
-                title: 'গ্রামীণ বৃত্তি কর্মসূচি চালু',
-                description: 'গ্রামীণ সম্প্রদায় থেকে ১০,০০০+ শিক্ষার্থীদের শিক্ষার সুযোগ প্রদান করে ব্যাপক বৃত্তি উদ্যোগ শুরু।',
-                icon: FaGraduationCap,
-                color: 'from-green-500 to-emerald-600',
-                bgColor: 'from-green-50 to-emerald-50'
-              },
-              {
-                year: '২০২০',
-                title: 'কৃষক সমবায় নেটওয়ার্ক প্রতিষ্ঠা',
-                description: '৫,০০০+ কৃষকদের সংযুক্ত করে টেকসই কৃষি সমবায় তৈরি, ফলন এবং বাজার প্রবেশাধিকার উন্নত।',
-                icon: FaTrophy,
-                color: 'from-blue-500 to-cyan-600',
-                bgColor: 'from-blue-50 to-cyan-50'
-              },
-              {
-                year: '২০২৩',
-                title: 'শহর-ব্যাপী যুব সংস্কৃতি উৎসব',
-                description: 'একাধিক শহর জুড়ে ঐতিহ্য উদযাপন এবং তরুণ শিল্পীদের ক্ষমতায়নের জন্য প্রধান সাংস্কৃতিক উৎসব আয়োজন।',
-                icon: FaCheckCircle,
-                color: 'from-red-500 to-pink-600',
-                bgColor: 'from-red-50 to-pink-50'
-              },
-            ].map((item, idx) => (
-              <motion.div
-                key={item.year}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className={`relative bg-gradient-to-br ${item.bgColor} rounded-3xl p-8 md:p-10 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1`}
-              >
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-                  {/* Year Badge with Icon */}
-                  <div className="flex-shrink-0">
-                    <div className={`relative w-20 h-20 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center shadow-xl`}>
-                      <item.icon className="text-3xl text-white" />
-                    </div>
-                    <div className={`mt-3 inline-block px-4 py-1.5 bg-gradient-to-r ${item.color} text-white font-black rounded-full text-sm shadow-md`}>
-                      {item.year}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-3">
-                      {item.title}
-                    </h3>
-                    <p className="text-slate-700 text-lg leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Core Values */}
-      <section className="py-20 px-4 bg-slate-900 text-white">
         <div className="mx-auto max-w-7xl">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <span className="text-green-400 font-bold text-sm md:text-base uppercase tracking-wider">নীতি</span>
-            <h2 className="text-4xl md:text-6xl font-black mt-3 mb-6">
-              মূল মূল্যবোধ
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
+              ক্যারিয়ার পরিসংখ্যান
             </h2>
-            <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
-              যে নীতিগুলি আমাদের প্রতিটি সিদ্ধান্তকে নির্দেশনা দেয়
-            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: 'সততা', description: 'সকল কাজে সৎ এবং স্বচ্ছ' },
-              { title: 'সহানুভূতি', description: 'প্রতিটি সম্প্রদায় সদস্যের জন্য গভীর যত্ন' },
-              { title: 'উৎকর্ষতা', description: 'সর্বোচ্চ মানের প্রতি প্রতিশ্রুতিবদ্ধ' },
-              { title: 'উদ্ভাবন', description: 'আধুনিক চ্যালেঞ্জের সৃজনশীল সমাধান' },
-            ].map((value, idx) => (
+              { icon: FaFlag, label: 'আন্তর্জাতিক ম্যাচ', value: '৫৬', color: 'from-emerald-500 to-green-600' },
+              { icon: FaTrophy, label: 'ক্লাব শিরোপা', value: '১৫+', color: 'from-blue-500 to-cyan-600' },
+              { icon: FaMedal, label: 'ক্যারিয়ার বছর', value: '২০', color: 'from-purple-500 to-pink-600' },
+              { icon: FaStar, label: 'বিশেষ সম্মাননা', value: '৫+', color: 'from-amber-500 to-orange-600' },
+            ].map((stat, idx) => (
               <motion.div
-                key={value.title}
+                key={stat.label}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="bg-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/20 transition-all transform hover:-translate-y-2"
+                className="group relative"
               >
-                <h3 className="text-2xl font-bold mb-3">{value.title}</h3>
-                <p className="text-white/80">{value.description}</p>
+                <div className={`absolute inset-0 bg-gradient-to-r ${stat.color} rounded-2xl blur opacity-25 group-hover:opacity-50 transition-all`}></div>
+                <div className="relative bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all text-center border border-slate-200">
+                  <div className={`inline-flex p-4 bg-gradient-to-br ${stat.color} rounded-xl mb-4`}>
+                    <stat.icon className="text-3xl text-white" />
+                  </div>
+                  <div className="text-5xl font-black text-slate-900 mb-2">{stat.value}</div>
+                  <div className="text-slate-600 font-medium">{stat.label}</div>
+                </div>
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Club Career */}
+      <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
+              ক্লাব ক্যারিয়ার
+            </h2>
+          </motion.div>
+
+          <div className="space-y-8 max-w-4xl mx-auto">
+            {[
+              {
+                year: '১৯৯৪–১৯৯৫',
+                club: 'মোহামেডান এসসি',
+                description: 'ঢাকা প্রিমিয়ার ডিভিশন লীগে ক্যারিয়ার শুরু',
+                color: 'from-emerald-500 to-green-600',
+              },
+              {
+                year: '১৯৯৭–১৯৯৮',
+                club: 'মুক্তিযোদ্ধা সংসদ',
+                description: 'প্রথম লীগ শিরোপা এবং মোহননগরী কাপ জয়',
+                color: 'from-blue-500 to-cyan-600',
+              },
+              {
+                year: '১৯৯৯-২০০০',
+                club: 'ঢাকা আবাহনী',
+                description: 'ফেডারেশন কাপ এবং জাতীয় লীগ শিরোপা',
+                color: 'from-purple-500 to-pink-600',
+              },
+              {
+                year: '২০০৮-২০১০',
+                club: 'মোহামেডান এসসি',
+                description: '২০০৯ সুপার কাপ জয় এবং সেরা গোলরক্ষক পুরষ্কার',
+                color: 'from-amber-500 to-orange-600',
+              },
+              {
+                year: '২০১১–২০১২',
+                club: 'শেখ জামাল ডিসি',
+                description: 'প্রিমিয়ার লীগ এবং ফেডারেশন কাপ শিরোপা',
+                color: 'from-rose-500 to-red-600',
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={item.year}
+                initial={{ opacity: 0, x: idx % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="relative"
+              >
+                <div className={`absolute inset-0 bg-gradient-to-r ${item.color} rounded-2xl blur opacity-20`}></div>
+                <div className="relative bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200">
+                  <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+                    <div className={`px-4 py-2 bg-gradient-to-r ${item.color} text-white font-black rounded-xl text-sm`}>
+                      {item.year}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-black text-slate-900 mb-2">{item.club}</h3>
+                      <p className="text-slate-700">{item.description}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* International Career */}
+      <section className="py-20 px-4">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
+              আন্তর্জাতিক ক্যারিয়ার
+            </h2>
+            <p className="text-xl text-slate-600">
+              ১৯৯৮ থেকে ২০১০ সাল পর্যন্ত বাংলাদেশ জাতীয় দলের প্রতিনিধিত্ব
+            </p>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200"
+            >
+              <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
+                <p>
+                  আমিনুল ১৯৯৮ থেকে ২০১০ সাল পর্যন্ত বাংলাদেশ জাতীয় দলের প্রতিনিধিত্ব করেছেন। তিনি প্রায় <strong>৫৬ বার</strong> ক্যাপিং করেছিলেন, যার মধ্যে তিনি ২০০৬, ২০০৮, ২০০৯ এবং ২০১০ সালে তার দেশের অধিনায়কত্ব করেছিলেন।
+                </p>
+                <p>
+                  <strong>২০০৩ সালের SAFF চ্যাম্পিয়নশিপ:</strong> পেনাল্টি শুটআউটের সময়, তিনি আশরাফ লুথফির একটি গুরুত্বপূর্ণ শট রক্ষা করেন, যার ফলে বাংলাদেশ তাদের প্রথম SAFF চ্যাম্পিয়নশিপ জিততে পারে। আমিনুলকে টুর্নামেন্টের সেরা গোলরক্ষকও মনোনীত করা হয়।
+                </p>
+                <p>
+                  <strong>২০১০ সালের দক্ষিণ এশীয় গেমস:</strong> তিনি বাংলাদেশ অনূর্ধ্ব-২৩ দলকে স্বর্ণপদক জেতানোর নেতৃত্ব দিয়েছিলেন।
+                </p>
+                <p>
+                  আন্তর্জাতিক পর্যায়ে তার পারফরম্যান্স নিউক্যাসল ইউনাইটেড এবং আল হিলাল এসএফসির মতো ক্লাবগুলির কাছ থেকেও আগ্রহ আকর্ষণ করেছিল।
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Honors Section */}
+      <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
+              সম্মাননা ও পুরস্কার
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: 'SAFF চ্যাম্পিয়নশিপ', year: '২০০৩', icon: FaTrophy, color: 'from-emerald-500 to-green-600' },
+              { title: 'দক্ষিণ এশীয় গেমস স্বর্ণ', year: '২০১০', icon: FaMedal, color: 'from-amber-500 to-orange-600' },
+              { title: 'সুপার কাপ সেরা গোলরক্ষক', year: '২০০৯', icon: FaAward, color: 'from-blue-500 to-cyan-600' },
+              { title: 'প্রিমিয়ার লীগ শিরোপা', year: '৩ বার', icon: FaTrophy, color: 'from-purple-500 to-pink-600' },
+              { title: 'ফেডারেশন কাপ', year: '৫ বার', icon: FaTrophy, color: 'from-rose-500 to-red-600' },
+              { title: 'জাতীয় লীগ', year: '২ বার', icon: FaTrophy, color: 'from-teal-500 to-cyan-600' },
+            ].map((honor, idx) => (
+              <motion.div
+                key={honor.title}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                className="group relative"
+              >
+                <div className={`absolute inset-0 bg-gradient-to-r ${honor.color} rounded-2xl blur opacity-25 group-hover:opacity-50 transition-all`}></div>
+                <div className="relative bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all text-center border border-slate-200">
+                  <div className={`inline-flex p-4 bg-gradient-to-br ${honor.color} rounded-xl mb-4`}>
+                    <honor.icon className="text-3xl text-white" />
+                  </div>
+                  <h3 className="text-xl font-black text-slate-900 mb-2">{honor.title}</h3>
+                  <p className="text-slate-600 font-semibold">{honor.year}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Early Life */}
+      <section className="py-20 px-4">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
+              জীবনের প্রথমার্ধ
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
+              <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
+                <p>
+                  ভোলায় জন্মগ্রহণকারী আমিনুল তার শৈশবের বেশিরভাগ সময় ঢাকায় কাটিয়েছেন, মোহাম্মদ এমরান এবং মনওয়ারা বেগমের ছেলে। তিন ভাইয়ের মধ্যে তিনি সবার ছোট। তার ভাই মইনুল হক, যিনি তার চেয়ে দশ বছরের বড়, তিনিও ঢাকা প্রিমিয়ার ডিভিশন ফুটবল লীগে খেলেছেন।
+                </p>
+                <p>
+                  চতুর্থ শ্রেণীতে পড়ার সময়, আমিনুল কোচ ইমতিয়াজের অধীনে এমএসপিসিসি সিটি ক্লাবে প্রশিক্ষণ শুরু করেন। মিরপুরের আলুবদী গ্রামে একটি স্থানীয় টুর্নামেন্টে সিটি ক্লাবের জুনিয়র দলের হয়ে খেলার সময়, আমিনুল তার পারফর্মেন্সের জন্য ১৫০ টাকা পেয়েছিলেন।
+                </p>
+                <p>
+                  ১৯৯৩ সালে, তিনি সিটি ক্লাবের সাথে পাইওনিয়ার ফুটবল লীগে অংশগ্রহণ করেন এবং লীগের প্রথম পর্বে টানা নয়টি ক্লিনশিট ধরে রাখতে সক্ষম হন।
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Political Career */}
+      <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
+              রাজনৈতিক জীবন
+            </span>
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
+              জনসেবায় নতুন অধ্যায়
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-rose-500 rounded-3xl blur-2xl opacity-20"></div>
+              <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
+                <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
+                  <p className="text-xl font-semibold text-slate-900">
+                    ফুটবল ক্যারিয়ার শেষে আমিনুল হক রাজনৈতিক অঙ্গনে প্রবেশ করেন এবং জনগণের সেবায় নিজেকে নিয়োজিত করেন।
+                  </p>
+                  <div className="bg-gradient-to-br from-red-50 to-rose-50 p-6 rounded-2xl border-l-4 border-red-600">
+                    <h3 className="text-2xl font-black text-slate-900 mb-4 flex items-center gap-3">
+                      <FaFlag className="text-red-600" />
+                      বাংলাদেশ জাতীয়তাবাদী দল (বিএনপি)
+                    </h3>
+                    <p>
+                      আমিনুল হক <strong>বাংলাদেশ জাতীয়তাবাদী দলের ঢাকা উত্তর সিটি ইউনিটের সদস্য সচিব</strong> হিসেবে যোগদান করেছেন এবং দলের হয়ে কাজ করছেন।
+                    </p>
+                  </div>
+                  <div className="bg-slate-50 p-6 rounded-2xl">
+                    <p className="font-semibold text-slate-900 mb-3">রাজনৈতিক সংগ্রাম:</p>
+                    <p>
+                      ২০০৯-২০২৪ সালের প্রাক্তন প্রধানমন্ত্রী শেখ হাসিনার শাসনামলে, দুটি পৃথক নাশকতার ঘটনার কারণে তাকে <strong>২০২৩ সালের ১ নভেম্বর গ্রেপ্তার</strong> করা হয়েছিল। কয়েক মাস কারাভোগের পর পরে তাকে মুক্তি দেওয়া হয়।
+                    </p>
+                  </div>
+                  <p>
+                    রাজনৈতিক জীবনেও আমিনুল হক তার ফুটবল ক্যারিয়ারের মতোই সাহসী এবং দৃঢ়প্রতিজ্ঞ। তিনি জনগণের অধিকার এবং গণতন্ত্রের জন্য লড়াই চালিয়ে যাচ্ছেন।
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </main>
   );
 }
-
-

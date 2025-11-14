@@ -1,168 +1,216 @@
 "use client";
-import { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
-import { FaCalendarAlt, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaCalendarAlt, FaMapMarkerAlt, FaImages, FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-type CampaignEvent = {
-  date: string;
-  title: string;
-  location: string;
-  description: string;
-  images: { src: string; alt: string }[];
-};
-
-const CAMPAIGN_EVENTS: CampaignEvent[] = [
+const CAMPAIGN_EVENTS = [
   {
-    date: 'নভেম্বর ১২, ২০২৫',
-    title: 'গণসংযোগ সভা - ঢাকা',
-    location: 'শাহবাগ, ঢাকা',
-    description: 'জনগণের সাথে সরাসরি সংযোগ এবং নির্বাচনী ইশতেহার উপস্থাপন।',
+    date: '১৫ অক্টোবর ২০২৩',
+    location: 'ঢাকা বিশ্ববিদ্যালয় প্রাঙ্গণ',
+    description: 'যুব নেতৃত্ব সেমিনার এবং ছাত্র মিথস্ক্রিয়া',
     images: [
-      { src: '/gallery/aminul14.webp', alt: 'শাহবাগ জনসভা' },
-      { src: '/gallery/aminul14.webp', alt: 'জনগণের সাথে কথা বলা' },
-      { src: '/gallery/aminul14.webp', alt: 'প্রচার দল' },
-    ]
+      '/aminul_haque.jpg',
+      '/aminul_nomination_post.webp',
+      '/aminul_haque.jpg',
+      '/aminul_nomination_post.webp',
+    ],
+    color: 'from-amber-500 to-orange-600',
   },
   {
-    date: 'নভেম্বর ১০, ২০২৫',
-    title: 'কৃষক সমাবেশ',
-    location: 'মানিকগঞ্জ',
-    description: 'কৃষকদের সাথে বৈঠক এবং কৃষি উন্নয়ন পরিকল্পনা নিয়ে আলোচনা।',
+    date: '২ অক্টোবর ২০২৩',
+    location: 'ময়মনসিংহ কৃষি সমবায়',
+    description: 'কৃষক মিলনায়তন এবং প্রশিক্ষণ সেশন',
     images: [
-      { src: '/gallery/aminul14.webp', alt: 'কৃষক সভা' },
-      { src: '/gallery/aminul14.webp', alt: 'কৃষকদের সাথে' },
-      { src: '/gallery/aminul14.webp', alt: 'গ্রামীণ প্রচার' },
-    ]
+      '/aminul_haque.jpg',
+      '/aminul_nomination_post.webp',
+      '/aminul_haque.jpg',
+    ],
+    color: 'from-emerald-500 to-green-600',
   },
   {
-    date: 'নভেম্বর ৮, ২০২৫',
-    title: 'যুব সমাবেশ',
-    location: 'চট্টগ্রাম',
-    description: 'তরুণদের সাথে সংলাপ এবং যুব উন্নয়ন কর্মসূচি উপস্থাপন।',
+    date: '২০ সেপ্টেম্বর ২০২৩',
+    location: 'চট্টগ্রাম সাংস্কৃতিক কেন্দ্র',
+    description: 'লোক সঙ্গীত উৎসব এবং কারুশিল্প প্রদর্শনী',
     images: [
-      { src: '/gallery/aminul14.webp', alt: 'যুব সমাবেশ' },
-      { src: '/gallery/aminul14.webp', alt: 'তরুণদের সাথে' },
-      { src: '/gallery/aminul14.webp', alt: 'চট্টগ্রাম প্রচার' },
-    ]
+      '/aminul_haque.jpg',
+      '/aminul_nomination_post.webp',
+      '/aminul_haque.jpg',
+      '/aminul_nomination_post.webp',
+      '/aminul_haque.jpg',
+    ],
+    color: 'from-purple-500 to-pink-600',
   },
   {
-    date: 'নভেম্বর ৫, ২০২৫',
-    title: 'শিক্ষা সংস্কার সভা',
-    location: 'রাজশাহী',
-    description: 'শিক্ষা সংস্কার পরিকল্পনা এবং শিক্ষকদের সাথে মতবিনিময়।',
+    date: '৮ সেপ্টেম্বর ২০২৩',
+    location: 'সিলেট গ্রামীণ স্কুল ভিজিট',
+    description: 'বৃত্তি প্রোগ্রাম চালু এবং স্কুল সরবরাহ বিতরণ',
     images: [
-      { src: '/gallery/aminul14.webp', alt: 'শিক্ষক সভা' },
-      { src: '/gallery/aminul14.webp', alt: 'শিক্ষা পরিকল্পনা' },
-      { src: '/gallery/aminul14.webp', alt: 'রাজশাহী প্রচার' },
-    ]
-  },
-  {
-    date: 'নভেম্বর ৩, ২০২৫',
-    title: 'মহিলা সমাবেশ',
-    location: 'সিলেট',
-    description: 'নারী ক্ষমতায়ন এবং নারী উন্নয়ন কর্মসূচি নিয়ে আলোচনা।',
-    images: [
-      { src: '/gallery/aminul14.webp', alt: 'মহিলা সমাবেশ' },
-      { src: '/gallery/aminul14.webp', alt: 'নারী নেত্রীদের সাথে' },
-      { src: '/gallery/aminul14.webp', alt: 'সিলেট প্রচার' },
-    ]
+      '/aminul_haque.jpg',
+      '/aminul_nomination_post.webp',
+      '/aminul_haque.jpg',
+    ],
+    color: 'from-blue-500 to-cyan-600',
   },
 ];
 
 export default function GalleryClient() {
-  const [selectedEvent, setSelectedEvent] = useState<number | null>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentEventImages, setCurrentEventImages] = useState<string[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const openLightbox = (image: string, eventImages: string[]) => {
+    setSelectedImage(image);
+    setCurrentEventImages(eventImages);
+    setCurrentImageIndex(eventImages.indexOf(image));
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    setSelectedImage(null);
+  };
+
+  const navigateImage = (direction: 'prev' | 'next') => {
+    if (direction === 'prev') {
+      const newIndex = (currentImageIndex - 1 + currentEventImages.length) % currentEventImages.length;
+      setCurrentImageIndex(newIndex);
+      setSelectedImage(currentEventImages[newIndex]);
+    } else {
+      const newIndex = (currentImageIndex + 1) % currentEventImages.length;
+      setCurrentImageIndex(newIndex);
+      setSelectedImage(currentEventImages[newIndex]);
+    }
+  };
 
   return (
-    <div className="space-y-12">
-      {CAMPAIGN_EVENTS.map((event, eventIdx) => (
-        <motion.div
-          key={eventIdx}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: eventIdx * 0.1 }}
-          className="bg-white rounded-3xl shadow-xl overflow-hidden"
-        >
-          {/* Event Header */}
-          <div className="bg-gradient-to-r from-green-600 to-green-700 p-6 md:p-8">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 text-green-100 mb-2">
-                  <FaCalendarAlt />
-                  <span className="font-semibold">{event.date}</span>
-                </div>
-                <h3 className="text-2xl md:text-3xl font-black text-white mb-2">
-                  {event.title}
-                </h3>
-                <div className="flex items-center gap-2 text-white/90">
-                  <FaMapMarkerAlt />
-                  <span>{event.location}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-white">
-                <FaUsers />
-                <span className="font-semibold">{event.images.length} ছবি</span>
-              </div>
-            </div>
-            <p className="text-white/90 mt-4 text-lg">
-              {event.description}
-            </p>
-          </div>
-
-          {/* Image Grid */}
-          <div className="p-6 md:p-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {event.images.map((image, imgIdx) => (
-                <motion.div
-                  key={imgIdx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: imgIdx * 0.05 }}
-                  onClick={() => setSelectedEvent(eventIdx * 10 + imgIdx)}
-                  className="group relative overflow-hidden rounded-2xl cursor-pointer shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1"
-                >
-                  <div className="aspect-[4/3] overflow-hidden bg-slate-100">
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                  {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <p className="text-white font-semibold text-sm">
-                        {image.alt}
-                      </p>
+    <>
+      <section className="py-20 px-4">
+        <div className="mx-auto max-w-7xl space-y-16">
+          {CAMPAIGN_EVENTS.map((event, idx) => (
+            <motion.div
+              key={event.date}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+              className="relative"
+            >
+              <div className={`absolute inset-0 bg-gradient-to-r ${event.color} rounded-3xl blur-2xl opacity-20`}></div>
+              <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
+                {/* Event Header */}
+                <div className="mb-8">
+                  <div className="flex flex-wrap items-center gap-4 mb-4">
+                    <div className="flex items-center gap-2 text-slate-700">
+                      <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
+                        <FaCalendarAlt className="text-white" />
+                      </div>
+                      <span className="font-bold">{event.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-700">
+                      <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
+                        <FaMapMarkerAlt className="text-white" />
+                      </div>
+                      <span>{event.location}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-700">
+                      <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
+                        <FaImages className="text-white" />
+                      </div>
+                      <span>{event.images.length} ফটো</span>
                     </div>
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      ))}
+                  <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">
+                    {event.description}
+                  </h2>
+                </div>
 
-      {/* Lightbox Modal - You can implement this later if needed */}
-      {selectedEvent !== null && (
-        <div 
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedEvent(null)}
-        >
-          <button
-            className="absolute top-4 right-4 text-white text-4xl hover:text-green-400 transition-colors"
-            onClick={() => setSelectedEvent(null)}
-          >
-            ×
-          </button>
-          <img
-            src={CAMPAIGN_EVENTS[Math.floor(selectedEvent / 10)].images[selectedEvent % 10].src}
-            alt="Full size"
-            className="max-w-full max-h-full object-contain"
-          />
+                {/* Images Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {event.images.map((image, imageIdx) => (
+                    <motion.div
+                      key={imageIdx}
+                      whileHover={{ scale: 1.05 }}
+                      onClick={() => openLightbox(image, event.images)}
+                      className="group relative cursor-pointer rounded-xl overflow-hidden aspect-square shadow-lg hover:shadow-2xl transition-all"
+                    >
+                      <div className={`absolute inset-0 bg-gradient-to-t ${event.color} opacity-0 group-hover:opacity-75 transition-all z-10`}></div>
+                      <img
+                        src={image}
+                        alt={`${event.description} - ছবি ${imageIdx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20">
+                        <FaImages className="text-4xl text-white" />
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      )}
-    </div>
+      </section>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxOpen && selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+            onClick={closeLightbox}
+          >
+            <button
+              onClick={closeLightbox}
+              className="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all z-10"
+            >
+              <FaTimes className="text-2xl" />
+            </button>
+
+            {/* Navigation Buttons */}
+            {currentEventImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigateImage('prev');
+                  }}
+                  className="absolute left-4 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all"
+                >
+                  <FaChevronLeft className="text-2xl" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigateImage('next');
+                  }}
+                  className="absolute right-4 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all"
+                >
+                  <FaChevronRight className="text-2xl" />
+                </button>
+              </>
+            )}
+
+            <motion.img
+              key={selectedImage}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              src={selectedImage}
+              alt="Full size"
+              className="max-w-full max-h-full object-contain rounded-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            {/* Image Counter */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-white/10 backdrop-blur-lg text-white rounded-full font-bold">
+              {currentImageIndex + 1} / {currentEventImages.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

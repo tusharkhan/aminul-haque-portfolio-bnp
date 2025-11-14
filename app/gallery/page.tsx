@@ -1,38 +1,37 @@
 "use client";
 import { motion } from 'framer-motion';
+import { FaCamera } from 'react-icons/fa';
 import GalleryClient from './GalleryClient';
 
 export default function GalleryPage() {
   return (
-    <main className="overflow-hidden">
+    <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 px-4 bg-gradient-to-br from-green-900 via-green-800 to-red-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-        
-        <div className="relative z-10 mx-auto max-w-7xl">
+      <section className="relative py-32 px-4 bg-gradient-to-br from-amber-50 via-white to-orange-50">
+        <div className="mx-auto max-w-7xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center"
           >
-            <span className="text-green-300 font-bold text-sm md:text-base uppercase tracking-wider">প্রচারণা</span>
-            <h1 className="text-5xl md:text-7xl font-black mt-3 mb-6">
-              প্রচারণার মুহূর্ত
+            <span className="inline-block px-6 py-2 bg-amber-100 text-amber-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
+              <FaCamera className="inline mr-2" />
+              ক্যাম্পেইন গ্যালারি
+            </span>
+            <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
+              <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                মুহূর্ত ক্যাপচার
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-              প্রতিদিনের প্রচারণা কার্যক্রম — জনগণের সাথে সরাসরি সংযোগ এবং সমাবেশের ছবি
+            <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
+              আমাদের ক্যাম্পেইন ইভেন্ট এবং সম্প্রদায় পরিদর্শন থেকে স্মৃতি
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Gallery Grid */}
-      <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl">
-          <GalleryClient />
-        </div>
-      </section>
+      {/* Gallery Client Component */}
+      <GalleryClient />
     </main>
   );
 }

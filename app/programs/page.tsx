@@ -1,83 +1,70 @@
 "use client";
-import type { Metadata } from 'next';
 import { motion } from 'framer-motion';
-import { FaBookReader, FaSeedling, FaTheaterMasks, FaLandmark, FaArrowRight, FaCheckCircle, FaUsers, FaChartLine } from 'react-icons/fa';
+import { FaBook, FaSeedling, FaPalette, FaUsers, FaChartLine, FaHeart, FaArrowRight, FaBus, FaTint, FaHospital, FaGraduationCap, FaTree } from 'react-icons/fa';
 
 export default function ProgramsPage() {
   const programs = [
     {
-      icon: FaBookReader,
-      title: 'শিক্ষা সংস্কার',
-      description: 'বিশ্বমানের শিক্ষা অবকাঠামো তৈরি করছি এবং প্রতিটি শিশুর জন্য মানসম্পন্ন শিক্ষার প্রবেশাধিকার প্রসারিত করছি।',
-      color: 'from-blue-500 to-blue-700',
-      features: [
-        'বৃত্তি কর্মসূচি',
-        'ডিজিটাল সাক্ষরতা উদ্যোগ',
-        'আধুনিকীকৃত পাঠ্যক্রম',
-        'শিক্ষক প্রশিক্ষণ কর্মসূচি',
-        'গ্রামীণ বিদ্যালয় উন্নয়ন'
-      ]
+      icon: FaBus,
+      title: 'যানজট নিরসন',
+      tagline: 'আধুনিক গণপরিবহন ব্যবস্থা',
+      description: 'ঢাকার যানজট আমাদের মূল্যবান সময় এবং শক্তি নষ্ট করে। আমিনুল হক একটি আধুনিক গণপরিবহন ব্যবস্থা গড়ে তুলবেন, রাস্তাঘাট প্রশস্ত করবেন এবং ট্র্যাফিক ব্যবস্থাপনাকে উন্নত করে ঢাকাকে যানজটমুক্ত করবেন।',
+      color: 'from-red-500 to-rose-600',
     },
     {
-      icon: FaSeedling,
-      title: 'কৃষি উদ্ভাবন',
-      description: 'আধুনিক কৌশল, স্মার্ট সেচ এবং টেকসই সমবায় মডেলের মাধ্যমে কৃষকদের ক্ষমতায়ন করছি।',
-      color: 'from-green-500 to-green-700',
-      features: [
-        'স্মার্ট চাষাবাদ কৌশল',
-        'ন্যায্য মূল্য ব্যবস্থা',
-        'আধুনিক সেচ সমাধান',
-        'কৃষক সমবায়',
-        'বাজার প্রবেশাধিকার কর্মসূচি'
-      ]
+      icon: FaTint,
+      title: 'বিশুদ্ধ পানির সরবরাহ',
+      tagline: 'প্রতিটি বাড়িতে বিশুদ্ধ পানি',
+      description: 'বিশুদ্ধ পানি প্রত্যেক নাগরিকের অধিকার। অনেক এলাকা এখনও বিশুদ্ধ পানির সংকটে ভুগছে। মেয়র হিসেবে, আমিনুল ঢাকার প্রতিটি বাড়িতে বিশুদ্ধ পানির সরবরাহ নিশ্চিত করতে নতুন পাইপলাইন স্থাপন এবং ওয়াটার ট্রিটমেন্ট প্ল্যান্ট তৈরি করবেন।',
+     
+      color: 'from-teal-500 to-cyan-600',
     },
     {
-      icon: FaTheaterMasks,
-      title: 'শিল্প ও সংস্কৃতি',
-      description: 'আমাদের সমৃদ্ধ ঐতিহ্য উদযাপন করছি এবং তরুণ শিল্পী ও সাংস্কৃতিক উদ্যোগকে ক্ষমতায়ন করছি।',
-      color: 'from-purple-500 to-purple-700',
-      features: [
-        'সাংস্কৃতিক উৎসব',
-        'ঐতিহ্য সংরক্ষণ',
-        'যুব শিল্প কর্মসূচি',
-        'সম্প্রদায় থিয়েটার',
-        'শিল্পী সহায়তা তহবিল'
-      ]
+      icon: FaHospital,
+      title: 'সাশ্রয়ী স্বাস্থ্যসেবা',
+      tagline: 'সবার জন্য মানসম্মত চিকিৎসা',
+      description: 'স্বাস্থ্যসেবা কোনো বিলাসিতা নয়, এটি একটি মৌলিক অধিকার। আমিনুল হক শহরের হাসপাতালগুলোর মান উন্নয়ন করবেন এবং সাধারণ মানুষের জন্য সাশ্রয়ী মূল্যে চিকিৎসা সেবা নিশ্চিত করতে নতুন ক্লিনিক স্থাপন করবেন।',
+      
+      color: 'from-pink-500 to-rose-600',
     },
     {
-      icon: FaLandmark,
-      title: 'সুশাসন',
-      description: 'স্বচ্ছ, জবাবদিহিমূলক নেতৃত্ব যা সততার সাথে জনগণের সেবায় নিবেদিত।',
-      color: 'from-red-500 to-red-700',
-      features: [
-        'স্বচ্ছতা উদ্যোগ',
-        'জবাবদিহিতা ব্যবস্থা',
-        'নাগরিক-প্রথম সেবা',
-        'দুর্নীতিবিরোধী কর্মসূচি',
-        'সম্প্রদায় সংযুক্তি'
-      ]
+      icon: FaGraduationCap,
+      title: 'মানসম্মত শিক্ষা',
+      tagline: 'সকল শিশুর জন্য উন্নত শিক্ষা',
+      description: 'সকল শিশুর জন্য মানসম্মত শিক্ষা নিশ্চিত করতে স্কুলগুলোর আধুনিকায়ন করা হবে এবং শিক্ষকদের প্রশিক্ষণের ব্যবস্থা করা হবে। প্রযুক্তিভিত্তিক শিক্ষা প্রসারেও বিশেষ নজর দেওয়া হবে।',
+      
+      color: 'from-indigo-500 to-purple-600',
+    },
+    {
+      icon: FaTree,
+      title: 'পরিষ্কার ও সবুজ ঢাকা',
+      tagline: 'বাসযোগ্য সবুজ নগরী',
+      description: 'শহরকে পরিষ্কার রাখতে আধুনিক বর্জ্য ব্যবস্থাপনা সিস্টেম চালু করা হবে। পার্ক, খেলার মাঠ এবং সবুজায়ন বৃদ্ধি করে ঢাকাকে একটি স্বাস্থ্যকর ও বাসযোগ্য নগরী হিসেবে গড়ে তোলা হবে।',
+      
+      color: 'from-emerald-500 to-green-600',
     },
   ];
 
   return (
-    <main className="overflow-hidden">
+    <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 px-4 bg-gradient-to-br from-green-900 via-green-800 to-red-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-        
-        <div className="relative z-10 mx-auto max-w-7xl">
+      <section className="relative py-32 px-4 bg-gradient-to-br from-blue-50 via-white to-cyan-50">
+        <div className="mx-auto max-w-7xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center"
           >
-            <span className="text-green-300 font-bold text-sm md:text-base uppercase tracking-wider">আমরা যা করি</span>
-            <h1 className="text-5xl md:text-7xl font-black mt-3 mb-6">
-              আমাদের কর্মসূচি
+            <span className="inline-block px-6 py-2 bg-blue-100 text-blue-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
+              আমাদের প্রোগ্রাম
+            </span>
+            <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
+              <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                পরিবর্তন তৈরি
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-              বাংলাদেশ জুড়ে প্রকৃত পরিবর্তনের চালক চারটি স্তম্ভ
+            <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
+              স্থায়ী প্রভাবের জন্য যত্ন সহকারে ডিজাইন করা উদ্যোগ
             </p>
           </motion.div>
         </div>
@@ -85,143 +72,67 @@ export default function ProgramsPage() {
 
       {/* Programs Grid */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {programs.map((program, idx) => (
-              <motion.div
-                key={program.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="group relative bg-white rounded-3xl p-8 md:p-10 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2 cursor-pointer overflow-hidden"
-              >
-                {/* Background Gradient */}
-                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${program.color} opacity-10 rounded-full blur-3xl group-hover:w-64 group-hover:h-64 transition-all duration-500`} />
-                
-                <div className="relative z-10">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${program.color} rounded-2xl flex items-center justify-center mb-6 transform group-hover:scale-110 group-hover:rotate-6 transition-all`}>
-                    <program.icon className="text-3xl text-white" />
+        <div className="mx-auto max-w-6xl space-y-8">
+          {programs.map((program, idx) => (
+            <motion.div
+              key={program.title}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+              className="relative group"
+            >
+              <div className={`absolute inset-0 bg-gradient-to-r ${program.color} rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-all`}></div>
+              <div className="relative bg-white rounded-3xl p-8 md:p-10 shadow-xl hover:shadow-2xl transition-all border border-slate-200">
+                <div className="flex flex-col md:flex-row gap-6 items-start">
+                  {/* Icon */}
+                  <div className={`flex-shrink-0 p-5 bg-gradient-to-br ${program.color} rounded-2xl shadow-lg`}>
+                    <program.icon className="text-5xl text-white" />
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
-                    {program.title}
-                  </h3>
-                  <p className="text-slate-600 text-base md:text-lg leading-relaxed mb-6">
-                    {program.description}
-                  </p>
-                  
-                  {/* Features List */}
-                  <ul className="space-y-3 mb-6">
-                    {program.features.map((feature, featureIdx) => (
-                      <li key={featureIdx} className="flex items-center text-slate-700">
-                        <FaCheckCircle className={`text-green-600 mr-3 flex-shrink-0`} />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
 
-                  <div className="flex items-center text-green-600 font-semibold group-hover:text-red-600 transition-colors">
-                    আরও জানুন <FaArrowRight className="ml-2 group-hover:translate-x-2 transition-transform" />
+                  {/* Content */}
+                  <div className="flex-1">
+                    <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">
+                      {program.title}
+                    </h2>
+                    <p className={`text-base md:text-lg font-semibold bg-gradient-to-r ${program.color} bg-clip-text text-transparent mb-4`}>
+                      {program.tagline}
+                    </p>
+                    <p className="text-slate-700 text-base md:text-lg leading-relaxed">
+                      {program.description}
+                    </p>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* Impact Stats */}
-      <section className="py-20 px-4 bg-slate-50">
-        <div className="mx-auto max-w-7xl">
+      {/* CTA Section */}
+      <section className="py-20 px-4">
+        <div className="mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="relative"
           >
-            <span className="text-green-600 font-bold text-sm md:text-base uppercase tracking-wider">প্রভাব</span>
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 mt-3 mb-6">
-              বাস্তব ফলাফল
-            </h2>
-            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
-              বাংলাদেশ জুড়ে আমাদের কর্মসূচির পরিমাপযোগ্য ফলাফল
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: FaUsers,
-                stat: '১৫০K+',
-                label: 'প্রভাবিত মানুষ',
-                description: 'আমাদের কর্মসূচির মাধ্যমে সরাসরি উন্নত জীবন',
-                color: 'from-blue-500 to-cyan-600'
-              },
-              {
-                icon: FaChartLine,
-                stat: '৮৫%',
-                label: 'সফলতার হার',
-                description: 'কর্মসূচির লক্ষ্য পূরণ বা অতিক্রম',
-                color: 'from-green-500 to-emerald-600'
-              },
-              {
-                icon: FaLandmark,
-                stat: '৪৫+',
-                label: 'সম্প্রদায়',
-                description: 'সক্রিয়ভাবে সেবা প্রদান করা জেলা ও অঞ্চল',
-                color: 'from-red-500 to-pink-600'
-              },
-            ].map((stat, idx) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="relative bg-white rounded-2xl p-8 shadow-lg text-center group hover:shadow-xl transition-all"
-              >
-                <div className={`w-16 h-16 bg-gradient-to-br ${stat.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                  <stat.icon className="text-2xl text-white" />
-                </div>
-                <div className={`text-5xl font-black bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}>
-                  {stat.stat}
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">{stat.label}</h3>
-                <p className="text-slate-600">{stat.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-20 px-4 bg-gradient-to-br from-green-900 to-red-900 text-white">
-        <div className="mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-4xl md:text-5xl font-black mb-6">
-              যুক্ত হতে চান?
-            </h2>
-            <p className="text-xl text-white/90 mb-8">
-              পার্থক্য তৈরিতে আমাদের সাথে যোগ দিন। স্বেচ্ছাসেবক, দান বা আমাদের কর্মসূচির সাথে অংশীদার হন।
-            </p>
-            <a
-              href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-white text-green-700 rounded-full font-bold text-lg shadow-2xl hover:bg-green-50 transition-all transform hover:scale-105"
-            >
-              আজই যোগাযোগ করুন
-              <FaArrowRight className="ml-2" />
-            </a>
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 rounded-3xl blur-2xl opacity-30"></div>
+            <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
+                পরিবর্তনের অংশ হন
+              </h2>
+              <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
+                আমাদের প্রোগ্রামে যোগদান করুন এবং বাংলাদেশে টেকসই প্রভাব তৈরি করতে সাহায্য করুন
+              </p>
+              <button className="px-10 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105">
+                যোগাযোগ করুন
+              </button>
+            </div>
           </motion.div>
         </div>
       </section>
     </main>
   );
 }
-
-
