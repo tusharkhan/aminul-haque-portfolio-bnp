@@ -8,24 +8,42 @@ import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 const navItems = [
   { href: '/', label: 'হোম' },
   { href: '/about', label: 'সম্পর্কে' },
-  { href: '/programs', label: 'কর্মসূচি' },
-  { href: '/events', label: 'ইভেন্ট' },
+  { 
+    label: 'কর্মসূচি ও ইভেন্ট',
+    hasDropdown: true,
+    dropdownItems: [
+      { href: '/programs', label: 'কর্মসূচি' },
+      { href: '/events', label: 'ইভেন্ট' },
+    ]
+  },
   { 
     label: 'ইশতেহার',
     hasDropdown: true,
     dropdownItems: [
-      { href: '/aminul-manifesto', label: 'আমিনুল ভাইয়ের ইশতেহার' },
+      { href: '/aminul-manifesto', label: 'ইশতেহার' },
       { href: '/bnp-31-point', label: 'বিএনপির ৩১ দফা' },
-      { href: '/bnp-28-point', label: 'বিএনপির ২৮ দফা' },
+      { href: '/bnp-19-point', label: 'বিএনপির ১৯ দফা' },
     ]
   },
   { href: '/manifesto', label: 'রূপকল্প' },
-  { href: '/voter-center', label: 'ভোট কেন্দ্র' },
-  { href: '/complaints', label: 'অভিযোগ' },
-  { href: '/gallery', label: 'গ্যালারি' },
-  { href: '/press-release', label: 'প্রেস রিলিজ' },
-  { href: '/blog', label: 'ব্লগ' },
-  { href: '/comments', label: 'মন্তব্য' },
+  { 
+    label: 'তথ্য ও মিডিয়া',
+    hasDropdown: true,
+    dropdownItems: [
+      { href: '/gallery', label: 'গ্যালারি' },
+      { href: '/press-release', label: 'প্রেস রিলিজ' },
+      { href: '/blog', label: 'ব্লগ' },
+    ]
+  },
+  { 
+    label: 'যোগাযোগ ও সেবা',
+    hasDropdown: true,
+    dropdownItems: [
+      { href: '/voter-center', label: 'ভোট কেন্দ্র' },
+      { href: '/complaints', label: 'অভিযোগ' },
+      { href: '/comments', label: 'মন্তব্য' },
+    ]
+  },
 ];
 
 export default function Navbar() {
@@ -41,9 +59,9 @@ export default function Navbar() {
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl blur opacity-50 group-hover:opacity-75 transition-all"></div>
-              <div className="relative w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center">
+              {/* <div className="relative w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center">
                 <span className="text-white text-2xl font-black">আহ</span>
-              </div>
+              </div> */}
             </div>
             <div>
               <div className="text-xl font-black bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
@@ -91,7 +109,7 @@ export default function Navbar() {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute top-full mt-2 left-0 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 min-w-[250px] z-50"
+                          className="absolute top-full mt-2 left-0 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 min-w-[140px] z-50"
                         >
                           {item.dropdownItems.map((dropItem) => {
                             const isActive = pathname === dropItem.href;

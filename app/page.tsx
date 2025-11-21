@@ -1,123 +1,17 @@
 "use client";
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { FaGraduationCap, FaSeedling, FaPalette, FaUsers, FaArrowRight, FaChartLine, FaHeart, FaTrophy, FaMapMarkerAlt, FaNewspaper, FaExclamationTriangle } from 'react-icons/fa';
-import Hero from './components/Hero';
-import TestimonialCarousel from './components/TestimonialCarousel';
-import WelcomeModal from './components/WelcomeModal';
+
 import Link from 'next/link';
+import Hero from './components/Hero';
+import { motion } from 'framer-motion';
+import WelcomeModal from './components/WelcomeModal';
+import TestimonialCarousel from './components/TestimonialCarousel';
+import { FaArrowRight, FaMapMarkerAlt, FaNewspaper, FaExclamationTriangle } from 'react-icons/fa';
 
 export default function Home() {
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       <WelcomeModal />
-      
-      {/* Hero Section */}
       <Hero />
-
-      {/* Stats Section */}
-      {/* <section className="py-20 px-4 -mt-20 relative z-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: FaUsers, label: 'জনগণ সেবায়', value: '৫০,০০০+', color: 'from-emerald-500 to-green-600' },
-              { icon: FaGraduationCap, label: 'ছাত্র উপকৃত', value: '১৫,০০০+', color: 'from-blue-500 to-cyan-600' },
-              { icon: FaSeedling, label: 'কৃষক সহায়তা', value: '৮,০০০+', color: 'from-amber-500 to-orange-600' },
-              { icon: FaTrophy, label: 'সফল প্রকল্প', value: '৫০+', color: 'from-purple-500 to-pink-600' },
-            ].map((stat, idx) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="group relative"
-              >
-                <div className={`absolute inset-0 bg-gradient-to-r ${stat.color} rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition-all`}></div>
-                <div className="relative bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all border border-slate-200">
-                  <div className={`inline-flex p-4 bg-gradient-to-br ${stat.color} rounded-xl mb-4`}>
-                    <stat.icon className="text-3xl text-white" />
-                  </div>
-                  <div className="text-4xl font-black text-slate-900 mb-2">{stat.value}</div>
-                  <div className="text-slate-600 font-semibold">{stat.label}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-      {/* Vision Section */}
-      {/* <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-              আমাদের রূপকল্প
-            </span>
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              একটি উন্নত <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">বাংলাদেশ</span>
-            </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              শিক্ষা, কৃষি, শিল্প ও সংস্কৃতিতে টেকসই উন্নয়নের মাধ্যমে একটি সমৃদ্ধ ও ন্যায়সংগত সমাজ গড়ে তোলা আমাদের লক্ষ্য।
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl blur-2xl opacity-20"></div>
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                <img
-                  src="/aminul_haque.jpg"
-                  alt="আমিনুল হক"
-                  className="w-full h-[500px] object-cover"
-                />
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="space-y-6"
-            >
-              <h3 className="text-4xl font-black text-slate-900">
-                জনগণের সেবায় নিবেদিত
-              </h3>
-              <p className="text-lg text-slate-700 leading-relaxed">
-                আমিনুল হক দীর্ঘদিন ধরে বাংলাদেশের সাধারণ মানুষের জীবনমান উন্নয়নে কাজ করে যাচ্ছেন। তার নেতৃত্বে শিক্ষা, কৃষি এবং সংস্কৃতি ক্ষেত্রে অসংখ্য সফল কর্মসূচি বাস্তবায়িত হয়েছে।
-              </p>
-              <div className="space-y-4">
-                {[
-                  { icon: FaGraduationCap, text: 'শিক্ষা প্রতিষ্ঠান উন্নয়ন ও বৃত্তি কর্মসূচি' },
-                  { icon: FaSeedling, text: 'কৃষক সহায়তা ও আধুনিক কৃষি প্রযুক্তি' },
-                  { icon: FaPalette, text: 'সংস্কৃতি সংরক্ষণ ও শিল্পীদের সহায়তা' },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
-                    <div className="p-3 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg">
-                      <item.icon className="text-2xl text-white" />
-                    </div>
-                    <span className="font-semibold text-slate-800">{item.text}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section> */}
 
       {/* Video Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
@@ -162,75 +56,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
-      {/* Programs Section */}
-      {/* <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <span className="inline-block px-6 py-2 bg-blue-100 text-blue-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-              আমাদের কর্মসূচি
-            </span>
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              পরিবর্তনের <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">উদ্যোগ</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: FaGraduationCap,
-                title: 'শিক্ষা অগ্রাধিকার',
-                description: 'প্রতিটি শিশুর জন্য মানসম্পন্ন শিক্ষা নিশ্চিত করা',
-                color: 'from-emerald-500 to-green-600',
-              },
-              {
-                icon: FaSeedling,
-                title: 'কৃষি উন্নয়ন',
-                description: 'কৃষকদের জন্য আধুনিক প্রযুক্তি ও সহায়তা',
-                color: 'from-blue-500 to-cyan-600',
-              },
-              {
-                icon: FaPalette,
-                title: 'শিল্প ও সংস্কৃতি',
-                description: 'ঐতিহ্য সংরক্ষণ ও শিল্পীদের ক্ষমতায়ন',
-                color: 'from-purple-500 to-pink-600',
-              },
-              {
-                icon: FaUsers,
-                title: 'যুব নেতৃত্ব',
-                description: 'তরুণদের দক্ষতা উন্নয়ন ও প্রশিক্ষণ',
-                color: 'from-amber-500 to-orange-600',
-              },
-            ].map((program, idx) => (
-              <motion.div
-                key={program.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="group relative"
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${program.color} rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition-all`}></div>
-                <div className="relative bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all border border-slate-200 h-full">
-                  <div className={`inline-flex p-4 bg-gradient-to-br ${program.color} rounded-xl mb-6`}>
-                    <program.icon className="text-3xl text-white" />
-                  </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-3">{program.title}</h3>
-                  <p className="text-slate-600 leading-relaxed">{program.description}</p>
-                  <button className={`mt-6 inline-flex items-center gap-2 text-sm font-bold bg-gradient-to-r ${program.color} bg-clip-text text-transparent group-hover:gap-3 transition-all`}>
-                    আরও জানুন <FaArrowRight />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* Quick Services Section */}
       <section className="py-20 px-4">
