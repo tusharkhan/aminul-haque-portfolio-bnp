@@ -1,9 +1,10 @@
 "use client";
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { FaGraduationCap, FaSeedling, FaPalette, FaUsers, FaArrowRight, FaChartLine, FaHeart, FaTrophy } from 'react-icons/fa';
+import { FaGraduationCap, FaSeedling, FaPalette, FaUsers, FaArrowRight, FaChartLine, FaHeart, FaTrophy, FaMapMarkerAlt, FaNewspaper, FaExclamationTriangle } from 'react-icons/fa';
 import Hero from './components/Hero';
 import TestimonialCarousel from './components/TestimonialCarousel';
 import WelcomeModal from './components/WelcomeModal';
+import Link from 'next/link';
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -231,8 +232,107 @@ export default function Home() {
         </div>
       </section> */}
 
-      {/* Testimonials */}
+      {/* Quick Services Section */}
       <section className="py-20 px-4">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="inline-block px-6 py-2 bg-cyan-100 text-cyan-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
+              দ্রুত সেবা
+            </span>
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
+              অনলাইন <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">সেবা সমূহ</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="group relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all"></div>
+              <Link href="/voter-center" className="relative block bg-white rounded-3xl p-8 md:p-12 shadow-xl hover:shadow-2xl transition-all border border-slate-200 h-full">
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex-shrink-0 p-5 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl mb-6">
+                    <FaMapMarkerAlt className="text-5xl text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-3xl font-black text-slate-900 mb-4">ভোট কেন্দ্র খুঁজুন</h3>
+                    <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+                      আপনার এনআইডি, মোবাইল নম্বর বা এলাকার নাম দিয়ে সহজেই আপনার ভোট কেন্দ্রের অবস্থান খুঁজে নিন
+                    </p>
+                    <div className="flex items-center justify-center gap-2 text-blue-600 font-bold group-hover:gap-3 transition-all">
+                      এখনই খুঁজুন <FaArrowRight />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="group relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all"></div>
+              <Link href="/complaints" className="relative block bg-white rounded-3xl p-8 md:p-12 shadow-xl hover:shadow-2xl transition-all border border-slate-200 h-full">
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex-shrink-0 p-5 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl mb-6">
+                    <FaExclamationTriangle className="text-5xl text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-3xl font-black text-slate-900 mb-4">অভিযোগ দাখিল</h3>
+                    <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+                      আপনার সমস্যা ও অভিযোগ জানান। আমরা সমাধানে প্রতিশ্রুতিবদ্ধ এবং দ্রুত ব্যবস্থা নিতে প্রস্তুত
+                    </p>
+                    <div className="flex items-center justify-center gap-2 text-red-600 font-bold group-hover:gap-3 transition-all">
+                      অভিযোগ করুন <FaArrowRight />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="group relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all"></div>
+              <Link href="/press-release" className="relative block bg-white rounded-3xl p-8 md:p-12 shadow-xl hover:shadow-2xl transition-all border border-slate-200 h-full">
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex-shrink-0 p-5 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl mb-6">
+                    <FaNewspaper className="text-5xl text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-3xl font-black text-slate-900 mb-4">প্রেস রিলিজ</h3>
+                    <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+                      আমাদের সর্বশেষ প্রেস রিলিজ, ঘোষণা এবং কার্যক্রম সম্পর্কে জানুন এবং মিডিয়া কভারেজ দেখুন
+                    </p>
+                    <div className="flex items-center justify-center gap-2 text-emerald-600 font-bold group-hover:gap-3 transition-all">
+                      সব রিলিজ দেখুন <FaArrowRight />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
         <div className="mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

@@ -3,20 +3,34 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 
 const navItems = [
   { href: '/', label: 'হোম' },
   { href: '/about', label: 'সম্পর্কে' },
   { href: '/programs', label: 'কর্মসূচি' },
+  { href: '/events', label: 'ইভেন্ট' },
+  { 
+    label: 'ইশতেহার',
+    hasDropdown: true,
+    dropdownItems: [
+      { href: '/aminul-manifesto', label: 'আমিনুল ভাইয়ের ইশতেহার' },
+      { href: '/bnp-31-point', label: 'বিএনপির ৩১ দফা' },
+      { href: '/bnp-28-point', label: 'বিএনপির ২৮ দফা' },
+    ]
+  },
   { href: '/manifesto', label: 'রূপকল্প' },
+  { href: '/voter-center', label: 'ভোট কেন্দ্র' },
+  { href: '/complaints', label: 'অভিযোগ' },
   { href: '/gallery', label: 'গ্যালারি' },
+  { href: '/press-release', label: 'প্রেস রিলিজ' },
   { href: '/blog', label: 'ব্লগ' },
   { href: '/comments', label: 'মন্তব্য' },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
   return (
@@ -42,11 +56,71 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
+              if (item.hasDropdown && item.dropdownItems) {
+                const isDropdownActive = item.dropdownItems.some(dropItem => pathname === dropItem.href);
+                return (
+                  <div
+                    key={item.label}
+                    className="relative"
+                    onMouseEnter={() => setOpenDropdown(item.label)}
+                    onMouseLeave={() => setOpenDropdown(null)}
+                  >
+                    <button
+                      className={`relative px-4 py-2 font-bold text-sm transition-all rounded-lg flex items-center gap-2 ${
+                        isDropdownActive
+                          ? 'text-white'
+                          : 'text-slate-700 hover:text-emerald-600'
+                      }`}
+                    >
+                      {isDropdownActive && (
+                        <motion.div
+                          layoutId="activeTab"
+                          className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-lg"
+                          initial={false}
+                          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                        />
+                      )}
+                      <span className="relative z-10">{item.label}</span>
+                      <FaChevronDown className={`relative z-10 text-xs transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    <AnimatePresence>
+                      {openDropdown === item.label && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute top-full mt-2 left-0 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 min-w-[250px] z-50"
+                        >
+                          {item.dropdownItems.map((dropItem) => {
+                            const isActive = pathname === dropItem.href;
+                            return (
+                              <Link
+                                key={dropItem.href}
+                                href={dropItem.href}
+                                className={`block px-4 py-3 font-bold text-sm transition-all ${
+                                  isActive
+                                    ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white'
+                                    : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
+                                }`}
+                              >
+                                {dropItem.label}
+                              </Link>
+                            );
+                          })}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+              
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={item.href!}
                   className={`relative px-4 py-2 font-bold text-sm transition-all rounded-lg ${
                     isActive
                       ? 'text-white'
@@ -101,11 +175,38 @@ export default function Navbar() {
             >
               <div className="py-4 space-y-2">
                 {navItems.map((item) => {
+                  if (item.hasDropdown && item.dropdownItems) {
+                    return (
+                      <div key={item.label} className="space-y-1">
+                        <div className="px-4 py-2 font-bold text-sm text-emerald-700 bg-emerald-50 rounded-lg">
+                          {item.label}
+                        </div>
+                        {item.dropdownItems.map((dropItem) => {
+                          const isActive = pathname === dropItem.href;
+                          return (
+                            <Link
+                              key={dropItem.href}
+                              href={dropItem.href}
+                              onClick={() => setIsOpen(false)}
+                              className={`block px-6 py-3 font-bold rounded-xl transition-all ml-4 ${
+                                isActive
+                                  ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg'
+                                  : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
+                              }`}
+                            >
+                              {dropItem.label}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    );
+                  }
+                  
                   const isActive = pathname === item.href;
                   return (
                     <Link
                       key={item.href}
-                      href={item.href}
+                      href={item.href!}
                       onClick={() => setIsOpen(false)}
                       className={`block px-4 py-3 font-bold rounded-xl transition-all ${
                         isActive
