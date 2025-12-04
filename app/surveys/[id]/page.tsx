@@ -26,19 +26,20 @@ export function generateStaticParams() {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function SurveyDetailPage({ params }: PageProps) {
+export default async function SurveyDetailPage({ params }: PageProps) {
+  const { id } = await params;
   let survey: Survey | null = null;
   
   try {
     const filePath = join(process.cwd(), 'public', 'data', 'surveys.json');
     const fileContents = readFileSync(filePath, 'utf8');
     const surveys: Survey[] = JSON.parse(fileContents);
-    survey = surveys.find((s) => s.id === params.id) || null;
+    survey = surveys.find((s) => s.id === id) || null;
   } catch (error) {
     console.error('Error reading surveys.json:', error);
   }

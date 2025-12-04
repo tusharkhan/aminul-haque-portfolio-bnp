@@ -5,18 +5,57 @@ import { FaUser, FaEnvelope, FaCommentDots, FaPaperPlane, FaCheckCircle } from '
 export default function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
+    // Clear error when user starts typing
+    if (error) setError(null);
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // Placeholder submit
-    console.log('Contact form submitted:', form);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    
+    setLoading(true);
+    setError(null);
+
+    try {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api-protfolio.trusttous.com/api/v1';
+      const response = await fetch(`${apiBaseUrl}/contacts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          text: form.message.trim(), // Map message to text for API
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to submit contact form: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.success && result.data) {
+        // Reset form on success
+        setForm({ name: '', email: '', message: '' });
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 5000);
+      } else {
+        throw new Error('Invalid response from server');
+      }
+    } catch (err) {
+      console.error('Error submitting contact form:', err);
+      setError(err instanceof Error ? err.message : 'Failed to submit contact form. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (submitted) {
@@ -35,6 +74,12 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <div className="p-4 bg-red-50 border-2 border-red-200 text-red-700 rounded-xl text-center font-semibold">
+          {error}
+        </div>
+      )}
+
       {/* Name Field */}
       <div>
         <label className="mb-2 block text-sm font-bold text-slate-900">
@@ -49,7 +94,8 @@ export default function ContactForm() {
             value={form.name}
             onChange={handleChange}
             required
-            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all"
+            disabled={loading}
+            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder="আপনার নাম"
           />
         </div>
@@ -70,7 +116,8 @@ export default function ContactForm() {
             value={form.email}
             onChange={handleChange}
             required
-            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all"
+            disabled={loading}
+            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder="আপনার@ইমেইল.com"
           />
         </div>
@@ -91,7 +138,8 @@ export default function ContactForm() {
             onChange={handleChange}
             required
             rows={6}
-            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all resize-none"
+            disabled={loading}
+            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder="আমরা কীভাবে আপনাকে সাহায্য করতে পারি তা বলুন..."
           />
         </div>
@@ -100,10 +148,20 @@ export default function ContactForm() {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-green-600 to-green-700 px-8 py-4 text-white font-bold text-lg shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 transition-all transform hover:scale-105"
+        disabled={loading}
+        className="w-full flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-green-600 to-green-700 px-8 py-4 text-white font-bold text-lg shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
       >
-        <FaPaperPlane />
-        বার্তা পাঠান
+        {loading ? (
+          <>
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            <span>পাঠানো হচ্ছে...</span>
+          </>
+        ) : (
+          <>
+            <FaPaperPlane />
+            বার্তা পাঠান
+          </>
+        )}
       </button>
     </form>
   );

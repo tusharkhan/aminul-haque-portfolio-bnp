@@ -24,49 +24,49 @@ export default function EventCard({
 }) {
   return (
     <article className="group h-full flex flex-col rounded-2xl overflow-hidden relative">
-      <div className={`absolute inset-0 bg-gradient-to-r ${isPast ? 'from-slate-500 to-slate-600' : 'from-emerald-500 to-green-600'} rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all`}></div>
-      <div className="relative bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all h-full flex flex-col border border-slate-200">
+      <div className={`absolute inset-0 bg-gradient-to-r ${isPast ? 'from-slate-500 to-slate-600' : 'from-emerald-500 to-green-600'} rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all duration-300`}></div>
+      <div className="relative bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-slate-200 overflow-hidden">
         {/* Image/Header */}
         {image ? (
-          <div className="relative h-48 bg-gradient-to-br from-emerald-50 to-green-50 overflow-hidden">
+          <div className="relative w-full h-64 bg-gradient-to-br from-emerald-50 to-green-50 overflow-hidden flex items-center justify-center">
             <img
               src={image}
               alt={title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
             />
             {isPast && hasVideo && (
-              <div className="absolute top-4 right-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5">
+              <div className="absolute top-4 right-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 z-10">
                 <FaVideo />
                 ভিডিও উপলব্ধ
               </div>
             )}
             {!isPast && (
-              <div className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-bold shadow-lg">
+              <div className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
                 আসছে শীঘ্রই
               </div>
             )}
             {isPast && (
-              <div className="absolute top-4 left-4 px-3 py-1.5 bg-slate-600 text-white rounded-full text-xs font-bold shadow-lg">
+              <div className="absolute top-4 left-4 px-3 py-1.5 bg-slate-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
                 সম্পন্ন
               </div>
             )}
           </div>
         ) : (
-          <div className={`relative h-48 bg-gradient-to-br ${isPast ? 'from-slate-100 to-slate-200' : 'from-emerald-50 to-green-50'} flex items-center justify-center`}>
+          <div className={`relative h-64 bg-gradient-to-br ${isPast ? 'from-slate-100 to-slate-200' : 'from-emerald-50 to-green-50'} flex items-center justify-center`}>
             <FaCalendar className={`text-6xl ${isPast ? 'text-slate-400' : 'text-emerald-300'}`} />
             {isPast && hasVideo && (
-              <div className="absolute top-4 right-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5">
+              <div className="absolute top-4 right-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 z-10">
                 <FaVideo />
                 ভিডিও উপলব্ধ
               </div>
             )}
             {!isPast && (
-              <div className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-bold shadow-lg">
+              <div className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
                 আসছে শীঘ্রই
               </div>
             )}
             {isPast && (
-              <div className="absolute top-4 left-4 px-3 py-1.5 bg-slate-600 text-white rounded-full text-xs font-bold shadow-lg">
+              <div className="absolute top-4 left-4 px-3 py-1.5 bg-slate-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
                 সম্পন্ন
               </div>
             )}
@@ -106,7 +106,7 @@ export default function EventCard({
           {/* View Details Link */}
           <Link 
             href={`/events/${slug}`}
-            className={`inline-flex items-center gap-2 text-sm font-bold bg-gradient-to-r ${isPast ? 'from-slate-600 to-slate-700' : 'from-emerald-600 to-green-600'} bg-clip-text text-transparent hover:opacity-80 transition-all`}
+            className={`inline-flex items-center gap-2 text-sm font-bold ${isPast ? 'text-slate-600 hover:text-slate-800' : 'text-emerald-600 hover:text-emerald-700'} transition-all`}
           >
             বিস্তারিত দেখুন
             <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -116,5 +116,3 @@ export default function EventCard({
     </article>
   );
 }
-
-
