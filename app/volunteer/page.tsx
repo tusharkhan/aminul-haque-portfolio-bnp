@@ -80,6 +80,8 @@ export default function VolunteerPage() {
     fullName: '',
     mobile: '',
     email: '',
+    password: '',
+    passwordConfirmation: '',
     district: '',
     upazila: '',
     ward: '',
@@ -90,6 +92,8 @@ export default function VolunteerPage() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -162,17 +166,81 @@ export default function VolunteerPage() {
     if (formData.availability.length === 0) {
       newErrors.availability = 'অন্তত একটি সময় নির্বাচন করুন';
     }
+    if (!formData.password.trim()) {
+      newErrors.password = 'পাসওয়ার্ড আবশ্যক';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে';
+    }
+    if (!formData.passwordConfirmation.trim()) {
+      newErrors.passwordConfirmation = 'পাসওয়ার্ড নিশ্চিতকরণ আবশ্যক';
+    } else if (formData.password !== formData.passwordConfirmation) {
+      newErrors.passwordConfirmation = 'পাসওয়ার্ড মিলছে না';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      // In a real app, you would send this data to a backend
-      console.log('Volunteer form data:', formData);
-      setSubmitted(true);
+    if (!validateForm()) return;
+
+    setSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api-protfolio.trusttous.com/api/v1';
+      
+      // Map availability IDs to labels
+      const availabilityLabels = formData.availability.map((id) => {
+        const option = availabilityOptions.find((opt) => opt.id === id);
+        return option ? option.label : id;
+      });
+
+      // Get district name from ID
+      const districtName = districts.find((d) => d.id === formData.district)?.name || formData.district;
+
+      // Prepare payload according to API structure
+      const payload = {
+        full_name: formData.fullName,
+        mobile: formData.mobile,
+        email: formData.email,
+        password: formData.password,
+        password_confirmation: formData.passwordConfirmation,
+        district: districtName,
+        upazila: formData.upazila,
+        ward: formData.ward,
+        skills: formData.skills,
+        preferred_tasks: formData.preferredTasks,
+        availability: availabilityLabels,
+      };
+
+      const response = await fetch(`${apiBaseUrl}/volunteers/store`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: 'Failed to submit volunteer application' }));
+        throw new Error(errorData.message || `Failed to submit: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        throw new Error(data.message || 'Failed to submit volunteer application');
+      }
+    } catch (error) {
+      console.error('Error submitting volunteer form:', error);
+      setSubmitError(error instanceof Error ? error.message : 'আবেদন জমা দেওয়ার সময় একটি ত্রুটি হয়েছে');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -204,6 +272,8 @@ export default function VolunteerPage() {
                     fullName: '',
                     mobile: '',
                     email: '',
+                    password: '',
+                    passwordConfirmation: '',
                     district: '',
                     upazila: '',
                     ward: '',
@@ -212,6 +282,7 @@ export default function VolunteerPage() {
                     availability: [],
                   });
                   setErrors({});
+                  setSubmitError(null);
                 }}
                 className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
               >
@@ -320,6 +391,42 @@ export default function VolunteerPage() {
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="আপনার@ইমেইল.com"
+                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                        required
+                      />
+                    </div>
+
+                    {/* Password */}
+                    <div>
+                      <label className="block text-slate-700 font-bold mb-3 text-lg">
+                        পাসওয়ার্ড <span className="text-red-500">*</span>
+                      </label>
+                      {errors.password && (
+                        <p className="text-red-500 text-sm font-bold mb-2">{errors.password}</p>
+                      )}
+                      <input
+                        type="password"
+                        value={formData.password}
+                        onChange={(e) => handleInputChange('password', e.target.value)}
+                        placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)"
+                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                        required
+                      />
+                    </div>
+
+                    {/* Password Confirmation */}
+                    <div>
+                      <label className="block text-slate-700 font-bold mb-3 text-lg">
+                        পাসওয়ার্ড নিশ্চিতকরণ <span className="text-red-500">*</span>
+                      </label>
+                      {errors.passwordConfirmation && (
+                        <p className="text-red-500 text-sm font-bold mb-2">{errors.passwordConfirmation}</p>
+                      )}
+                      <input
+                        type="password"
+                        value={formData.passwordConfirmation}
+                        onChange={(e) => handleInputChange('passwordConfirmation', e.target.value)}
+                        placeholder="পাসওয়ার্ড আবার লিখুন"
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
                       />
@@ -494,13 +601,28 @@ export default function VolunteerPage() {
                   </div>
                 </div>
 
+                {/* Error Message */}
+                {submitError && (
+                  <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                    <p className="text-red-600 font-bold">{submitError}</p>
+                  </div>
+                )}
+
                 {/* Submit Button */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-6">
                   <button
                     type="submit"
-                    className="flex-1 px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+                    disabled={submitting}
+                    className="flex-1 px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                   >
-                    আবেদন জমা দিন
+                    {submitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                        জমা দেওয়া হচ্ছে...
+                      </>
+                    ) : (
+                      'আবেদন জমা দিন'
+                    )}
                   </button>
                   <button
                     type="button"
@@ -509,6 +631,8 @@ export default function VolunteerPage() {
                         fullName: '',
                         mobile: '',
                         email: '',
+                        password: '',
+                        passwordConfirmation: '',
                         district: '',
                         upazila: '',
                         ward: '',
@@ -517,6 +641,7 @@ export default function VolunteerPage() {
                         availability: [],
                       });
                       setErrors({});
+                      setSubmitError(null);
                     }}
                     className="px-8 py-4 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-all"
                   >
