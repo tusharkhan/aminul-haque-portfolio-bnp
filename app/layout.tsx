@@ -36,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body className={`${poppins.className} bg-white text-slate-900 antialiased`}> 
+          <html lang="en" data-scroll-behavior="smooth">
+            <body className={`${poppins.className} bg-white text-slate-900 antialiased`} suppressHydrationWarning>
         <div className="min-h-screen flex flex-col">
           <Navbar />
           <main className="flex-1">{children}</main>
