@@ -202,7 +202,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
             >
               <span className="text-red-600 font-bold text-sm uppercase tracking-wider">আপনার কণ্ঠস্বর শুনুন</span>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
-                আমি আপনার সেবায় আছি
+              আপনার সেবায় সর্বদা প্রস্তুত
               </h2>
               <div className="space-y-4 text-lg text-slate-700 leading-relaxed">
                 <p>

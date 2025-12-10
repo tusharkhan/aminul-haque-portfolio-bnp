@@ -314,7 +314,7 @@ export default function VolunteerPage() {
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              পরিবর্তনে অংশ নিন - আমাদের সাথে স্বেচ্ছাসেবক হন
+            পরিবর্তনের পথে আমাদের সঙ্গী হোন—স্বেচ্ছাসেবক হিসেবে যোগ দিন
             </p>
           </motion.div>
         </div>

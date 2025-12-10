@@ -248,7 +248,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
                 আপনার মতামত আমার শক্তি
               </h2>
-              <div className="space-y-4 text-lg text-slate-700 leading-relaxed">
+              <div className="space-y-4 text-lg text-slate-700 leading-relaxed text-justify">
                 <p>
                   প্রিয় এলাকাবাসী, আপনাদের মতামত, পরামর্শ এবং চিন্তাভাবনা আমার কাছে অত্যন্ত মূল্যবান।
                 </p>

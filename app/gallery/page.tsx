@@ -20,11 +20,11 @@ export default function GalleryPage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                মুহূর্ত ক্যাপচার
+              প্রতিদিনের কর্মসূচি
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              আমাদের ক্যাম্পেইন ইভেন্ট এবং সম্প্রদায় পরিদর্শন থেকে স্মৃতি
+            জনগণের সাথে আমাদের যাত্রার অবিস্মরণীয় মুহূর্তগুলো
             </p>
           </motion.div>
         </div>

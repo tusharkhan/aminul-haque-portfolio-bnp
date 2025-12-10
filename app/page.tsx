@@ -305,7 +305,7 @@ export default function Home() {
               ক্যাম্পেইন গ্যালারি
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              মুহূর্ত <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">ক্যাপচার</span>
+            প্রতিদিনের  <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">কর্মসূচি</span>
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
               জনগণের সাথে আমাদের যাত্রার অবিস্মরণীয় মুহূর্তগুলো
@@ -520,7 +520,7 @@ export default function Home() {
               <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">উক্তি</span> ও <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">বাণী</span>
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              জনগণের জন্য, জনগণের সাথে - আমিনুল হকের অনুপ্রেরণাদায়ক বাণী
+            জনগণের স্বপ্ন ও সংগ্রামকে ধারণ করে—আমিনুল হকের বাণী ও দিকনির্দেশনা
             </p>
           </motion.div>
 
@@ -592,60 +592,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
-      {/* Key Programs Section */}
-      {/* <section className="py-20 px-4 bg-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <span className="inline-block px-6 py-2 bg-blue-100 text-blue-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-              আমাদের কাজ
-            </span>
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              মূল <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">কর্মসূচি</span>
-            </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              ঢাকাকে আরও বাসযোগ্য ও সমৃদ্ধ করতে আমাদের পাঁচটি মূল ক্ষেত্র
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {keyPrograms.map((program, idx) => (
-              <motion.div
-                key={program.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="group relative"
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${program.color} rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-all`}></div>
-                <Link href={program.link} className="relative block bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all border border-slate-200 h-full hover:-translate-y-2">
-                  <div className={`inline-flex p-5 bg-gradient-to-br ${program.color} rounded-2xl mb-6`}>
-                    <program.icon className="text-4xl text-white" />
-                  </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-2">
-                    {program.title}
-                  </h3>
-                  <p className="text-lg font-bold text-slate-500 mb-4">
-                    {program.subtitle}
-                  </p>
-                  <p className="text-slate-600 leading-relaxed mb-6">
-                    {program.description}
-                  </p>
-                  <div className={`inline-flex items-center gap-2 font-bold bg-gradient-to-r ${program.color} bg-clip-text text-transparent group-hover:gap-3 transition-all`}>
-                    বিস্তারিত দেখুন <FaArrowRight />
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* Quick Services Section - Enhanced */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
@@ -663,7 +609,7 @@ export default function Home() {
               অনলাইন <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">সেবা সমূহ</span>
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              ঘরে বসেই পাবেন দ্রুত ও কার্যকর সেবা
+            ঘরে বসেই গ্রহণ করুন দ্রুত, সহজ ও কার্যকর সেবা
             </p>
           </motion.div>
 

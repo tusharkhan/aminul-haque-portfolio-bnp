@@ -23,8 +23,8 @@ export default function Hero() {
             </span>
           </h1>
           <p className="text-slate-600 text-lg max-w-prose leading-relaxed">
-          আপনার জীবনের সমস্যার সমাধানই আমাদের রাজনীতি
-            আপনার স্বপ্নের বাংলাদেশ গড়ার লড়াইয়ে আছি আপনার পাশে
+          আপনার জীবনের সমস্যার সমাধানই আমাদের রাজনীতি,
+            আপনার স্বপ্নের বাংলাদেশ গড়ার লড়াইয়ে আছি আপনার পাশে।
           </p>
           <div className="flex items-center gap-4">
             <Link
