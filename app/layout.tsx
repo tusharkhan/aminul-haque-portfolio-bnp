@@ -27,7 +27,13 @@ export const metadata: Metadata = {
     type: 'website',
   },
   metadataBase: new URL('https://example.com'),
-  icons: { icon: '/favicon.ico' },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '192x192' },
+    ],
+    apple: { url: '/apple-icon.png', sizes: '180x180' },
+  },
 };
 
 export default function RootLayout({
