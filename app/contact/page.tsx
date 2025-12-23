@@ -120,11 +120,11 @@ export default function ContactPage() {
                   <div className="space-y-3 text-slate-700">
                     <div className="flex justify-between">
                       <span className="font-medium">সোমবার - শুক্রবার</span>
-                      <span className="text-slate-900 font-bold">৯:০০ - ৬:০০ অপরাহ্ন</span>
+                      <span className="text-slate-900 font-bold">সকাল ৯:০০ - বিকাল ৬:০০ টা</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-medium">শনিবার</span>
-                      <span className="text-slate-900 font-bold">১০:০০ - ৪:০০ অপরাহ্ন</span>
+                      <span className="text-slate-900 font-bold">সকাল ১০:০০ - বিকাল ৪:০০ টা</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-medium">রবিবার</span>
