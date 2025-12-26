@@ -142,7 +142,7 @@ export default function SiteFooter() {
         <div className="pt-8 border-t border-slate-300">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-slate-600 font-semibold text-center md:text-left">
-              © {toBanglaNumber(new Date().getFullYear())} আর কে ও সাহেদ। সর্বস্বত্ব সংরক্ষিত।
+              © {toBanglaNumber(new Date().getFullYear())} আর.কে.ও. শাহেদ। সর্বস্বত্ব সংরক্ষিত।
             </p>
           </div>
         </div>
