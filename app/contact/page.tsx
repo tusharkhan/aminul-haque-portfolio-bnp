@@ -1,6 +1,6 @@
 "use client";
 import { motion } from 'framer-motion';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaTwitter, FaInstagram, FaTiktok } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaTwitter, FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import ContactForm from '../components/ContactForm';
 import ChatWidget from '../components/ChatWidget';
@@ -146,6 +146,7 @@ export default function ContactPage() {
                       { icon: FaInstagram, color: 'from-pink-500 to-purple-600', link: 'https://www.instagram.com/captain_aminul_haque' },
                       { icon: FaXTwitter, color: 'from-gray-800 to-black', link: 'https://x.com/Aminulhaque1980' },
                       { icon: FaTiktok, color: 'from-gray-900 to-black', link: 'https://www.tiktok.com/@aminulhoqueofficial' },
+                      { icon: FaYoutube, color: 'from-red-600 to-red-700', link: 'https://youtube.com/@captainaminulhaquedhaka16' },
                     ].map((social, idx) => (
                       <a
                         key={idx}
