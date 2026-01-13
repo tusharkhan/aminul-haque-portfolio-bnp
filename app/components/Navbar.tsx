@@ -46,7 +46,34 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
+  const [language, setLanguage] = useState<'bd' | 'en'>('bd');
+  const [isChangingLanguage, setIsChangingLanguage] = useState(false);
   const pathname = usePathname();
+
+  // Toggle language and call API
+  const toggleLanguage = async () => {
+    const newLanguage = language === 'bd' ? 'en' : 'bd';
+    setIsChangingLanguage(true);
+    
+    try {
+      const response = await fetch('https://admin.aminul-haque.com/api/v1/settings/change-language', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ language: newLanguage }),
+      });
+
+      if (response.ok) {
+        setLanguage(newLanguage);
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('Failed to change language:', error);
+    } finally {
+      setIsChangingLanguage(false);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg shadow-lg border-b border-slate-200">
@@ -156,8 +183,37 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden lg:block">
+          {/* Language Toggle & CTA Button */}
+          <div className="hidden lg:flex items-center gap-3">
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLanguage}
+              disabled={isChangingLanguage}
+              className="relative w-20 h-9 bg-gradient-to-r from-slate-100 to-slate-200 rounded-full p-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 shadow-inner disabled:opacity-70"
+              aria-label="Toggle language"
+            >
+              {/* Background labels */}
+              <div className="absolute inset-0 flex items-center justify-between px-2.5 text-xs font-bold pointer-events-none">
+                <span className={`transition-colors duration-300 z-10 ${language === 'bd' ? 'text-white' : 'text-slate-500'}`}>
+                  বাং
+                </span>
+                <span className={`transition-colors duration-300 z-10 ${language === 'en' ? 'text-white' : 'text-slate-500'}`}>
+                  EN
+                </span>
+              </div>
+              {/* Sliding indicator */}
+              <motion.div
+                className="absolute top-1 w-9 h-7 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 shadow-lg"
+                animate={{ x: language === 'en' ? 40 : 0 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              />
+              {isChangingLanguage && (
+                <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded-full">
+                  <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+            </button>
+
             <Link
               href="/contact"
               className="px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
@@ -166,17 +222,57 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-3 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all"
-          >
-            {isOpen ? (
-              <FaTimes className="h-6 w-6 text-slate-900" />
-            ) : (
-              <FaBars className="h-6 w-6 text-slate-900" />
-            )}
-          </button>
+          {/* Mobile: Language Toggle & Menu Button */}
+          <div className="flex lg:hidden items-center gap-2">
+            {/* Mobile Language Toggle */}
+            <button
+              onClick={toggleLanguage}
+              disabled={isChangingLanguage}
+              className="relative flex items-center gap-1 px-3 py-2 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all disabled:opacity-70"
+              aria-label="Toggle language"
+            >
+              <AnimatePresence mode="wait">
+                {language === 'bd' ? (
+                  <motion.span
+                    key="bd"
+                    initial={{ y: -10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 10, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-sm font-bold text-emerald-600"
+                  >
+                    বাংলা
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="en"
+                    initial={{ y: -10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 10, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-sm font-bold text-emerald-600"
+                  >
+                    EN
+                  </motion.span>
+                )}
+              </AnimatePresence>
+              {isChangingLanguage && (
+                <div className="w-3 h-3 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+              )}
+            </button>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-3 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all"
+            >
+              {isOpen ? (
+                <FaTimes className="h-6 w-6 text-slate-900" />
+              ) : (
+                <FaBars className="h-6 w-6 text-slate-900" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
