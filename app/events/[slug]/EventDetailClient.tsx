@@ -136,33 +136,35 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
       </section>
 
       {/* Google Maps */}
-      <section className="py-12 px-4">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="bg-white rounded-3xl p-8 shadow-xl border border-slate-200"
-          >
-            <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
-              <FaMapMarkerAlt className="text-red-600" />
-              {t('eventDetail.eventLocation')}
-            </h2>
-            <div className="aspect-video rounded-2xl overflow-hidden shadow-xl">
-              <iframe
-                src={event.mapLocation.embedUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Event Location"
-              />
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {event.mapLocation?.embedUrl && (
+        <section className="py-12 px-4">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="bg-white rounded-3xl p-8 shadow-xl border border-slate-200"
+            >
+              <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
+                <FaMapMarkerAlt className="text-red-600" />
+                {t('eventDetail.eventLocation')}
+              </h2>
+              <div className="aspect-video rounded-2xl overflow-hidden shadow-xl">
+                <iframe
+                  src={event.mapLocation.embedUrl}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Event Location"
+                />
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Videos (For Past Events) */}
       {event.isPast && event.hasVideo && event.videos && event.videos.length > 0 && (

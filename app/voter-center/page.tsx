@@ -32,6 +32,7 @@ interface Voter {
   mother_name: string;
   date_of_birth: string;
   date_of_birth_bangla: string;
+  serial_number: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -112,7 +113,7 @@ export default function VoterCenterPage() {
         
         <!-- Banner Image -->
         <div style="width: 100%; background: linear-gradient(135deg, #006A4E 0%, #00A86B 100%); padding: 20px; text-align: center;">
-          <img src="/aminul Haque/hero.jpeg" alt="Aminul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; margin-bottom: 10px;" />
+          <img src="/aminul Haque/hero.jpeg" alt="Aminul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; object-position: center top; margin-bottom: 10px;" />
           <h2 style="color: white; margin: 0; font-size: 24px;">আমিনুল হক</h2>
           <p style="color: #90EE90; margin: 5px 0 0; font-size: 14px;">ধানের শীষে ভোট দিন</p>
         </div>
@@ -132,6 +133,7 @@ export default function VoterCenterPage() {
         <div style="padding: 20px; background: white;">
           <div style="line-height: 2; font-size: 15px; color: #333;">
             ${voter.voter_area_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "সিরিয়াল নাম্বারঃ" : "Serial No:"}</strong> ${voter.voter_area_number}</p>` : ""}
+            ${voter.serial_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "সিরিয়াল নম্বরঃ" : "Serial Number:"}</strong> ${voter.serial_number}</p>` : ""}
             <p style="margin: 0;"><strong>${language === "bd" ? "নামঃ" : "Name:"}</strong> ${voter.name}</p>
             ${voter.voter_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "ভোটার নং-" : "Voter No:"}</strong> ${language === "bd" ? voter.voter_number_bangla : voter.voter_number}</p>` : ""}
             ${voter.date_of_birth ? `<p style="margin: 0;"><strong>${language === "bd" ? "জন্ম তারিখঃ" : "DOB:"}</strong> ${language === "bd" ? voter.date_of_birth_bangla : voter.date_of_birth}</p>` : ""}
@@ -191,7 +193,7 @@ export default function VoterCenterPage() {
       <div style="border: 3px solid #006A4E; border-radius: 12px; overflow: hidden;">
         <!-- Banner Image -->
         <div style="width: 100%; background: linear-gradient(135deg, #006A4E 0%, #00A86B 100%); padding: 20px; text-align: center;">
-          <img src="/aminul Haque/hero.jpeg" alt="Aminul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; margin-bottom: 10px;" />
+          <img src="/aminul Haque/hero.jpeg" alt="Aminul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; object-position: center top; margin-bottom: 10px;" />
           <h2 style="color: white; margin: 0; font-size: 24px;">আমিনুল হক</h2>
           <p style="color: #90EE90; margin: 5px 0 0; font-size: 14px;">ধানের শীষে ভোট দিন</p>
         </div>
@@ -211,6 +213,7 @@ export default function VoterCenterPage() {
         <div style="padding: 20px; background: white;">
           <div style="line-height: 2; font-size: 15px; color: #333;">
             ${voter.voter_area_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "সিরিয়াল নাম্বারঃ" : "Serial No:"}</strong> ${voter.voter_area_number}</p>` : ""}
+            ${voter.serial_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "সিরিয়াল নম্বরঃ" : "Serial Number:"}</strong> ${voter.serial_number}</p>` : ""}
             <p style="margin: 0;"><strong>${language === "bd" ? "নামঃ" : "Name:"}</strong> ${voter.name}</p>
             ${voter.voter_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "ভোটার নং-" : "Voter No:"}</strong> ${language === "bd" ? voter.voter_number_bangla : voter.voter_number}</p>` : ""}
             ${voter.date_of_birth ? `<p style="margin: 0;"><strong>${language === "bd" ? "জন্ম তারিখঃ" : "DOB:"}</strong> ${language === "bd" ? voter.date_of_birth_bangla : voter.date_of_birth}</p>` : ""}
@@ -480,6 +483,16 @@ export default function VoterCenterPage() {
                                 {voter.name}
                               </p>
                             </div>
+                            {voter.serial_number && (
+                              <div className="p-4 bg-slate-50 rounded-xl">
+                                <p className="text-sm text-slate-600 mb-1">
+                                  {language === "bd" ? "সিরিয়াল নম্বর" : "Serial Number"}
+                                </p>
+                                <p className="text-lg font-bold text-slate-900">
+                                  {voter.serial_number}
+                                </p>
+                              </div>
+                            )}
                             {voter.voter_number && (
                               <div className="p-4 bg-slate-50 rounded-xl">
                                 <p className="text-sm text-slate-600 mb-1">
