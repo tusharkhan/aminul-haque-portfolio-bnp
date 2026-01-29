@@ -35,15 +35,10 @@ export default function ContactPage() {
     },
   ];
 
-  const officeHours = language === 'bd' ? [
-    { day: 'সোমবার - শুক্রবার', time: 'সকাল ৯:০০ - বিকাল ৬:০০ টা' },
-    { day: 'শনিবার', time: 'সকাল ১০:০০ - বিকাল ৪:০০ টা' },
-    { day: 'রবিবার', time: 'বন্ধ', closed: true },
-  ] : [
-    { day: 'Monday - Friday', time: '9:00 AM - 6:00 PM' },
-    { day: 'Saturday', time: '10:00 AM - 4:00 PM' },
-    { day: 'Sunday', time: 'Closed', closed: true },
-  ];
+  const officeStatus = {
+    bd: 'সর্বদা খোলা',
+    en: 'Always Open'
+  };
 
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
@@ -67,6 +62,35 @@ export default function ContactPage() {
               {t('contact.description')}
             </p>
           </motion.div>
+        </div>
+      </section>
+       {/* Constituency Map */}
+       <section className="py-20 px-4 max-w-7xl mx-auto">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-2xl blur opacity-20"></div>
+          <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-200">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl shadow-lg">
+                <FaMapMarkerAlt className="text-2xl text-white" />
+              </div>
+              <h3 className="text-2xl font-black text-slate-900">
+                {language === 'bd' ? 'ঢাকা-১৬ নির্বাচনী এলাকা' : 'Dhaka-16 Constituency'}
+              </h3>
+            </div>
+            <div className="relative w-full aspect-square max-w-md mx-auto py-6">
+              <Image
+                src="/aminul Haque/ঢাকা-১৬.svg.png"
+                alt={language === 'bd' ? 'ঢাকা-১৬ নির্বাচনী এলাকার মানচিত্র' : 'Dhaka-16 Constituency Map'}
+                fill
+                className="object-contain"
+              />
+            </div>
+            <p className="text-center text-slate-600 text-sm mt-4">
+              {language === 'bd'
+                ? 'পল্লবী ও রুপনগর থানা এলাকা'
+                : 'Pallabi & Rupnagar Police Station Area'}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -120,32 +144,30 @@ export default function ContactPage() {
             </motion.div>
 
             {/* Additional Info */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="space-y-8"
-            >
-              {/* Office Hours */}
+            <div className="space-y-8">
+              {/* Office Hours - Always Open */}
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-20"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-2xl blur opacity-20"></div>
                 <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-200">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="p-3 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl shadow-lg">
                       <FaClock className="text-2xl text-white" />
                     </div>
                     <h3 className="text-2xl font-black text-slate-900">{t('contact.officeHours')}</h3>
                   </div>
-                  <div className="space-y-3 text-slate-700">
-                    {officeHours.map((hour, idx) => (
-                      <div key={idx} className="flex justify-between">
-                        <span className="font-medium">{hour.day}</span>
-                        <span className={`font-bold ${hour.closed ? 'text-slate-500' : 'text-slate-900'}`}>
-                          {hour.time}
-                        </span>
-                      </div>
-                    ))}
+                  <div className="text-center py-4">
+                    <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full">
+                      <span className="relative flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                      </span>
+                      <span className="text-2xl font-black text-white">
+                        {language === 'bd' ? officeStatus.bd : officeStatus.en}
+                      </span>
+                    </div>
+                    <p className="text-slate-600 mt-4">
+                      {language === 'bd' ? '২৪/৭ আপনার সেবায়' : '24/7 At Your Service'}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -176,37 +198,7 @@ export default function ContactPage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Constituency Map */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-2xl blur opacity-20"></div>
-          <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-200">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="p-3 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl shadow-lg">
-                <FaMapMarkerAlt className="text-2xl text-white" />
-              </div>
-              <h3 className="text-2xl font-black text-slate-900">
-                {language === 'bd' ? 'ঢাকা-১৬ নির্বাচনী এলাকা' : 'Dhaka-16 Constituency'}
-              </h3>
             </div>
-            <div className="relative w-full aspect-square max-w-md mx-auto py-6">
-              <Image
-                src="/aminul Haque/ঢাকা-১৬.svg.png"
-                alt={language === 'bd' ? 'ঢাকা-১৬ নির্বাচনী এলাকার মানচিত্র' : 'Dhaka-16 Constituency Map'}
-                fill
-                className="object-contain"
-              />
-            </div>
-            <p className="text-center text-slate-600 text-sm mt-4">
-              {language === 'bd'
-                ? 'পল্লবী ও রুপনগর থানা এলাকা'
-                : 'Pallabi & Rupnagar Police Station Area'}
-            </p>
           </div>
         </div>
       </section>

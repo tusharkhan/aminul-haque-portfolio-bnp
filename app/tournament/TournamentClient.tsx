@@ -13,7 +13,9 @@ interface Tournament {
   description: string;
   descriptionEn: string;
   startDate: string;
+  startDateEn: string;
   registrationDeadline: string;
+  registrationDeadlineEn: string;
   location: string;
   locationEn: string;
   participants: string;
@@ -32,8 +34,10 @@ const tournaments: Tournament[] = [
     titleEn: "Dhaka-16 Women Badminton Championship",
     description: "ঢাকা–১৬ এর ৭টি মহল্লার নারীদের অংশগ্রহণে আগামী ২৩ জানুয়ারি ২০২৬ তারিখ থেকে আয়োজিত হতে যাচ্ছে ঢাকা–১৬ উইমেন ব্যাডমিন্টন চ্যাম্পিয়নশিপ। খেলায় অংশ নিতে আগ্রহীরা নিচের দেয়া গুগল ফর্ম পূরণ এর মাধ্যমে আজই রেজিস্ট্রেশন করুন।",
     descriptionEn: "The Dhaka-16 Women Badminton Championship is being organized from January 23, 2026, with participation from women of 7 mohallas of Dhaka-16. Those interested in participating can register today by filling out the Google form below.",
-    startDate: "২৩ জানুয়ারি ২০২৬",
-    registrationDeadline: "২২ জানুয়ারি ২০২৬",
+    startDate: "৩১ জানুয়ারি ২০২৬",
+    startDateEn: "31 January 2026",
+    registrationDeadline: "২৪ জানুয়ারি ২০২৬",
+    registrationDeadlineEn: "24 January 2026",
     location: "ঢাকা–১৬",
     locationEn: "Dhaka-16",
     participants: "ঢাকা–১৬ এর ৭টি মহল্লার নারী",
@@ -138,7 +142,9 @@ export default function TournamentClient() {
                           </div>
                           <div>
                             <span className="text-xs text-slate-400 block">{t('tournament.startDate')}</span>
-                            <span className="font-semibold text-slate-700">{tournament.startDate}</span>
+                            <span className="font-semibold text-slate-700">
+                              {language === 'bd' ? tournament.startDate : tournament.startDateEn}
+                            </span>
                           </div>
                         </div>
 
@@ -148,7 +154,9 @@ export default function TournamentClient() {
                           </div>
                           <div>
                             <span className="text-xs text-slate-400 block">{t('tournament.registrationDeadline')}</span>
-                            <span className="font-semibold text-red-600">{tournament.registrationDeadline}</span>
+                            <span className="font-semibold text-red-600">
+                              {language === 'bd' ? tournament.registrationDeadline : tournament.registrationDeadlineEn}
+                            </span>
                           </div>
                         </div>
 
@@ -251,14 +259,18 @@ export default function TournamentClient() {
                       <FaCalendarAlt />
                       <span className="text-xs font-medium">{t('tournament.startDate')}</span>
                     </div>
-                    <span className="font-bold text-slate-800">{selectedTournament.startDate}</span>
+                    <span className="font-bold text-slate-800">
+                      {language === 'bd' ? selectedTournament.startDate : selectedTournament.startDateEn}
+                    </span>
                   </div>
                   <div className="bg-red-50 rounded-xl p-4">
                     <div className="flex items-center gap-2 text-red-600 mb-1">
                       <FaClock />
                       <span className="text-xs font-medium">{t('tournament.registrationDeadline')}</span>
                     </div>
-                    <span className="font-bold text-red-600">{selectedTournament.registrationDeadline}</span>
+                    <span className="font-bold text-red-600">
+                      {language === 'bd' ? selectedTournament.registrationDeadline : selectedTournament.registrationDeadlineEn}
+                    </span>
                   </div>
                 </div>
 

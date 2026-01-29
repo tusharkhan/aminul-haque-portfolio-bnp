@@ -52,13 +52,15 @@ export default function Hero() {
           className="relative order-1 md:order-2 mb-12 md:mb-0"
         >
           <div className="absolute inset-0 bg-emerald-500 rounded-3xl blur-2xl opacity-20"></div>
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white h-[400px] sm:h-[500px] md:h-[600px]">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white h-[400px] sm:h-[500px] md:h-[600px] bg-gradient-to-b from-emerald-200 to-emerald-300">
             <Image
               src="/aminul Haque/hero.jpeg"
               alt={t('hero.title')}
-              fill
-              className="object-cover"
+              className="object-contain object-bottom"
               priority
+              style={{ height: 'auto' }}
+              width={600}
+              height={800}
             />
           </div>
           <div className="mt-4 md:absolute md:bottom-[-50px] md:left-0 md:right-0 p-2 md:p-4">

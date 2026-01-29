@@ -9,17 +9,29 @@ import { useTranslation } from '../i18n/I18nProvider';
 interface Album {
   id: number;
   uuid: string;
-  bang_name: string;
-  bang_description: string;
+  name: string;
+  description: string;
   date: string;
   location: string;
   status: string;
-  media_count: number;
+  media_count: string;
+  is_for_home: number;
+  created_at: string;
   media: Array<{
     id: number;
     uuid: string;
-    path: string;
-    type: string;
+    filename: string | null;
+    path: string | null;
+    mime: string;
+    type: string | null;
+    extension: string | null;
+    size: number | null;
+    disk: string;
+    width: number | null;
+    height: number | null;
+    duration: string | null;
+    youtube_url: string | null;
+    video_thumbnail: string;
   }>;
 }
 
@@ -29,7 +41,7 @@ interface KheladhulaEvent {
   date: string;
   originalDate?: string; // Store original date string for filtering
   location: string;
-  title: string;
+  name: string;
   description: string;
   images: string[];
   color: string;
@@ -47,11 +59,17 @@ const defaultColors = [
   'from-pink-500 to-rose-600',
 ];
 
-// Month keys for translation
-const monthKeys = [
-  'january', 'february', 'march', 'april', 'may', 'june',
-  'july', 'august', 'september', 'october', 'november', 'december'
-];
+// Bengali numeral mapping
+const bengaliNumerals: { [key: string]: string } = {
+  '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪',
+  '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'
+};
+
+// Convert number to Bengali numerals
+const toBengaliNumber = (num: number | string): string => {
+  return String(num).replace(/[0-9]/g, (digit) => bengaliNumerals[digit] || digit);
+};
+
 
 interface PaginationMeta {
   current_page: number;
@@ -79,67 +97,33 @@ export default function KheladhulaClient() {
   const [titleFilter, setTitleFilter] = useState<string>('');
   const [dataFilter, setDataFilter] = useState<string>('');
 
-  // Format date from YYYY-MM-DD to localized format
+  // Format date - API already returns dates in Bengali format like "১৬ জানুয়ারি, ২০২৬"
+  // Just return as-is for Bengali, or convert for English if needed
   const formatDate = useCallback((dateString: string): string => {
-    try {
-      const date = new Date(dateString);
-      const day = date.getDate();
-      const monthKey = monthKeys[date.getMonth()];
-      const month = t(`kheladhula.months.${monthKey}`);
-      const year = date.getFullYear();
-      return `${day} ${month} ${year}`;
-    } catch {
-      return dateString;
-    }
-  }, [t]);
-
-  // Parse date back to Date object
-  const parseDateToObject = useCallback((originalDate: string): Date => {
-    try {
-      if (originalDate) {
-        return new Date(originalDate);
-      }
-      return new Date();
-    } catch {
-      return new Date();
-    }
+    if (!dateString) return '';
+    // The API returns dates already formatted in Bengali, return as-is
+    return dateString;
   }, []);
 
-  // Format date input value (YYYY-MM-DD) to localized format
-  const formatDateInputToLocalized = useCallback((dateString: string): string => {
-    try {
-      const date = new Date(dateString);
-      const day = date.getDate();
-      const monthKey = monthKeys[date.getMonth()];
-      const month = t(`kheladhula.months.${monthKey}`);
-      const year = date.getFullYear();
-      return `${day} ${month} ${year}`;
-    } catch {
-      return dateString;
-    }
-  }, [t]);
-
   // Filter events by all criteria (date, title, and data/description)
+  // Note: Since API returns dates in Bengali format, we use string-based filtering
   const filterEventsByDate = useMemo(() => {
     let filtered = allEvents;
 
-    // Filter by date
+    // Filter by date string (Bengali dates are already formatted, so search by string)
     if (selectedDate) {
-      const filterDate = new Date(selectedDate);
-      const filterDateStart = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate());
-      const filterDateEnd = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate(), 23, 59, 59);
-
+      const searchTerm = selectedDate.trim().toLowerCase();
       filtered = filtered.filter((event) => {
-        const eventDate = parseDateToObject(event.originalDate || '');
-        return eventDate >= filterDateStart && eventDate <= filterDateEnd;
+        return event.date.toLowerCase().includes(searchTerm) ||
+               event.originalDate?.toLowerCase().includes(searchTerm);
       });
     }
 
-    // Filter by title
+    // Filter by title/name
     if (titleFilter.trim()) {
       const searchTerm = titleFilter.trim().toLowerCase();
       filtered = filtered.filter((event) => {
-        return event.title.toLowerCase().includes(searchTerm);
+        return event.name.toLowerCase().includes(searchTerm);
       });
     }
 
@@ -153,7 +137,7 @@ export default function KheladhulaClient() {
     }
 
     return filtered;
-  }, [allEvents, selectedDate, titleFilter, dataFilter, parseDateToObject]);
+  }, [allEvents, selectedDate, titleFilter, dataFilter]);
 
   // Update filtered events when filter changes
   useEffect(() => {
@@ -251,7 +235,6 @@ export default function KheladhulaClient() {
         }
 
         const data = await response.json();
-        
         // Handle the API response structure: { success: true, data: { data: [...] } }
         let albumsData: Album[] = [];
         
@@ -271,19 +254,24 @@ export default function KheladhulaClient() {
         const mappedEvents: KheladhulaEvent[] = albumsData
           .filter((album: Album) => album.status === 'active')
           .map((album: Album, index: number) => {
-            // Get only image media
+            // Get only image media - check mime type or type field for images
             const images = album.media
-              .filter((media) => media.type === 'image')
-              .map((media) => media.path);
+              .filter((media) => {
+                // Check if it's an image by mime type or type field
+                const isImage = media.mime?.startsWith('image/') || media.type === 'image';
+                // Also ensure path exists
+                return isImage && media.path;
+              })
+              .map((media) => media.path as string);
 
             return {
               id: album.id,
               uuid: album.uuid,
-              date: album.date, // Store raw date, format when displaying
+              date: album.date, // Already formatted in Bengali from API
               originalDate: album.date,
               location: album.location || '',
-              title: album.bang_name || '',
-              description: album.bang_description || '',
+              name: album.name || '',
+              description: album.description || '',
               images: images,
               color: defaultColors[index % defaultColors.length],
             };
@@ -384,19 +372,6 @@ export default function KheladhulaClient() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                {/* Date Filter */}
-                <div>
-                  <label className="block text-slate-700 font-bold mb-2 text-sm">
-                    {t('kheladhula.dateFilter')}
-                  </label>
-                  <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-amber-500 focus:outline-none shadow-lg text-slate-700"
-                  />
-                </div>
-
                 {/* Title Filter */}
                 <div>
                   <label className="block text-slate-700 font-bold mb-2 text-sm">
@@ -406,7 +381,21 @@ export default function KheladhulaClient() {
                     type="text"
                     value={titleFilter}
                     onChange={(e) => setTitleFilter(e.target.value)}
-                    placeholder={t('kheladhula.searchTitle')}
+                    placeholder={language === 'bd' ? 'শিরোনাম অনুসন্ধান করুন...' : 'Search by title...'}
+                    className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-amber-500 focus:outline-none shadow-lg text-slate-700"
+                  />
+                </div>
+
+                {/* Date Filter - Text input for Bengali dates */}
+                <div>
+                  <label className="block text-slate-700 font-bold mb-2 text-sm">
+                    {t('kheladhula.dateFilter')}
+                  </label>
+                  <input
+                    type="text"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    placeholder={language === 'bd' ? 'তারিখ অনুসন্ধান করুন (যেমন: জানুয়ারি, ২০২৬)' : 'Search by date...'}
                     className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-amber-500 focus:outline-none shadow-lg text-slate-700"
                   />
                 </div>
@@ -415,9 +404,9 @@ export default function KheladhulaClient() {
               {/* Filter Summary and Clear Button */}
               <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200">
                 <div className="text-sm text-slate-600 font-medium">
-                  {filteredEvents.length} {t('kheladhula.eventsFound')}
-                  {selectedDate && ` (${t('kheladhula.date')}: ${formatDateInputToLocalized(selectedDate)})`}
+                  {language === 'bd' ? toBengaliNumber(filteredEvents.length) : filteredEvents.length} {t('kheladhula.eventsFound')}
                   {titleFilter && ` (${t('kheladhula.title')}: ${titleFilter})`}
+                  {selectedDate && ` (${t('kheladhula.date')}: ${selectedDate})`}
                   {dataFilter && ` (${t('kheladhula.description')}: ${dataFilter})`}
                 </div>
                 {(selectedDate || titleFilter || dataFilter) && (
@@ -450,7 +439,7 @@ export default function KheladhulaClient() {
                 {/* Event Header */}
                 <div className="mb-8">
                   <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">
-                    {event.title}
+                    {event.name}
                   </h2>
                   <div className="flex flex-wrap items-center gap-4 mb-4">
                     <div className="flex items-center gap-2 text-slate-700">
@@ -469,7 +458,7 @@ export default function KheladhulaClient() {
                       <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
                         <FaImages className="text-white" />
                       </div>
-                      <span>{event.images.length} {t('kheladhula.photos')}</span>
+                      <span>{language === 'bd' ? toBengaliNumber(event.images.length) : event.images.length} {t('kheladhula.photos')}</span>
                     </div>
                   </div>
                   <p className="text-slate-600 text-lg leading-relaxed mt-4">
@@ -489,7 +478,7 @@ export default function KheladhulaClient() {
                       <div className={`absolute inset-0 opacity-0 group-hover:opacity-75 transition-all z-10`}></div>
                       <Image
                         src={image}
-                        alt={`${event.title} - ${t('kheladhula.image')} ${imageIdx + 1}`}
+                        alt={`${event.name} - ${t('kheladhula.image')} ${language === 'bd' ? toBengaliNumber(imageIdx + 1) : imageIdx + 1}`}
                         fill
                         className="object-cover"
                         unoptimized
@@ -571,7 +560,7 @@ export default function KheladhulaClient() {
                         : 'bg-white border border-slate-300 hover:bg-slate-50 text-slate-700'
                     }`}
                   >
-                    {page}
+                    {language === 'bd' ? toBengaliNumber(page) : page}
                   </button>
                 );
               })}

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { FaArrowLeft, FaCheckCircle, FaQuestionCircle } from 'react-icons/fa';
 import Image from 'next/image';
+import { useTranslation } from '@/app/i18n/I18nProvider';
 
 interface Question {
   id: number;
@@ -36,8 +37,10 @@ interface SurveyDetailClientProps {
 
 export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
   const router = useRouter();
+  const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  console.log(submitting);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState<{
     answers: Record<string, string>;
@@ -93,25 +96,25 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
 
     // Validate required fields
     if (!formData.name.trim()) {
-      newErrors.name = 'নাম আবশ্যক';
+      newErrors.name = t('surveysPage.nameRequired');
     }
     if (!formData.email.trim()) {
-      newErrors.email = 'ইমেইল আবশ্যক';
+      newErrors.email = t('surveysPage.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'সঠিক ইমেইল ঠিকানা লিখুন';
+      newErrors.email = t('surveysPage.validEmail');
     }
     if (!formData.phone.trim()) {
-      newErrors.phone = 'ফোন নম্বর আবশ্যক';
+      newErrors.phone = t('surveysPage.phoneRequired');
     }
     if (!formData.area.trim()) {
-      newErrors.area = 'এলাকা আবশ্যক';
+      newErrors.area = t('surveysPage.areaRequired');
     }
 
     // Validate required questions (all questions are required by default)
     if (survey) {
       survey.questions.forEach((question) => {
         if (!formData.answers[question.id.toString()]) {
-          newErrors[question.id.toString()] = 'এই প্রশ্নের উত্তর আবশ্যক';
+          newErrors[question.id.toString()] = t('surveysPage.answerRequired');
         }
       });
     }
@@ -169,7 +172,7 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
       }
     } catch (error) {
       console.error('Error submitting survey:', error);
-      setSubmitError(error instanceof Error ? error.message : 'জরিপ জমা দেওয়ার সময় একটি ত্রুটি হয়েছে');
+      setSubmitError(error instanceof Error ? error.message : t('surveysPage.submitError'));
     } finally {
       setSubmitting(false);
     }
@@ -180,13 +183,13 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
       <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <h2 className="text-3xl font-black text-slate-900 mb-4">জরিপ পাওয়া যায়নি</h2>
-            <p className="text-slate-600 mb-6">আপনি যে জরিপটি খুঁজছেন তা পাওয়া যায়নি।</p>
+            <h2 className="text-3xl font-black text-slate-900 mb-4">{t('surveysPage.surveyNotFound')}</h2>
+            <p className="text-slate-600 mb-6">{t('surveysPage.surveyNotFoundDesc')}</p>
             <Link
               href="/surveys"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
             >
-              <FaArrowLeft /> জরিপ তালিকায় ফিরে যান
+              <FaArrowLeft /> {t('surveysPage.backToSurveys')}
             </Link>
           </div>
         </div>
@@ -208,17 +211,17 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
                 <FaCheckCircle className="text-6xl text-white" />
               </div>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-                ধন্যবাদ!
+                {t('surveysPage.thankYou')}
               </h2>
               <p className="text-xl text-slate-600 mb-8">
-                আপনার মতামত সফলভাবে জমা দেওয়া হয়েছে। আপনার মূল্যবান মতামতের জন্য আমরা কৃতজ্ঞ।
+                {t('surveysPage.submissionSuccess')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/surveys"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
                 >
-                  <FaArrowLeft /> অন্যান্য জরিপ দেখুন
+                  <FaArrowLeft /> {t('surveysPage.viewOtherSurveys')}
                 </Link>
                 <button
                   onClick={() => {
@@ -229,7 +232,7 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
                   }}
                   className="px-8 py-4 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-all"
                 >
-                  আবার জমা দিন
+                  {t('surveysPage.submitAgain')}
                 </button>
               </div>
             </div>
@@ -248,7 +251,7 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
             href="/surveys"
             className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-bold mb-6 transition-all"
           >
-            <FaArrowLeft /> জরিপ তালিকায় ফিরে যান
+            <FaArrowLeft /> {t('surveysPage.backToSurveys')}
           </Link>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -296,7 +299,7 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
             <div className="mb-12">
               <h2 className="text-3xl font-black text-slate-900 mb-8 flex items-center gap-2">
                 <FaQuestionCircle className="text-emerald-600" />
-                প্রশ্নসমূহ
+                {t('surveysPage.questions')}
               </h2>
               <div className="space-y-8">
                 {survey.questions.map((question, idx) => (
@@ -339,7 +342,7 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
                       <textarea
                         value={formData.answers[question.id.toString()] || ''}
                         onChange={(e) => handleAnswerChange(question.id, e.target.value)}
-                        placeholder="আপনার উত্তর লিখুন..."
+                        placeholder={t('surveysPage.enterYourAnswer')}
                         rows={4}
                         className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
                       />
@@ -351,11 +354,11 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
 
             {/* Personal Information */}
             <div className="mb-8 border-t-2 border-slate-200 pt-8">
-              <h2 className="text-3xl font-black text-slate-900 mb-6">ব্যক্তিগত তথ্য</h2>
+              <h2 className="text-3xl font-black text-slate-900 mb-6">{t('surveysPage.personalInfo')}</h2>
               <div className="space-y-6">
                 <div>
                   <label className="block text-lg font-bold text-slate-900 mb-2">
-                    নাম <span className="text-red-500">*</span>
+                    {t('surveysPage.name')} <span className="text-red-500">*</span>
                   </label>
                   {errors.name && (
                     <p className="text-red-500 text-sm font-bold mb-2">{errors.name}</p>
@@ -364,14 +367,14 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
                     type="text"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder="আপনার নাম লিখুন"
+                    placeholder={t('surveysPage.enterName')}
                     className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-lg font-bold text-slate-900 mb-2">
-                    ইমেইল <span className="text-red-500">*</span>
+                    {t('surveysPage.email')} <span className="text-red-500">*</span>
                   </label>
                   {errors.email && (
                     <p className="text-red-500 text-sm font-bold mb-2">{errors.email}</p>
@@ -380,14 +383,14 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    placeholder="আপনার ইমেইল লিখুন"
+                    placeholder={t('surveysPage.enterEmail')}
                     className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-lg font-bold text-slate-900 mb-2">
-                    ফোন নম্বর <span className="text-red-500">*</span>
+                    {t('surveysPage.phone')} <span className="text-red-500">*</span>
                   </label>
                   {errors.phone && (
                     <p className="text-red-500 text-sm font-bold mb-2">{errors.phone}</p>
@@ -396,14 +399,14 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    placeholder="আপনার ফোন নম্বর লিখুন"
+                    placeholder={t('surveysPage.enterPhone')}
                     className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-lg font-bold text-slate-900 mb-2">
-                    এলাকা <span className="text-red-500">*</span>
+                    {t('surveysPage.area')} <span className="text-red-500">*</span>
                   </label>
                   {errors.area && (
                     <p className="text-red-500 text-sm font-bold mb-2">{errors.area}</p>
@@ -412,7 +415,7 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
                     type="text"
                     value={formData.area}
                     onChange={(e) => handleInputChange('area', e.target.value)}
-                    placeholder="আপনার এলাকা লিখুন"
+                    placeholder={t('surveysPage.enterArea')}
                     className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
                     required
                   />
@@ -437,17 +440,17 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
                 {submitting ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                    জমা দেওয়া হচ্ছে...
+                    {t('surveysPage.submitting')}
                   </>
                 ) : (
-                  'জমা দিন'
+                  t('surveysPage.submit')
                 )}
               </button>
               <Link
                 href="/surveys"
                 className="px-8 py-4 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-all text-center"
               >
-                বাতিল করুন
+                {t('surveysPage.cancel')}
               </Link>
             </div>
           </form>
@@ -456,5 +459,3 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
     </main>
   );
 }
-
-
