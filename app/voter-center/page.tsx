@@ -66,14 +66,21 @@ interface VoterApiResponse {
 export default function VoterCenterPage() {
   const { t, language } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
+  const [fatherNameQuery, setFatherNameQuery] = useState("");
+  const [dateOfBirthQuery, setDateOfBirthQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Voter[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalVoters, setTotalVoters] = useState(0);
+  const [hasNextPage, setHasNextPage] = useState(false);
   const filterDropdownRef = useRef<HTMLDivElement>(null);
+  const modalContentRef = useRef<HTMLDivElement>(null);
 
   // Close filter dropdown when clicking outside
   useEffect(() => {
@@ -126,31 +133,48 @@ export default function VoterCenterPage() {
     },
   ];
 
+  const buildSearchUrl = (page: number = 1) => {
+    const params = new URLSearchParams();
+    if (searchQuery) params.append("search", searchQuery);
+    if (selectedColumns.length > 0)
+      params.append("searchColumns", selectedColumns.join(","));
+    if (fatherNameQuery) params.append("father_name", fatherNameQuery);
+    if (dateOfBirthQuery) params.append("date_of_birth", dateOfBirthQuery);
+    params.append("page", page.toString());
+    return `https://admin.aminul-haque.com/api/v1/voters?${params.toString()}`;
+  };
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSearching(true);
     setNotFound(false);
     setErrorMessage("");
+    setCurrentPage(1);
+    setSearchResults([]);
 
     try {
-      const response = await fetch(
-        `https://admin.aminul-haque.com/api/v1/voters?search=${encodeURIComponent(searchQuery)}&searchColumns=${encodeURIComponent(selectedColumns.join(","))}`,
-      );
-
+      const response = await fetch(buildSearchUrl(1));
       const data: VoterApiResponse = await response.json();
 
       if (data.success && data.data.data.length > 0) {
         setSearchResults(data.data.data);
+        setTotalVoters(data.data.meta.total);
+        setHasNextPage(data.data.links.next !== null);
+        setCurrentPage(data.data.meta.current_page);
         setNotFound(false);
         setShowModal(true);
       } else {
         setSearchResults([]);
+        setTotalVoters(0);
+        setHasNextPage(false);
         setNotFound(true);
         setShowModal(true);
       }
     } catch (error) {
       console.error("Error fetching voter data:", error);
       setSearchResults([]);
+      setTotalVoters(0);
+      setHasNextPage(false);
       setNotFound(true);
       setErrorMessage(t("voterCenter.serverConnectionError"));
       setShowModal(true);
@@ -158,6 +182,50 @@ export default function VoterCenterPage() {
       setIsSearching(false);
     }
   };
+
+  const loadMoreVoters = async () => {
+    if (isLoadingMore || !hasNextPage) return;
+
+    setIsLoadingMore(true);
+    const nextPage = currentPage + 1;
+
+    try {
+      const response = await fetch(buildSearchUrl(nextPage));
+      const data: VoterApiResponse = await response.json();
+
+      if (data.success && data.data.data.length > 0) {
+        setSearchResults((prev) => [...prev, ...data.data.data]);
+        setTotalVoters(data.data.meta.total);
+        setHasNextPage(data.data.links.next !== null);
+        setCurrentPage(data.data.meta.current_page);
+      }
+    } catch (error) {
+      console.error("Error loading more voters:", error);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
+  // Infinite scroll handler
+  useEffect(() => {
+    const modalContent = modalContentRef.current;
+    if (!modalContent || !showModal) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = modalContent;
+      // Load more when user scrolls to bottom (with 100px threshold)
+      if (
+        scrollHeight - scrollTop - clientHeight < 100 &&
+        hasNextPage &&
+        !isLoadingMore
+      ) {
+        loadMoreVoters();
+      }
+    };
+
+    modalContent.addEventListener("scroll", handleScroll);
+    return () => modalContent.removeEventListener("scroll", handleScroll);
+  }, [showModal, hasNextPage, isLoadingMore, currentPage]);
 
   const handlePrint = () => {
     if (searchResults.length === 0) return;
@@ -388,13 +456,59 @@ export default function VoterCenterPage() {
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder={t("voterCenter.searchPlaceholder")}
                             className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-lg"
-                            required
+                          />
+                        </div>
+
+                        {/* Optional Father Name Field */}
+                        <div>
+                          <label className="block text-slate-700 font-bold mb-3 text-base flex items-center gap-2 flex-wrap">
+                            <span>👨</span>
+                            <span>{t("voterCenter.fatherName")}</span>
+                            <span className="text-slate-400 font-normal text-sm">
+                              ({language === "bd" ? "ঐচ্ছিক" : "Optional"})
+                            </span>
+                          </label>
+                          <input
+                            type="text"
+                            value={fatherNameQuery}
+                            onChange={(e) => setFatherNameQuery(e.target.value)}
+                            placeholder={
+                              language === "bd"
+                                ? "পিতার নাম লিখুন"
+                                : "Enter father's name"
+                            }
+                            className="w-full px-6 py-3 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all"
+                          />
+                        </div>
+
+                        {/* Optional Date of Birth Field */}
+                        <div>
+                          <label className="block text-slate-700 font-bold mb-3 text-base flex items-center gap-2 flex-wrap">
+                            <span>📅</span>
+                            <span>{t("voterCenter.dateOfBirth")}</span>
+                            <span className="text-slate-400 font-normal text-sm">
+                              ({language === "bd" ? "ঐচ্ছিক" : "Optional"})
+                              {"1958-02-14"}
+                            </span>
+                          </label>
+                          <input
+                            type="text"
+                            value={dateOfBirthQuery}
+                            onChange={(e) =>
+                              setDateOfBirthQuery(e.target.value)
+                            }
+                            className="w-full px-6 py-3 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all"
                           />
                         </div>
 
                         <button
                           type="submit"
-                          disabled={isSearching}
+                          disabled={
+                            isSearching ||
+                            (!searchQuery &&
+                              !fatherNameQuery &&
+                              !dateOfBirthQuery)
+                          }
                           className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-blue-700 hover:to-cyan-700 transition-all transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-lg"
                         >
                           {isSearching ? (
@@ -457,7 +571,7 @@ export default function VoterCenterPage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col"
             >
               {/* Modal Header */}
               <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between z-10">
@@ -472,6 +586,9 @@ export default function VoterCenterPage() {
                     setSearchResults([]);
                     setNotFound(false);
                     setErrorMessage("");
+                    setTotalVoters(0);
+                    setHasNextPage(false);
+                    setCurrentPage(1);
                   }}
                   className="p-2 hover:bg-slate-100 rounded-xl transition-all"
                 >
@@ -480,7 +597,10 @@ export default function VoterCenterPage() {
               </div>
 
               {/* Modal Content */}
-              <div className="p-6 space-y-6">
+              <div
+                ref={modalContentRef}
+                className="p-6 space-y-6 overflow-y-auto flex-1"
+              >
                 {notFound ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -497,14 +617,21 @@ export default function VoterCenterPage() {
                   </motion.div>
                 ) : searchResults.length > 0 ? (
                   <>
-                    {/* Success Message */}
+                    {/* Success Message with Total Count */}
                     <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 text-center">
                       <div className="text-5xl mb-3">✅</div>
                       <h3 className="text-2xl font-bold text-green-800">
-                        {searchResults.length === 1
+                        {totalVoters === 1
                           ? t("voterCenter.infoFound")
-                          : `${language === "bd" ? toBanglaNumber(searchResults.length) : searchResults.length} ${t("voterCenter.votersFound")}`}
+                          : `${language === "bd" ? toBanglaNumber(totalVoters) : totalVoters} ${t("voterCenter.votersFound")}`}
                       </h3>
+                      {totalVoters > searchResults.length && (
+                        <p className="text-green-600 mt-2 text-sm">
+                          {language === "bd"
+                            ? `${toBanglaNumber(searchResults.length)} জন দেখানো হচ্ছে - স্ক্রোল করুন আরও দেখতে`
+                            : `Showing ${searchResults.length} - Scroll to load more`}
+                        </p>
+                      )}
                     </div>
 
                     {searchResults.map((voter, index) => (
@@ -709,6 +836,32 @@ export default function VoterCenterPage() {
                         <li>• {t("voterCenter.guideline3")}</li>
                       </ul>
                     </motion.div>
+
+                    {/* Loading More Indicator */}
+                    {isLoadingMore && (
+                      <div className="flex justify-center py-4">
+                        <div className="flex items-center gap-3 text-blue-600">
+                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                          <span className="font-medium">
+                            {language === "bd"
+                              ? "আরও লোড হচ্ছে..."
+                              : "Loading more..."}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Load More Button (backup for infinite scroll) */}
+                    {hasNextPage && !isLoadingMore && (
+                      <div className="flex justify-center py-4">
+                        <button
+                          onClick={loadMoreVoters}
+                          className="px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-slate-700 hover:to-slate-800 transition-all transform hover:scale-105 flex items-center gap-2"
+                        >
+                          {language === "bd" ? "আরও দেখুন" : "Load More"}
+                        </button>
+                      </div>
+                    )}
                   </>
                 ) : null}
               </div>
@@ -733,6 +886,11 @@ export default function VoterCenterPage() {
                     setNotFound(false);
                     setErrorMessage("");
                     setSearchQuery("");
+                    setFatherNameQuery("");
+                    setDateOfBirthQuery("");
+                    setTotalVoters(0);
+                    setHasNextPage(false);
+                    setCurrentPage(1);
                   }}
                   className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
                 >
