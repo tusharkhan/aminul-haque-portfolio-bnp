@@ -39,6 +39,7 @@ import {
 } from 'react-icons/fa';
 import { useTranslation } from '../i18n/I18nProvider';
 import { IconType } from 'react-icons';
+import Image from 'next/image';
 
 interface ManifestoSection {
   id: string;
@@ -779,7 +780,26 @@ export default function AminulManifestoPage() {
           </motion.div>
         </div>
       </section>
-
+      {/* Manifesto Image Section */}
+      <section className="relative w-full">
+        <div className="mx-auto max-w-5xl px-4 py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200"
+          >
+            <Image
+              src="/aminul Haque/menifesto.jpeg"
+              alt={language === 'bd' ? 'আমিনুল হকের নির্বাচনী ইশতেহার' : 'Aminul Haque Election Manifesto'}
+              width={1200}
+              height={1600}
+              className="w-full h-auto object-contain"
+              priority
+            />
+          </motion.div>
+        </div>
+      </section>
       {/* Introduction Section */}
       <section className="py-16 md:py-20 px-4">
         <div className="mx-auto max-w-4xl">

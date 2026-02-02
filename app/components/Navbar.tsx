@@ -19,6 +19,7 @@ const navItems = [
       { href: '/manifesto', labelKey: 'nav.sportsdev' },
       { href: '/bnp-31-point', labelKey: 'nav.bnp31' },
       { href: '/bnp-19-point', labelKey: 'nav.bnp19' },
+      { href: '/bnp-8-points', labelKey: 'nav.bnp8' },
     ]
   },
   { 
