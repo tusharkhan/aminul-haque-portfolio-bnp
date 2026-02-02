@@ -11,8 +11,8 @@ const navItems = [
   { href: '/', labelKey: 'nav.home' },
   { href: '/about', labelKey: 'nav.about' },
   { href: '/aminul-manifesto', labelKey: 'nav.manifesto' },
-  { href: '/programs', labelKey: 'nav.programs' },
-  { 
+  { href: '/voter-center', labelKey: 'nav.voterCenter' },
+  {
     labelKey: 'nav.policy',
     hasDropdown: true,
     dropdownItems: [
@@ -22,7 +22,7 @@ const navItems = [
       { href: '/bnp-8-points', labelKey: 'nav.bnp8' },
     ]
   },
-  { 
+  {
     labelKey: 'nav.media',
     hasDropdown: true,
     dropdownItems: [
@@ -33,11 +33,12 @@ const navItems = [
       { href: '/surveys', labelKey: 'nav.surveys' },
     ]
   },
-  { 
+  {
     labelKey: 'nav.service',
     hasDropdown: true,
     dropdownItems: [
-      { href: '/voter-center', labelKey: 'nav.voterCenter' },
+
+      { href: '/programs', labelKey: 'nav.programs' },
       { href: '/volunteer', labelKey: 'nav.volunteer' },
       { href: '/complaints', labelKey: 'nav.complaints' },
       { href: '/comments', labelKey: 'nav.comments' },
@@ -51,7 +52,7 @@ export default function Navbar() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
   const pathname = usePathname();
-  
+
   // Use i18n context
   const { language, setLanguage, t, isChangingLanguage } = useTranslation();
 
@@ -94,11 +95,10 @@ export default function Navbar() {
                     onMouseLeave={() => setOpenDropdown(null)}
                   >
                     <button
-                      className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg flex items-center gap-1 xl:gap-2 ${
-                        isDropdownActive
+                      className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg flex items-center gap-1 xl:gap-2 ${isDropdownActive
                           ? 'text-white'
                           : 'text-slate-700 hover:text-emerald-600'
-                      }`}
+                        }`}
                     >
                       {isDropdownActive && (
                         <motion.div
@@ -111,7 +111,7 @@ export default function Navbar() {
                       <span className="relative z-10 whitespace-nowrap">{translatedLabel}</span>
                       <FaChevronDown className={`relative z-10 text-xs transition-transform ${openDropdown === item.labelKey ? 'rotate-180' : ''}`} />
                     </button>
-                    
+
                     <AnimatePresence>
                       {openDropdown === item.labelKey && (
                         <motion.div
@@ -127,11 +127,10 @@ export default function Navbar() {
                               <Link
                                 key={dropItem.href}
                                 href={dropItem.href}
-                                className={`block px-4 py-3 font-bold text-sm transition-all ${
-                                  isActive
+                                className={`block px-4 py-3 font-bold text-sm transition-all ${isActive
                                     ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white'
                                     : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
-                                }`}
+                                  }`}
                               >
                                 {t(dropItem.labelKey)}
                               </Link>
@@ -143,17 +142,16 @@ export default function Navbar() {
                   </div>
                 );
               }
-              
+
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href!}
-                  className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg whitespace-nowrap ${
-                    isActive
+                  className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg whitespace-nowrap ${isActive
                       ? 'text-white'
                       : 'text-slate-700 hover:text-emerald-600'
-                  }`}
+                    }`}
                 >
                   {isActive && (
                     <motion.div
@@ -304,11 +302,10 @@ export default function Navbar() {
                                         setIsOpen(false);
                                         setOpenMobileDropdown(null);
                                       }}
-                                      className={`block px-6 py-3 font-bold rounded-xl transition-all ${
-                                        isActive
+                                      className={`block px-6 py-3 font-bold rounded-xl transition-all ${isActive
                                           ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg'
                                           : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
-                                      }`}
+                                        }`}
                                     >
                                       {t(dropItem.labelKey)}
                                     </Link>
@@ -321,7 +318,7 @@ export default function Navbar() {
                       </div>
                     );
                   }
-                  
+
                   const isActive = pathname === item.href;
                   return (
                     <Link
@@ -331,11 +328,10 @@ export default function Navbar() {
                         setIsOpen(false);
                         setOpenMobileDropdown(null);
                       }}
-                      className={`block px-4 py-3 font-bold rounded-xl transition-all ${
-                        isActive
+                      className={`block px-4 py-3 font-bold rounded-xl transition-all ${isActive
                           ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg'
                           : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
-                      }`}
+                        }`}
                     >
                       {t(item.labelKey)}
                     </Link>

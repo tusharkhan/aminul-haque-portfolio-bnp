@@ -7,7 +7,8 @@ import {
   FaEnvelope,
   FaPhone,
   FaMapMarkerAlt,
-  FaTiktok
+  FaTiktok,
+  FaGooglePlay
 } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { toBanglaNumber } from '@/lib/utils';
@@ -153,6 +154,27 @@ export default function SiteFooter() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Download App Section */}
+        <div className="py-8 border-t border-slate-300">
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-slate-700 font-bold text-center">
+              {language === 'bd' ? 'আমাদের অফিসিয়াল অ্যাপ ডাউনলোড করুন' : 'Download Our Official App'}
+            </p>
+            <a
+              href="https://play.google.com/store/apps/details?id=com.aminul_haque.portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+            >
+              <FaGooglePlay className="text-2xl" />
+              <div className="text-left">
+                <div className="text-xs opacity-90">{language === 'bd' ? 'ডাউনলোড করুন' : 'Get it on'}</div>
+                <div className="text-lg font-black">Google Play</div>
+              </div>
+            </a>
           </div>
         </div>
 
