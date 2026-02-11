@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   FaHeart,
@@ -35,11 +36,13 @@ import {
   FaCity,
   FaRunning,
   FaUserShield,
-  FaHandsHelping
+  FaHandsHelping,
+  FaListUl
 } from 'react-icons/fa';
 import { useTranslation } from '../i18n/I18nProvider';
 import { IconType } from 'react-icons';
 import Image from 'next/image';
+import { fetchManifestos, type ManifestoApi, fetchManifestoCms, type ManifestoCms } from '@/lib/api';
 
 interface ManifestoSection {
   id: string;
@@ -725,8 +728,8 @@ const category8_socialWelfare: ManifestoCategory = {
   ]
 };
 
-// All manifesto categories combined
-const manifestoCategories: ManifestoCategory[] = [
+// Hardcoded defaults (icons, colors, English text) — used as fallbacks
+const defaultManifestoCategories: ManifestoCategory[] = [
   category1_civicModernization,
   category2_utilities,
   category3_bangladeshiIdentity,
@@ -737,8 +740,89 @@ const manifestoCategories: ManifestoCategory[] = [
   category8_socialWelfare
 ];
 
+// Fallback colors for new API categories beyond the 8 hardcoded ones
+const fallbackCategoryColors = [
+  'from-blue-600 to-indigo-700',
+  'from-cyan-500 to-blue-600',
+  'from-emerald-500 to-green-600',
+  'from-purple-500 to-indigo-600',
+  'from-lime-500 to-green-600',
+  'from-red-600 to-rose-700',
+  'from-green-600 to-emerald-700',
+  'from-pink-500 to-rose-600',
+];
+
+const fallbackCategoryIcons: IconType[] = [
+  FaCity, FaTint, FaUsers, FaBriefcase, FaFutbol, FaUserShield, FaTree, FaHandsHelping
+];
+
+const fallbackSectionColors = [
+  'from-blue-600 to-indigo-700',
+  'from-amber-500 to-orange-600',
+  'from-rose-500 to-red-600',
+  'from-sky-500 to-blue-600',
+  'from-cyan-500 to-teal-600',
+  'from-emerald-500 to-green-600',
+  'from-violet-500 to-purple-600',
+  'from-pink-500 to-rose-600',
+];
+
+const fallbackSectionIcons: IconType[] = [
+  FaRoad, FaCar, FaHospital, FaGraduationCap, FaWifi, FaTools, FaLaptopCode, FaListUl
+];
+
+/**
+ * Merge API manifesto data with hardcoded defaults.
+ * API provides dynamic Bangla content; hardcoded provides icons, colors, English text.
+ * New categories from the API (beyond the 8 hardcoded) get fallback icons/colors.
+ */
+function mergeManifestos(apiData: ManifestoApi[]): ManifestoCategory[] {
+  if (apiData.length === 0) return defaultManifestoCategories;
+
+  return apiData.map((apiCat, catIdx) => {
+    const hardcoded = defaultManifestoCategories[catIdx];
+
+    const sections: ManifestoSection[] = apiCat.items
+      .sort((a, b) => a.order - b.order)
+      .map((apiItem, itemIdx) => {
+        const hardcodedSection = hardcoded?.sections?.[itemIdx];
+        return {
+          id: hardcodedSection?.id || `section-${apiItem.id}`,
+          icon: hardcodedSection?.icon || fallbackSectionIcons[itemIdx % fallbackSectionIcons.length],
+          title: apiItem.title,
+          titleEn: hardcodedSection?.titleEn || apiItem.title,
+          color: hardcodedSection?.color || fallbackSectionColors[itemIdx % fallbackSectionColors.length],
+          items: apiItem.text_list,
+          itemsEn: hardcodedSection?.itemsEn || apiItem.text_list,
+        };
+      });
+
+    return {
+      id: hardcoded?.id || `category-${apiCat.id}`,
+      icon: hardcoded?.icon || fallbackCategoryIcons[catIdx % fallbackCategoryIcons.length],
+      subtitle: apiCat.main_title,
+      subtitleEn: hardcoded?.subtitleEn || apiCat.main_title,
+      title: apiCat.second_title,
+      titleEn: hardcoded?.titleEn || apiCat.second_title,
+      color: hardcoded?.color || fallbackCategoryColors[catIdx % fallbackCategoryColors.length],
+      sections,
+    };
+  });
+}
+
 export default function AminulManifestoPage() {
   const { language } = useTranslation();
+  const [manifestoCategories, setManifestoCategories] = useState<ManifestoCategory[]>(defaultManifestoCategories);
+  const [cms, setCms] = useState<ManifestoCms | null>(null);
+
+  useEffect(() => {
+    fetchManifestos().then((apiData) => {
+      if (apiData.length > 0) {
+        setManifestoCategories(mergeManifestos(apiData));
+      }
+    });
+    fetchManifestoCms().then(setCms);
+  }, []);
 
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
@@ -759,22 +843,22 @@ export default function AminulManifestoPage() {
             </span>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 mb-4">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {language === 'bd' ? 'আমিনুল হক' : 'Aminul Haque'}
+                {cms?.header?.title || (language === 'bd' ? 'আমিনুল হক' : 'Aminul Haque')}
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-emerald-700 font-bold mb-6">
-              {language === 'bd'
+              {cms?.header?.subtitle || (language === 'bd'
                 ? 'বিএনপি মনোনীত ধানের শীষের প্রার্থী'
-                : 'BNP Nominated Sheaf of Paddy Candidate'}
+                : 'BNP Nominated Sheaf of Paddy Candidate')}
             </p>
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 inline-block shadow-xl border border-emerald-100">
               <p className="text-3xl md:text-4xl font-black text-emerald-600 mb-2">
-                {language === 'bd' ? '"আমি আপনাদেরই একজন"' : '"I am one of you"'}
+                {cms?.header?.quotation_title ? `"${cms.header.quotation_title}"` : (language === 'bd' ? '"আমি আপনাদেরই একজন"' : '"I am one of you"')}
               </p>
               <p className="text-lg text-slate-600">
-                {language === 'bd'
+                {cms?.header?.quotation_subtitle || (language === 'bd'
                   ? 'আমি আপনাদের সন্তান এবং আপনাদেরই একজন'
-                  : 'I am your child and one of you'}
+                  : 'I am your child and one of you')}
               </p>
             </div>
           </motion.div>
@@ -814,41 +898,48 @@ export default function AminulManifestoPage() {
               <div className="text-center mb-8">
                 <FaHeart className="text-5xl md:text-6xl text-emerald-600 mx-auto mb-4" />
                 <h2 className="text-2xl md:text-3xl font-black text-slate-900">
-                  {language === 'bd' ? 'প্রিয় পল্লবী ও রুপনগরবাসী' : 'Dear Residents of Pallabi & Rupnagar'}
+                  {cms?.plans?.title || (language === 'bd' ? 'প্রিয় পল্লবী ও রুপনগরবাসী' : 'Dear Residents of Pallabi & Rupnagar')}
                 </h2>
                 <p className="text-emerald-600 font-bold mt-2">
-                  {language === 'bd' ? 'আসসালামুআলাইকুম। আন্তরিক শুভেচ্ছা গ্রহণ করুন।' : 'Assalamu Alaikum. Please accept my sincere greetings.'}
+                  {cms?.plans?.subtitle || (language === 'bd' ? 'আসসালামুআলাইকুম। আন্তরিক শুভেচ্ছা গ্রহণ করুন।' : 'Assalamu Alaikum. Please accept my sincere greetings.')}
                 </p>
               </div>
-              <div className="space-y-6 text-base md:text-lg text-slate-700 leading-relaxed">
-                <p>
-                  {language === 'bd'
-                    ? 'আমি, আমিনুল হক, আপনাদেরই একজন সন্তান। পল্লবী ও রুপনগর আমার ঘর ও আমার পরিবার। এ এলাকার ভবিষ্যৎ আমি নিজের মত করে অনুভব করি। বিগত ১৭ বছর আমরা সবাই একসাথে এক কঠিন সময় পার করেছি।'
-                    : 'I, Aminul Haque, am one of your own children. Pallabi and Rupnagar are my home and my family. I feel the future of this area as my own. For the past 17 years, we have all gone through difficult times together.'}
-                </p>
-                <p>
-                  {language === 'bd'
-                    ? 'যানজট, পানি ও গ্যাসের ঘাটতি, চাঁদাবাজি, মাদক আর অব্যবস্থাপনার কারণে আমাদের প্রতিদিনের জীবন দুর্বিষহ হয়ে উঠেছে। আমাদের তরুণরা পথ হারাচ্ছে, মায়েরা নিরাপত্তাহীনতায় ভুগছে ও পরিবারগুলো স্বপ্ন হারাচ্ছে।'
-                    : 'Traffic jams, water and gas shortages, extortion, drugs and mismanagement have made our daily lives unbearable. Our youth are losing their way, mothers are suffering from insecurity, and families are losing their dreams.'}
-                </p>
-                <p>
-                  {language === 'bd'
-                    ? 'আমি রাজনীতি করি ক্ষমতার জন্য না, মানুষের সেবা করার জন্য। সকল মত ও চিন্তার ঐক্যতান রচনার জন্য অব্যাহত আলোচনা, মতবিনিময় এবং পারস্পারিক বোঝাপড়ার সেতুবন্ধন রচনা করে সকল প্রকার বৈষম্য ও ভেদবুদ্ধির বেড়াজাল অতিক্রম করে ভবিষ্যতে সুখী এবং নতুন সংস্কৃতি চর্চার মাধ্যমে আধুনিক, সুস্থ ও আদর্শ নগর জীবন উপহার দেওয়াই আমার স্বপ্ন।'
-                    : 'I do politics not for power, but to serve the people. My dream is to create a modern, healthy and ideal urban life through continuous dialogue, exchange of views and building bridges of mutual understanding to overcome all forms of discrimination.'}
-                </p>
-                <p>
-                  {language === 'bd'
-                    ? 'প্রবীণের অভিজ্ঞতা আর তারুণ্যের প্রাণশক্তি কাজে লাগিয়ে শুরু করতে চাই আমাদের পথচলা। আমি বিশ্বাস করি, আপনাদের সমর্থন ও আন্তরিক সহযোগিতা এবং নিষ্কলুষ সততা ও সমতার আদর্শে উজ্জীবিত হয়ে সকলে মিলে কাজ করলে এ স্বপ্ন বাস্তবায়ন অবশ্যই সম্ভব।'
-                    : 'I want to start our journey by utilizing the experience of elders and the vitality of youth. I believe that with your support and sincere cooperation, and working together inspired by the ideals of pure honesty and equality, this dream can definitely be realized.'}
-                </p>
-                <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 mt-8">
-                  <FaQuoteLeft className="text-3xl text-emerald-400 mb-4" />
-                  <p className="text-xl md:text-2xl font-bold text-emerald-700 italic">
+              {cms?.plans?.content ? (
+                <div
+                  className="space-y-6 text-base md:text-lg text-slate-700 leading-relaxed prose prose-lg max-w-none"
+                  dangerouslySetInnerHTML={{ __html: cms.plans.content }}
+                />
+              ) : (
+                <div className="space-y-6 text-base md:text-lg text-slate-700 leading-relaxed">
+                  <p>
                     {language === 'bd'
-                      ? 'আমি বিশ্বাস করি –পরিবর্তন সম্ভব, যদি আমরা সবাই চাই। আর সেই পরিবর্তনের পথ দেখাতে আমি আপনাদের কাছে এসেছি "পল্লবী ও রুপনগর গড়ার পরিকল্পনা" ও তার বাস্তবায়নের অঙ্গীকার নিয়ে।'
-                      : 'I believe - change is possible, if we all want it. And to show you that path of change, I have come to you with the "Plan for Building Pallabi & Rupnagar" and a commitment to its implementation.'}
+                      ? 'আমি, আমিনুল হক, আপনাদেরই একজন সন্তান। পল্লবী ও রুপনগর আমার ঘর ও আমার পরিবার। এ এলাকার ভবিষ্যৎ আমি নিজের মত করে অনুভব করি। বিগত ১৭ বছর আমরা সবাই একসাথে এক কঠিন সময় পার করেছি।'
+                      : 'I, Aminul Haque, am one of your own children. Pallabi and Rupnagar are my home and my family. I feel the future of this area as my own. For the past 17 years, we have all gone through difficult times together.'}
+                  </p>
+                  <p>
+                    {language === 'bd'
+                      ? 'যানজট, পানি ও গ্যাসের ঘাটতি, চাঁদাবাজি, মাদক আর অব্যবস্থাপনার কারণে আমাদের প্রতিদিনের জীবন দুর্বিষহ হয়ে উঠেছে। আমাদের তরুণরা পথ হারাচ্ছে, মায়েরা নিরাপত্তাহীনতায় ভুগছে ও পরিবারগুলো স্বপ্ন হারাচ্ছে।'
+                      : 'Traffic jams, water and gas shortages, extortion, drugs and mismanagement have made our daily lives unbearable. Our youth are losing their way, mothers are suffering from insecurity, and families are losing their dreams.'}
+                  </p>
+                  <p>
+                    {language === 'bd'
+                      ? 'আমি রাজনীতি করি ক্ষমতার জন্য না, মানুষের সেবা করার জন্য। সকল মত ও চিন্তার ঐক্যতান রচনার জন্য অব্যাহত আলোচনা, মতবিনিময় এবং পারস্পারিক বোঝাপড়ার সেতুবন্ধন রচনা করে সকল প্রকার বৈষম্য ও ভেদবুদ্ধির বেড়াজাল অতিক্রম করে ভবিষ্যতে সুখী এবং নতুন সংস্কৃতি চর্চার মাধ্যমে আধুনিক, সুস্থ ও আদর্শ নগর জীবন উপহার দেওয়াই আমার স্বপ্ন।'
+                      : 'I do politics not for power, but to serve the people. My dream is to create a modern, healthy and ideal urban life through continuous dialogue, exchange of views and building bridges of mutual understanding to overcome all forms of discrimination.'}
+                  </p>
+                  <p>
+                    {language === 'bd'
+                      ? 'প্রবীণের অভিজ্ঞতা আর তারুণ্যের প্রাণশক্তি কাজে লাগিয়ে শুরু করতে চাই আমাদের পথচলা। আমি বিশ্বাস করি, আপনাদের সমর্থন ও আন্তরিক সহযোগিতা এবং নিষ্কলুষ সততা ও সমতার আদর্শে উজ্জীবিত হয়ে সকলে মিলে কাজ করলে এ স্বপ্ন বাস্তবায়ন অবশ্যই সম্ভব।'
+                      : 'I want to start our journey by utilizing the experience of elders and the vitality of youth. I believe that with your support and sincere cooperation, and working together inspired by the ideals of pure honesty and equality, this dream can definitely be realized.'}
                   </p>
                 </div>
+              )}
+              <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 mt-8">
+                <FaQuoteLeft className="text-3xl text-emerald-400 mb-4" />
+                <p className="text-xl md:text-2xl font-bold text-emerald-700 italic">
+                  {cms?.plans?.quotes || (language === 'bd'
+                    ? 'আমি বিশ্বাস করি –পরিবর্তন সম্ভব, যদি আমরা সবাই চাই। আর সেই পরিবর্তনের পথ দেখাতে আমি আপনাদের কাছে এসেছি "পল্লবী ও রুপনগর গড়ার পরিকল্পনা" ও তার বাস্তবায়নের অঙ্গীকার নিয়ে।'
+                    : 'I believe - change is possible, if we all want it. And to show you that path of change, I have come to you with the "Plan for Building Pallabi & Rupnagar" and a commitment to its implementation.')}
+                </p>
               </div>
             </div>
           </motion.div>
@@ -864,16 +955,16 @@ export default function AminulManifestoPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-              {language === 'bd'
+              {cms?.green_box?.title || (language === 'bd'
                 ? 'আমাদের পল্লবী ও রুপনগর পরিবর্তনের পরিকল্পনা'
-                : 'Our Plan for Transforming Pallabi & Rupnagar'}
+                : 'Our Plan for Transforming Pallabi & Rupnagar')}
             </h2>
             <p className="text-xl text-white/80">
-              {language === 'bd' ? 'আমার নির্বাচনী ইশতেহার' : 'My Election Manifesto'}
+              {cms?.green_box?.subtitle || (language === 'bd' ? 'আমার নির্বাচনী ইশতেহার' : 'My Election Manifesto')}
             </p>
             <div className="mt-6 inline-block bg-white/20 backdrop-blur-sm rounded-full px-8 py-3">
               <span className="text-2xl font-black text-white">
-                {language === 'bd' ? 'সবার আগে বাংলাদেশ' : 'Bangladesh First'}
+                {cms?.green_box?.short_title || (language === 'bd' ? 'সবার আগে বাংলাদেশ' : 'Bangladesh First')}
               </span>
             </div>
           </motion.div>
@@ -955,47 +1046,54 @@ export default function AminulManifestoPage() {
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30 bg-gradient-to-r from-emerald-500 to-green-600"></div>
             <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl text-center border border-slate-200">
               <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-6">
-                {language === 'bd'
+                {cms?.conclusion?.title || (language === 'bd'
                   ? 'শ্রদ্ধেয় মুরুব্বীগণ, প্রিয় সমবয়সী ও তরুণ বন্ধুগণ'
-                  : 'Respected Elders, Dear Peers & Young Friends'}
+                  : 'Respected Elders, Dear Peers & Young Friends')}
               </h2>
-              <div className="space-y-6 text-base md:text-lg text-slate-700 leading-relaxed text-left">
-                <p>
-                  {language === 'bd'
-                    ? 'আমি পল্লবী ও রুপনগরের সন্তান। আপনাদেরই সন্তান। আপনাদের আপনজন। আপনাদের সুখ-দুঃখের সাথে আমার জীবন ওতপ্রোতভাবে জড়িয়ে আছে। এ এলাকা আমার আনন্দ-বেদনা, হাসি-কান্নার স্মৃতিমাখা গর্বের শহর।'
-                    : 'I am a child of Pallabi and Rupnagar—your child. Your loved one. My life is deeply intertwined with your joys and sorrows. This area is my proud city filled with memories of joy and sorrow, laughter and tears.'}
-                </p>
-                <p>
-                  {language === 'bd'
-                    ? 'আমি জানি, যত সংকট, যত সীমাবদ্ধতা, নাগরিক-যন্ত্রণাসহ নানাবিধ সমস্যা আছে। এই এলাকার সন্তান হিসেবে আমার নির্বাচনী প্রতিশ্রুতি হচ্ছে ঐতিহ্য ও আধুনিকতার সমন্বয়ে বিশ্বমানের বাসযোগ্য অত্যাধুনিক পল্লবী ও রুপনগর গড়ে তোলা।'
-                    : 'I know there are many crises, limitations, civic sufferings and various problems. As a child of this area, my electoral promise is to build a world-class livable, ultra-modern Pallabi and Rupnagar combining tradition and modernity.'}
-                </p>
-                <p>
-                  {language === 'bd'
-                    ? 'এ লক্ষ্যে আমার নিজস্ব চিন্তা চেতনা, স্বপ্ন-দাবনা ও প্রত্যাশার কথাগুলো আপনাদের সমীপে তুলে ধরলাম। আপনাদের সহযোগিতা পেলে তা আরও বাস্তব, প্রায়োগিক ও নাগরিকবান্ধব করে গড়ে তোলা সম্ভব হবে ইনশাআল্লাহ।'
-                    : 'I have presented my own thoughts, dreams and expectations to you for this purpose. With your cooperation, it will be possible to make it more practical, applicable and citizen-friendly, Inshallah.'}
-                </p>
-              </div>
+              {cms?.conclusion?.content ? (
+                <div
+                  className="space-y-6 text-base md:text-lg text-slate-700 leading-relaxed text-left prose prose-lg max-w-none"
+                  dangerouslySetInnerHTML={{ __html: cms.conclusion.content }}
+                />
+              ) : (
+                <div className="space-y-6 text-base md:text-lg text-slate-700 leading-relaxed text-left">
+                  <p>
+                    {language === 'bd'
+                      ? 'আমি পল্লবী ও রুপনগরের সন্তান। আপনাদেরই সন্তান। আপনাদের আপনজন। আপনাদের সুখ-দুঃখের সাথে আমার জীবন ওতপ্রোতভাবে জড়িয়ে আছে। এ এলাকা আমার আনন্দ-বেদনা, হাসি-কান্নার স্মৃতিমাখা গর্বের শহর।'
+                      : 'I am a child of Pallabi and Rupnagar—your child. Your loved one. My life is deeply intertwined with your joys and sorrows. This area is my proud city filled with memories of joy and sorrow, laughter and tears.'}
+                  </p>
+                  <p>
+                    {language === 'bd'
+                      ? 'আমি জানি, যত সংকট, যত সীমাবদ্ধতা, নাগরিক-যন্ত্রণাসহ নানাবিধ সমস্যা আছে। এই এলাকার সন্তান হিসেবে আমার নির্বাচনী প্রতিশ্রুতি হচ্ছে ঐতিহ্য ও আধুনিকতার সমন্বয়ে বিশ্বমানের বাসযোগ্য অত্যাধুনিক পল্লবী ও রুপনগর গড়ে তোলা।'
+                      : 'I know there are many crises, limitations, civic sufferings and various problems. As a child of this area, my electoral promise is to build a world-class livable, ultra-modern Pallabi and Rupnagar combining tradition and modernity.'}
+                  </p>
+                  <p>
+                    {language === 'bd'
+                      ? 'এ লক্ষ্যে আমার নিজস্ব চিন্তা চেতনা, স্বপ্ন-দাবনা ও প্রত্যাশার কথাগুলো আপনাদের সমীপে তুলে ধরলাম। আপনাদের সহযোগিতা পেলে তা আরও বাস্তব, প্রায়োগিক ও নাগরিকবান্ধব করে গড়ে তোলা সম্ভব হবে ইনশাআল্লাহ।'
+                      : 'I have presented my own thoughts, dreams and expectations to you for this purpose. With your cooperation, it will be possible to make it more practical, applicable and citizen-friendly, Inshallah.'}
+                  </p>
+                </div>
+              )}
               <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 my-8">
                 <p className="text-xl md:text-2xl font-bold text-emerald-700">
-                  {language === 'bd'
+                  {cms?.conclusion?.quotes || (language === 'bd'
                     ? 'আমি একান্তভাবে আশা করি, আসন্ন জাতীয় নির্বাচনে ঢাকা-১৬ আসনে ধানের শীষ প্রতীকে আপনার মূল্যবান ভোটটি দিয়ে আমাকে আপনাদের সেবা করার সুযোগ দিবেন।'
-                    : 'I sincerely hope that in the upcoming national election, you will give me the opportunity to serve you by casting your valuable vote for the Sheaf of Paddy symbol in Dhaka-16 constituency.'}
+                    : 'I sincerely hope that in the upcoming national election, you will give me the opportunity to serve you by casting your valuable vote for the Sheaf of Paddy symbol in Dhaka-16 constituency.')}
                 </p>
               </div>
               <div className="space-y-2 text-center">
                 <p className="text-lg text-slate-600">
-                  {language === 'bd' ? 'আল্লাহ আমাদের সহায় হোন।' : 'May Allah help us.'}
+                  {cms?.conclusion?.short_title_first || (language === 'bd' ? 'আল্লাহ আমাদের সহায় হোন।' : 'May Allah help us.')}
                 </p>
                 <p className="text-lg text-slate-600">
-                  {language === 'bd' ? 'আল্লাহ হাফেজ।' : 'Allah Hafez.'}
+                  {cms?.conclusion?.short_title_second || (language === 'bd' ? 'আল্লাহ হাফেজ।' : 'Allah Hafez.')}
                 </p>
                 <p className="text-2xl font-black text-emerald-600 mt-4">
-                  {language === 'bd' ? 'বাংলাদেশ জিন্দাবাদ।' : 'Long Live Bangladesh.'}
+                  {cms?.conclusion?.slogan || (language === 'bd' ? 'বাংলাদেশ জিন্দাবাদ।' : 'Long Live Bangladesh.')}
                 </p>
                 <div className="mt-8 pt-6 border-t border-slate-200">
                   <p className="text-3xl font-black text-emerald-600">
-                    {language === 'bd' ? '- আমিনুল হক' : '- Aminul Haque'}
+                    - {cms?.conclusion?.from_name || (language === 'bd' ? 'আমিনুল হক' : 'Aminul Haque')}
                   </p>
                 </div>
               </div>

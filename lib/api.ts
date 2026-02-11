@@ -91,6 +91,64 @@ export async function fetchCommentsWeHearYou(): Promise<HearYourVoiceData | null
   return fetchHearYourVoice('comments-we-hear-you');
 }
 
+// ─── Manifesto CMS (page content sections) ─────────────────
+
+export interface ManifestoCmsHeader {
+  title: string | null;
+  subtitle: string | null;
+  quotation_title: string | null;
+  quotation_subtitle: string | null;
+}
+
+export interface ManifestoCmsPlans {
+  title: string | null;
+  subtitle: string | null;
+  content: string | null;
+  quotes: string | null;
+}
+
+export interface ManifestoCmsGreenBox {
+  title: string | null;
+  subtitle: string | null;
+  short_title: string | null;
+}
+
+export interface ManifestoCmsConclusion {
+  title: string | null;
+  content: string | null;
+  quotes: string | null;
+  short_title_first: string | null;
+  short_title_second: string | null;
+  slogan: string | null;
+  from_name: string | null;
+}
+
+export interface ManifestoCms {
+  header: ManifestoCmsHeader;
+  plans: ManifestoCmsPlans;
+  green_box: ManifestoCmsGreenBox;
+  conclusion: ManifestoCmsConclusion;
+}
+
+/**
+ * Fetch manifesto page CMS content (header, plans, green_box, conclusion).
+ */
+export async function fetchManifestoCms(): Promise<ManifestoCms | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/manifesto-cms`, { cache: 'no-store' });
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    if (data.success && data.data) {
+      return data.data;
+    }
+    return null;
+  } catch (err) {
+    console.error('Error fetching manifesto CMS:', err);
+    return null;
+  }
+}
+
 // ─── Manifestos ─────────────────────────────────────────────
 
 export interface ManifestoItemApi {
