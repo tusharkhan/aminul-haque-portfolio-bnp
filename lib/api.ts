@@ -1,3 +1,5 @@
+import { IconType } from "react-icons";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
 
 // ─── Settings ──────────────────────────────────────────────
