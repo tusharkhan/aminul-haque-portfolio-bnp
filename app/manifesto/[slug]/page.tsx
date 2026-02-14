@@ -1,5 +1,7 @@
 import ProposalDetailClient from './ProposalDetailClient';
 
+export const dynamic = 'force-dynamic';
+
 interface ProposalContent {
   id: number;
   title: string | null;
@@ -16,12 +18,12 @@ interface Proposal {
   created_at: string;
 }
 
-// Fetch all proposals to generate static params
+// Fetch all proposals (no cache)
 async function getAllProposals(): Promise<Proposal[]> {
   try {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
     const response = await fetch(`${apiBaseUrl}/proposal`, {
-      next: { revalidate: 60 },
+      cache: 'no-store',
     });
 
     if (!response.ok) {
@@ -55,9 +57,7 @@ async function getAllProposals(): Promise<Proposal[]> {
 // Fetch individual proposal by UUID or ID
 async function getProposal(slug: string): Promise<Proposal | null> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-    
-    // First, fetch all proposals and find the one matching the slug
+    // Fetch all proposals and find the one matching the slug
     const proposals = await getAllProposals();
     
     // Try to find by UUID first, then by ID
@@ -65,27 +65,10 @@ async function getProposal(slug: string): Promise<Proposal | null> {
       (p) => p.uuid === slug || p.id.toString() === slug
     );
 
-    console.log(proposal);
     return proposal || null;
   } catch (err) {
     console.error('Error fetching proposal:', err);
     return null;
-  }
-}
-
-export async function generateStaticParams() {
-  try {
-    const proposals = await getAllProposals();
-    // Return both UUID and ID as slugs to support both formats
-    const params = proposals.flatMap(proposal => [
-      { slug: proposal.uuid },
-      { slug: proposal.id.toString() },
-    ]);
-    return params;
-  } catch (error) {
-    console.error('Error generating static params:', error);
-    // Return empty array to prevent build failure
-    return [];
   }
 }
 

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { FaArrowLeft } from 'react-icons/fa';
 import Link from 'next/link';
+import { useTranslation } from '../../i18n/I18nProvider';
 
 interface ProposalContent {
   id: number;
@@ -23,14 +24,17 @@ interface ProposalDetailClientProps {
 }
 
 export default function ProposalDetailClient({ proposal }: ProposalDetailClientProps) {
+  const { language } = useTranslation();
 
   if (!proposal) {
     return (
       <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="text-4xl font-black text-slate-900 mb-4">প্রস্তাবনা পাওয়া যায়নি</h1>
+          <h1 className="text-4xl font-black text-slate-900 mb-4">
+            {language === 'bd' ? 'প্রস্তাবনা পাওয়া যায়নি' : 'Proposal Not Found'}
+          </h1>
           <Link href="/manifesto" className="text-red-600 hover:underline font-bold">
-            প্রস্তাবনা পেজে ফিরে যান
+            {language === 'bd' ? 'প্রস্তাবনা পেজে ফিরে যান' : 'Go back to Proposals'}
           </Link>
         </div>
       </main>
@@ -47,7 +51,7 @@ export default function ProposalDetailClient({ proposal }: ProposalDetailClientP
             className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold transition-colors"
           >
             <FaArrowLeft />
-            সব প্রস্তাবনায় ফিরে যান
+            {language === 'bd' ? 'সব প্রস্তাবনায় ফিরে যান' : 'Back to All Proposals'}
           </Link>
         </div>
       </section>
@@ -62,7 +66,7 @@ export default function ProposalDetailClient({ proposal }: ProposalDetailClientP
             className="text-center"
           >
             <div className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
-              প্রস্তাবনা-{proposal.serial}
+              {language === 'bd' ? 'প্রস্তাবনা' : 'Proposal'}-{proposal.serial}
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
               {proposal.title}
@@ -105,7 +109,9 @@ export default function ProposalDetailClient({ proposal }: ProposalDetailClientP
             </div>
           ) : (
             <div className="text-center py-20">
-              <p className="text-xl text-slate-600">কোনো বিষয়বস্তু পাওয়া যায়নি</p>
+              <p className="text-xl text-slate-600">
+                {language === 'bd' ? 'কোনো বিষয়বস্তু পাওয়া যায়নি' : 'No content found'}
+              </p>
             </div>
           )}
         </div>
