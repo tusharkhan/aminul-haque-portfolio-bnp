@@ -24,9 +24,9 @@ export default function AminulManifestoPage() {
         setManifestoCategories(apiData);
       }
     });
+
     fetchManifestoCms().then(setCms);
   }, []);
-  console.log("Manifesto Categories:", manifestoCategories);
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
@@ -46,29 +46,18 @@ export default function AminulManifestoPage() {
             </span>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 mb-4">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {cms?.header?.title ||
-                  (language === "bd" ? "আমিনুল হক" : "Aminul Haque")}
+                {cms?.header?.title}
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-emerald-700 font-bold mb-6">
-              {cms?.header?.subtitle ||
-                (language === "bd"
-                  ? "বিএনপি মনোনীত ধানের শীষের প্রার্থী"
-                  : "BNP Nominated Sheaf of Paddy Candidate")}
+              {cms?.header?.subtitle}
             </p>
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 inline-block shadow-xl border border-emerald-100">
               <p className="text-3xl md:text-4xl font-black text-emerald-600 mb-2">
-                {cms?.header?.quotation_title
-                  ? `"${cms.header.quotation_title}"`
-                  : language === "bd"
-                    ? '"আমি আপনাদেরই একজন"'
-                    : '"I am one of you"'}
+                {cms?.header?.quotation_title}
               </p>
               <p className="text-lg text-slate-600">
-                {cms?.header?.quotation_subtitle ||
-                  (language === "bd"
-                    ? "আমি আপনাদের সন্তান এবং আপনাদেরই একজন"
-                    : "I am your child and one of you")}
+                {cms?.header?.quotation_subtitle}
               </p>
             </div>
           </motion.div>
@@ -112,16 +101,10 @@ export default function AminulManifestoPage() {
               <div className="text-center mb-8">
                 <FaHeart className="text-5xl md:text-6xl text-emerald-600 mx-auto mb-4" />
                 <h2 className="text-2xl md:text-3xl font-black text-slate-900">
-                  {cms?.plans?.title ||
-                    (language === "bd"
-                      ? "প্রিয় পল্লবী ও রুপনগরবাসী"
-                      : "Dear Residents of Pallabi & Rupnagar")}
+                  {cms?.plans?.title}
                 </h2>
                 <p className="text-emerald-600 font-bold mt-2">
-                  {cms?.plans?.subtitle ||
-                    (language === "bd"
-                      ? "আসসালামুআলাইকুম। আন্তরিক শুভেচ্ছা গ্রহণ করুন।"
-                      : "Assalamu Alaikum. Please accept my sincere greetings.")}
+                  {cms?.plans?.subtitle}
                 </p>
               </div>
               {cms?.plans?.content ? (
@@ -156,10 +139,7 @@ export default function AminulManifestoPage() {
               <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 mt-8">
                 <FaQuoteLeft className="text-3xl text-emerald-400 mb-4" />
                 <p className="text-xl md:text-2xl font-bold text-emerald-700 italic">
-                  {cms?.plans?.quotes ||
-                    (language === "bd"
-                      ? 'আমি বিশ্বাস করি –পরিবর্তন সম্ভব, যদি আমরা সবাই চাই। আর সেই পরিবর্তনের পথ দেখাতে আমি আপনাদের কাছে এসেছি "পল্লবী ও রুপনগর গড়ার পরিকল্পনা" ও তার বাস্তবায়নের অঙ্গীকার নিয়ে।'
-                      : 'I believe - change is possible, if we all want it. And to show you that path of change, I have come to you with the "Plan for Building Pallabi & Rupnagar" and a commitment to its implementation.')}
+                  {cms?.plans?.quotes}
                 </p>
               </div>
             </div>
@@ -176,23 +156,12 @@ export default function AminulManifestoPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-              {cms?.green_box?.title ||
-                (language === "bd"
-                  ? "আমাদের পল্লবী ও রুপনগর পরিবর্তনের পরিকল্পনা"
-                  : "Our Plan for Transforming Pallabi & Rupnagar")}
+              {cms?.green_box?.title}
             </h2>
-            <p className="text-xl text-white/80">
-              {cms?.green_box?.subtitle ||
-                (language === "bd"
-                  ? "আমার নির্বাচনী ইশতেহার"
-                  : "My Election Manifesto")}
-            </p>
+            <p className="text-xl text-white/80">{cms?.green_box?.subtitle}</p>
             <div className="mt-6 inline-block bg-white/20 backdrop-blur-sm rounded-full px-8 py-3">
               <span className="text-2xl font-black text-white">
-                {cms?.green_box?.short_title ||
-                  (language === "bd"
-                    ? "সবার আগে বাংলাদেশ"
-                    : "Bangladesh First")}
+                {cms?.green_box?.short_title}
               </span>
             </div>
           </motion.div>
@@ -276,65 +245,32 @@ export default function AminulManifestoPage() {
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30 bg-gradient-to-r from-emerald-500 to-green-600"></div>
             <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl text-center border border-slate-200">
               <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-6">
-                {cms?.conclusion?.title ||
-                  (language === "bd"
-                    ? "শ্রদ্ধেয় মুরুব্বীগণ, প্রিয় সমবয়সী ও তরুণ বন্ধুগণ"
-                    : "Respected Elders, Dear Peers & Young Friends")}
+                {cms?.conclusion?.title}
               </h2>
-              {cms?.conclusion?.content ? (
+              {cms?.conclusion?.content && (
                 <div
                   className="space-y-6 text-base md:text-lg text-slate-700 leading-relaxed text-left prose prose-lg max-w-none"
                   dangerouslySetInnerHTML={{ __html: cms.conclusion.content }}
                 />
-              ) : (
-                <div className="space-y-6 text-base md:text-lg text-slate-700 leading-relaxed text-left">
-                  <p>
-                    {language === "bd"
-                      ? "আমি পল্লবী ও রুপনগরের সন্তান। আপনাদেরই সন্তান। আপনাদের আপনজন। আপনাদের সুখ-দুঃখের সাথে আমার জীবন ওতপ্রোতভাবে জড়িয়ে আছে। এ এলাকা আমার আনন্দ-বেদনা, হাসি-কান্নার স্মৃতিমাখা গর্বের শহর।"
-                      : "I am a child of Pallabi and Rupnagar—your child. Your loved one. My life is deeply intertwined with your joys and sorrows. This area is my proud city filled with memories of joy and sorrow, laughter and tears."}
-                  </p>
-                  <p>
-                    {language === "bd"
-                      ? "আমি জানি, যত সংকট, যত সীমাবদ্ধতা, নাগরিক-যন্ত্রণাসহ নানাবিধ সমস্যা আছে। এই এলাকার সন্তান হিসেবে আমার নির্বাচনী প্রতিশ্রুতি হচ্ছে ঐতিহ্য ও আধুনিকতার সমন্বয়ে বিশ্বমানের বাসযোগ্য অত্যাধুনিক পল্লবী ও রুপনগর গড়ে তোলা।"
-                      : "I know there are many crises, limitations, civic sufferings and various problems. As a child of this area, my electoral promise is to build a world-class livable, ultra-modern Pallabi and Rupnagar combining tradition and modernity."}
-                  </p>
-                  <p>
-                    {language === "bd"
-                      ? "এ লক্ষ্যে আমার নিজস্ব চিন্তা চেতনা, স্বপ্ন-দাবনা ও প্রত্যাশার কথাগুলো আপনাদের সমীপে তুলে ধরলাম। আপনাদের সহযোগিতা পেলে তা আরও বাস্তব, প্রায়োগিক ও নাগরিকবান্ধব করে গড়ে তোলা সম্ভব হবে ইনশাআল্লাহ।"
-                      : "I have presented my own thoughts, dreams and expectations to you for this purpose. With your cooperation, it will be possible to make it more practical, applicable and citizen-friendly, Inshallah."}
-                  </p>
-                </div>
               )}
               <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 my-8">
                 <p className="text-xl md:text-2xl font-bold text-emerald-700">
-                  {cms?.conclusion?.quotes ||
-                    (language === "bd"
-                      ? "আমি একান্তভাবে আশা করি, আসন্ন জাতীয় নির্বাচনে ঢাকা-১৬ আসনে ধানের শীষ প্রতীকে আপনার মূল্যবান ভোটটি দিয়ে আমাকে আপনাদের সেবা করার সুযোগ দিবেন।"
-                      : "I sincerely hope that in the upcoming national election, you will give me the opportunity to serve you by casting your valuable vote for the Sheaf of Paddy symbol in Dhaka-16 constituency.")}
+                  {cms?.conclusion?.quotes}
                 </p>
               </div>
               <div className="space-y-2 text-center">
                 <p className="text-lg text-slate-600">
-                  {cms?.conclusion?.short_title_first ||
-                    (language === "bd"
-                      ? "আল্লাহ আমাদের সহায় হোন।"
-                      : "May Allah help us.")}
+                  {cms?.conclusion?.short_title_first}
                 </p>
                 <p className="text-lg text-slate-600">
-                  {cms?.conclusion?.short_title_second ||
-                    (language === "bd" ? "আল্লাহ হাফেজ।" : "Allah Hafez.")}
+                  {cms?.conclusion?.short_title_second}
                 </p>
                 <p className="text-2xl font-black text-emerald-600 mt-4">
-                  {cms?.conclusion?.slogan ||
-                    (language === "bd"
-                      ? "বাংলাদেশ জিন্দাবাদ।"
-                      : "Long Live Bangladesh.")}
+                  {cms?.conclusion?.slogan}
                 </p>
                 <div className="mt-8 pt-6 border-t border-slate-200">
                   <p className="text-3xl font-black text-emerald-600">
-                    -{" "}
-                    {cms?.conclusion?.from_name ||
-                      (language === "bd" ? "আমিনুল হক" : "Aminul Haque")}
+                    - {cms?.conclusion?.from_name}
                   </p>
                 </div>
               </div>
