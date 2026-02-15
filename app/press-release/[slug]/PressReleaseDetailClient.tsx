@@ -102,59 +102,158 @@ export default function PressReleaseDetailClient({
       </section>
 
       {/* Hero Section */}
-      <section className="py-12 px-4">
+      <section className="py-3 px-3">
         <div className="mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            {/* Date */}
-            <div className="flex items-center gap-2 text-slate-600 mb-6">
-              <FaClock />
-              <span className="font-medium">
-                {t("pressReleaseDetail.publishedOn")} : {pressRelease.date}
-              </span>
-            </div>
+            {/* Metadata Cards Section - Two Column Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {/* Left Column */}
+              <div className="space-y-6">
+                {/* Date Card */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-3 border border-blue-200 shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white shadow-md">
+                      <FaClock className="text-lg" />
+                    </div>
+                    <div className="flex-grow">
+                      <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest">
+                        {t("pressReleaseDetail.publishedOn")}
+                      </p>
+                      <p className="text-lg font-bold text-slate-900 mt-2">
+                        {pressRelease.date}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
 
-            <div className="flex items-center gap-2 text-slate-600 mb-6">
-              <FaClock />
-              <span className="font-medium">
-                {pressRelease.published_by.name} (
-                {pressRelease.published_by.email})
-              </span>
-            </div>
-
-            {pressRelease.reporterName && (
-              <div className="flex items-center gap-2 text-slate-600 mb-6">
-                <FaClock />
-                <span className="font-medium">
-                  {t("pressReleaseDetail.reporter")}:{" "}
-                  {pressRelease.reporterName}
-                </span>
-              </div>
-            )}
-
-            {pressRelease.news_links && pressRelease.news_links.length > 0 && (
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-slate-700 mb-2">
-                  {t("pressReleaseDetail.newsLink")}
-                </h3>
-                <ul className="list-disc pl-5 space-y-1">
-                  {pressRelease.news_links.map((link, index) => (
-                    <li key={index} className="text-blue-600 hover:underline">
-                      <a
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                {/* Published By Card */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-2xl p-3 border border-cyan-200 shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 p-3 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl text-white shadow-md">
+                      <svg
+                        className="text-lg w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
                       >
-                        {link.title || link.url}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                        <path
+                          d="M10.5 1.5H3.75A2.25 2.25 0 001.5 3.75v12.5A2.25 2.25 0 003.75 18.5h12.5a2.25 2.25 0 002.25-2.25V9.5m-15-4h12m-12 4v8m12-8v4m0-4h4.25"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          fill="none"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-grow min-w-0">
+                      <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest">
+                        Published By
+                      </p>
+                      <p className="text-lg font-bold text-slate-900 mt-2 truncate">
+                        {pressRelease.published_by.name}
+                      </p>
+                      <p className="text-xs text-slate-600 mt-1 truncate">
+                        {pressRelease.published_by.email}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
-            )}
+
+              {/* Right Column */}
+              <div className="space-y-6">
+                {/* Reporter Name Card */}
+                {pressRelease.reporterName && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-3 border border-purple-200 shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl text-white shadow-md">
+                        <svg
+                          className="text-lg w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M10 10a3 3 0 100-6 3 3 0 000 6z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <div className="flex-grow">
+                        <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest">
+                          {t("pressReleaseDetail.reporter")}
+                        </p>
+                        <p className="text-lg font-bold text-slate-900 mt-2">
+                          {pressRelease.reporterName}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* News Links Card */}
+                {pressRelease.news_links &&
+                  pressRelease.news_links.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                      className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-3 border border-orange-200 shadow-lg hover:shadow-xl transition-shadow"
+                    >
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="flex-shrink-0 p-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl text-white shadow-md">
+                          <FaLink className="text-lg" />
+                        </div>
+                        <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest pt-3">
+                          {t("pressReleaseDetail.newsLink")}
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        {pressRelease.news_links.map((link, index) => (
+                          <motion.a
+                            key={index}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                              duration: 0.4,
+                              delay: 0.4 + index * 0.1,
+                            }}
+                            className="group flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-orange-300 hover:border-orange-500 hover:bg-white transition-all duration-300"
+                            title={link.title || link.url}
+                          >
+                            <FaLink className="text-orange-500 flex-shrink-0 text-xs group-hover:rotate-12 transition-transform" />
+                            <span className="text-xs font-medium text-slate-700 group-hover:text-orange-600 truncate">
+                              {link.title ||
+                                link.url.split("//")[1]?.split("/")[0]}
+                            </span>
+                          </motion.a>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
 
             {/* Title */}
             <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight">
