@@ -1,56 +1,57 @@
 "use client";
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
-import { useTranslation } from '../i18n/I18nProvider';
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
+import { useTranslation } from "../i18n/I18nProvider";
 
 // Nav items with translation keys
 const navItems = [
-  { href: '/', labelKey: 'nav.home' },
-  { href: '/about', labelKey: 'nav.about' },
-  { href: '/aminul-manifesto', labelKey: 'nav.manifesto' },
-  { href: '/voter-center', labelKey: 'nav.voterCenter' },
+  { href: "/", labelKey: "nav.home" },
+  { href: "/about", labelKey: "nav.about" },
+  { href: "/aminul-manifesto", labelKey: "nav.manifesto" },
+  { href: "/voter-center", labelKey: "nav.voterCenter" },
   {
-    labelKey: 'nav.policy',
+    labelKey: "nav.policy",
     hasDropdown: true,
     dropdownItems: [
-      { href: '/manifesto', labelKey: 'nav.sportsdev' },
-      { href: '/bnp-31-point', labelKey: 'nav.bnp31' },
-      { href: '/bnp-19-point', labelKey: 'nav.bnp19' },
-      { href: '/bnp-8-points', labelKey: 'nav.bnp8' },
-    ]
+      { href: "/programs", labelKey: "nav.programs" },
+      { href: "/manifesto", labelKey: "nav.sportsdev" },
+      { href: "/bnp-31-point", labelKey: "nav.bnp31" },
+      { href: "/bnp-19-point", labelKey: "nav.bnp19" },
+      { href: "/bnp-8-points", labelKey: "nav.bnp8" },
+    ],
   },
   {
-    labelKey: 'nav.media',
+    labelKey: "nav.media",
     hasDropdown: true,
     dropdownItems: [
-      { href: '/gallery', labelKey: 'nav.gallery' },
-      { href: '/kheladhula', labelKey: 'nav.sports' },
-      { href: '/events', labelKey: 'nav.events' },
-      { href: '/press-release', labelKey: 'nav.pressRelease' },
-      { href: '/surveys', labelKey: 'nav.surveys' },
-    ]
+      { href: "/gallery", labelKey: "nav.gallery" },
+      { href: "/kheladhula", labelKey: "nav.sports" },
+      { href: "/events", labelKey: "nav.events" },
+      { href: "/press-release", labelKey: "nav.pressRelease" },
+      { href: "/surveys", labelKey: "nav.surveys" },
+    ],
   },
   {
-    labelKey: 'nav.service',
+    labelKey: "nav.service",
     hasDropdown: true,
     dropdownItems: [
-
-      { href: '/programs', labelKey: 'nav.programs' },
-      { href: '/volunteer', labelKey: 'nav.volunteer' },
-      { href: '/complaints', labelKey: 'nav.complaints' },
-      { href: '/comments', labelKey: 'nav.comments' },
-    ]
+      { href: "/volunteer", labelKey: "nav.volunteer" },
+      { href: "/complaints", labelKey: "nav.complaints" },
+      { href: "/comments", labelKey: "nav.comments" },
+    ],
   },
-  { href: '/tournament', labelKey: 'nav.tournament' },
+  { href: "/tournament", labelKey: "nav.tournament" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(
+    null,
+  );
   const pathname = usePathname();
 
   // Use i18n context
@@ -58,7 +59,7 @@ export default function Navbar() {
 
   // Toggle language handler
   const toggleLanguage = () => {
-    const newLanguage = language === 'bd' ? 'en' : 'bd';
+    const newLanguage = language === "bd" ? "en" : "bd";
     setLanguage(newLanguage);
   };
 
@@ -67,16 +68,19 @@ export default function Navbar() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 xl:space-x-3 group flex-shrink-0">
+          <Link
+            href="/"
+            className="flex items-center space-x-2 xl:space-x-3 group flex-shrink-0"
+          >
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl blur opacity-50 group-hover:opacity-75 transition-all"></div>
             </div>
             <div>
               <div className="text-lg xl:text-xl font-black bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {t('hero.title')}
+                {t("hero.title")}
               </div>
               <div className="text-[10px] xl:text-xs font-semibold text-slate-600 hidden sm:block">
-                {t('hero.subtitle')}
+                {t("hero.subtitle")}
               </div>
             </div>
           </Link>
@@ -85,7 +89,9 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center space-x-1 flex-wrap">
             {navItems.map((item) => {
               if (item.hasDropdown && item.dropdownItems) {
-                const isDropdownActive = item.dropdownItems.some(dropItem => pathname === dropItem.href);
+                const isDropdownActive = item.dropdownItems.some(
+                  (dropItem) => pathname === dropItem.href,
+                );
                 const translatedLabel = t(item.labelKey);
                 return (
                   <div
@@ -95,21 +101,30 @@ export default function Navbar() {
                     onMouseLeave={() => setOpenDropdown(null)}
                   >
                     <button
-                      className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg flex items-center gap-1 xl:gap-2 ${isDropdownActive
-                          ? 'text-white'
-                          : 'text-slate-700 hover:text-emerald-600'
-                        }`}
+                      className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg flex items-center gap-1 xl:gap-2 ${
+                        isDropdownActive
+                          ? "text-white"
+                          : "text-slate-700 hover:text-emerald-600"
+                      }`}
                     >
                       {isDropdownActive && (
                         <motion.div
                           layoutId="activeTab"
                           className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-lg"
                           initial={false}
-                          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 500,
+                            damping: 30,
+                          }}
                         />
                       )}
-                      <span className="relative z-10 whitespace-nowrap">{translatedLabel}</span>
-                      <FaChevronDown className={`relative z-10 text-xs transition-transform ${openDropdown === item.labelKey ? 'rotate-180' : ''}`} />
+                      <span className="relative z-10 whitespace-nowrap">
+                        {translatedLabel}
+                      </span>
+                      <FaChevronDown
+                        className={`relative z-10 text-xs transition-transform ${openDropdown === item.labelKey ? "rotate-180" : ""}`}
+                      />
                     </button>
 
                     <AnimatePresence>
@@ -127,10 +142,11 @@ export default function Navbar() {
                               <Link
                                 key={dropItem.href}
                                 href={dropItem.href}
-                                className={`block px-4 py-3 font-bold text-sm transition-all ${isActive
-                                    ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white'
-                                    : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-600'
-                                  }`}
+                                className={`block px-4 py-3 font-bold text-sm transition-all ${
+                                  isActive
+                                    ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white"
+                                    : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                }`}
                               >
                                 {t(dropItem.labelKey)}
                               </Link>
@@ -148,17 +164,22 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href!}
-                  className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg whitespace-nowrap ${isActive
-                      ? 'text-white'
-                      : 'text-slate-700 hover:text-emerald-600'
-                    }`}
+                  className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg whitespace-nowrap ${
+                    isActive
+                      ? "text-white"
+                      : "text-slate-700 hover:text-emerald-600"
+                  }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
                       className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-lg"
                       initial={false}
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30,
+                      }}
                     />
                   )}
                   <span className="relative z-10">{t(item.labelKey)}</span>
@@ -178,18 +199,22 @@ export default function Navbar() {
             >
               {/* Background labels */}
               <div className="absolute inset-0 flex items-center justify-between px-2.5 text-xs font-bold pointer-events-none">
-                <span className={`transition-colors duration-300 z-10 ${language === 'bd' ? 'text-white' : 'text-slate-500'}`}>
+                <span
+                  className={`transition-colors duration-300 z-10 ${language === "bd" ? "text-white" : "text-slate-500"}`}
+                >
                   বাং
                 </span>
-                <span className={`transition-colors duration-300 z-10 ${language === 'en' ? 'text-white' : 'text-slate-500'}`}>
+                <span
+                  className={`transition-colors duration-300 z-10 ${language === "en" ? "text-white" : "text-slate-500"}`}
+                >
                   EN
                 </span>
               </div>
               {/* Sliding indicator */}
               <motion.div
                 className="absolute top-1 w-9 h-7 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 shadow-lg"
-                animate={{ x: language === 'en' ? 40 : 0 }}
-                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                animate={{ x: language === "en" ? 40 : 0 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
               />
               {isChangingLanguage && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded-full">
@@ -202,7 +227,7 @@ export default function Navbar() {
               href="/contact"
               className="px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
             >
-              {t('nav.contact')}
+              {t("nav.contact")}
             </Link>
           </div>
 
@@ -216,7 +241,7 @@ export default function Navbar() {
               aria-label="Toggle language"
             >
               <AnimatePresence mode="wait">
-                {language === 'bd' ? (
+                {language === "bd" ? (
                   <motion.span
                     key="bd"
                     initial={{ y: -10, opacity: 0 }}
@@ -264,29 +289,36 @@ export default function Navbar() {
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               className="lg:hidden overflow-hidden"
             >
               <div className="py-4 space-y-2">
                 {navItems.map((item) => {
                   if (item.hasDropdown && item.dropdownItems) {
-                    const isMobileDropdownOpen = openMobileDropdown === item.labelKey;
+                    const isMobileDropdownOpen =
+                      openMobileDropdown === item.labelKey;
                     const translatedLabel = t(item.labelKey);
                     return (
                       <div key={item.labelKey} className="space-y-1">
                         <button
-                          onClick={() => setOpenMobileDropdown(isMobileDropdownOpen ? null : item.labelKey)}
+                          onClick={() =>
+                            setOpenMobileDropdown(
+                              isMobileDropdownOpen ? null : item.labelKey,
+                            )
+                          }
                           className="w-full flex items-center justify-between px-4 py-2 font-bold text-sm text-emerald-700 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-all"
                         >
                           <span>{translatedLabel}</span>
-                          <FaChevronDown className={`text-xs transition-transform ${isMobileDropdownOpen ? 'rotate-180' : ''}`} />
+                          <FaChevronDown
+                            className={`text-xs transition-transform ${isMobileDropdownOpen ? "rotate-180" : ""}`}
+                          />
                         </button>
                         <AnimatePresence>
                           {isMobileDropdownOpen && (
                             <motion.div
                               initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
+                              animate={{ opacity: 1, height: "auto" }}
                               exit={{ opacity: 0, height: 0 }}
                               transition={{ duration: 0.2 }}
                               className="overflow-hidden"
@@ -302,10 +334,11 @@ export default function Navbar() {
                                         setIsOpen(false);
                                         setOpenMobileDropdown(null);
                                       }}
-                                      className={`block px-6 py-3 font-bold rounded-xl transition-all ${isActive
-                                          ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg'
-                                          : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
-                                        }`}
+                                      className={`block px-6 py-3 font-bold rounded-xl transition-all ${
+                                        isActive
+                                          ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg"
+                                          : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+                                      }`}
                                     >
                                       {t(dropItem.labelKey)}
                                     </Link>
@@ -328,10 +361,11 @@ export default function Navbar() {
                         setIsOpen(false);
                         setOpenMobileDropdown(null);
                       }}
-                      className={`block px-4 py-3 font-bold rounded-xl transition-all ${isActive
-                          ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg'
-                          : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
-                        }`}
+                      className={`block px-4 py-3 font-bold rounded-xl transition-all ${
+                        isActive
+                          ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg"
+                          : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+                      }`}
                     >
                       {t(item.labelKey)}
                     </Link>
@@ -345,7 +379,7 @@ export default function Navbar() {
                   }}
                   className="block px-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-bold rounded-xl text-center shadow-lg"
                 >
-                  {t('nav.contactUs')}
+                  {t("nav.contactUs")}
                 </Link>
               </div>
             </motion.div>
