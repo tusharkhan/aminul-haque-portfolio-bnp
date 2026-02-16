@@ -35,6 +35,33 @@ const manifestos = [
   },
 ];
 
+/**
+ * Convert any YouTube URL (watch, short, embed) to the embeddable format.
+ * Returns the original string if it's not a recognised YouTube URL.
+ */
+function toYouTubeEmbedUrl(url: string): string {
+  try {
+    const u = new URL(url);
+
+    // Already an embed URL
+    if (u.pathname.startsWith('/embed/')) return url;
+
+    // Standard watch URL: youtube.com/watch?v=VIDEO_ID
+    if (u.hostname.includes('youtube.com') && u.searchParams.has('v')) {
+      return `https://www.youtube.com/embed/${u.searchParams.get('v')}`;
+    }
+
+    // Short URL: youtu.be/VIDEO_ID
+    if (u.hostname === 'youtu.be') {
+      return `https://www.youtube.com/embed${u.pathname}`;
+    }
+
+    return url;
+  } catch {
+    return url;
+  }
+}
+
 export default function ManifestoHighlightsSection() {
   const { t } = useTranslation();
   const [cmsData, setCmsData] = useState<CmsPage | null>(null);
@@ -45,7 +72,8 @@ export default function ManifestoHighlightsSection() {
 
   const sectionTitle = cmsData?.title || t('home.manifestoPrograms');
   const sectionDesc = cmsData?.description || t('home.manifestoDesc');
-  const videoUrl = cmsData?.video_url || 'https://www.youtube.com/embed/AyL-WF3Uryo';
+  const rawVideoUrl = cmsData?.video_url || 'https://www.youtube.com/embed/AyL-WF3Uryo';
+  const videoUrl = toYouTubeEmbedUrl(rawVideoUrl);
 
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">

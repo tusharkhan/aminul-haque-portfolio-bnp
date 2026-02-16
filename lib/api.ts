@@ -200,6 +200,7 @@ export interface CmsPage {
   slug_label: string;
   title: string | null;
   description: string | null;
+  video_url: string | null;
   image_description: string | null;
   title_image: string | null;
   main_image: string | null;
