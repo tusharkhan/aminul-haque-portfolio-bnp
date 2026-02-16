@@ -45,6 +45,7 @@ export default function ManifestoHighlightsSection() {
 
   const sectionTitle = cmsData?.title || t('home.manifestoPrograms');
   const sectionDesc = cmsData?.description || t('home.manifestoDesc');
+  const videoUrl = cmsData?.video_url || 'https://www.youtube.com/embed/AyL-WF3Uryo';
 
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
@@ -112,7 +113,7 @@ export default function ManifestoHighlightsSection() {
               <div className="relative pb-[56.25%] h-0">
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube.com/embed/AyL-WF3Uryo"
+                  src={videoUrl}
                   title={t('hero.title')}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
