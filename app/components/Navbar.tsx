@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
+import { FaBars, FaTimes, FaChevronDown, FaUser, FaTasks, FaSignOutAlt } from "react-icons/fa";
+import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "../i18n/I18nProvider";
 
 // Nav items with translation keys
@@ -41,9 +42,9 @@ const navItems = [
       { href: "/volunteer", labelKey: "nav.volunteer" },
       { href: "/complaints", labelKey: "nav.complaints" },
       { href: "/comments", labelKey: "nav.comments" },
+      { href: "/tournament", labelKey: "nav.tournament" },
     ],
   },
-  { href: "/tournament", labelKey: "nav.tournament" },
 ];
 
 export default function Navbar() {
@@ -52,7 +53,16 @@ export default function Navbar() {
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(
     null,
   );
+  const [openUserDropdown, setOpenUserDropdown] = useState(false);
   const pathname = usePathname();
+  const { isAuthenticated, volunteer, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/');
+    setOpenUserDropdown(false);
+  };
 
   // Use i18n context
   const { language, setLanguage, t, isChangingLanguage } = useTranslation();
@@ -188,8 +198,73 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Language Toggle & CTA Button */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* CTA Button / User Menu */}
+          <div className="hidden lg:flex items-center gap-4">
+            {isAuthenticated ? (
+              <div className="relative">
+                <button
+                  onClick={() => setOpenUserDropdown(!openUserDropdown)}
+                  className="flex items-center gap-2 px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
+                >
+                  <FaUser />
+                  {volunteer?.full_name || 'User'}
+                  <FaChevronDown className={`text-xs transition-transform ${openUserDropdown ? 'rotate-180' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {openUserDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 min-w-[200px] z-50"
+                      onMouseLeave={() => setOpenUserDropdown(false)}
+                    >
+                      <Link
+                        href="/volunteer/dashboard"
+                        onClick={() => setOpenUserDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 font-bold text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all"
+                      >
+                        <FaUser />
+                        প্রোফাইল
+                      </Link>
+                      <Link
+                        href="/volunteer/tasks"
+                        onClick={() => setOpenUserDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 font-bold text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all"
+                      >
+                        <FaTasks />
+                        স্বেচ্ছাসেবক কাজ
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-3 font-bold text-sm text-red-600 hover:bg-red-50 transition-all"
+                      >
+                        <FaSignOutAlt />
+                        লগআউট
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/volunteer/login"
+                  className="px-4 xl:px-6 py-2 xl:py-3 bg-slate-100 text-slate-700 font-bold text-xs xl:text-sm rounded-xl hover:bg-slate-200 transition-all whitespace-nowrap"
+                >
+                  লগইন
+                </Link>
+                <Link
+                  href="/contact"
+                  className="px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
+                >
+                  যোগাযোগ
+                </Link>
+              </>
+            )}
+
             {/* Language Toggle */}
             <button
               onClick={toggleLanguage}
@@ -222,13 +297,6 @@ export default function Navbar() {
                 </div>
               )}
             </button>
-
-            <Link
-              href="/contact"
-              className="px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
-            >
-              {t("nav.contact")}
-            </Link>
           </div>
 
           {/* Mobile: Language Toggle & Menu Button */}
@@ -371,16 +439,66 @@ export default function Navbar() {
                     </Link>
                   );
                 })}
-                <Link
-                  href="/contact"
-                  onClick={() => {
-                    setIsOpen(false);
-                    setOpenMobileDropdown(null);
-                  }}
-                  className="block px-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-bold rounded-xl text-center shadow-lg"
-                >
-                  {t("nav.contactUs")}
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      href="/volunteer/dashboard"
+                      onClick={() => {
+                        setIsOpen(false);
+                        setOpenMobileDropdown(null);
+                      }}
+                      className="block px-4 py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-center"
+                    >
+                      <FaUser className="inline mr-2" />
+                      প্রোফাইল
+                    </Link>
+                    <Link
+                      href="/volunteer/tasks"
+                      onClick={() => {
+                        setIsOpen(false);
+                        setOpenMobileDropdown(null);
+                      }}
+                      className="block px-4 py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-center"
+                    >
+                      <FaTasks className="inline mr-2" />
+                      স্বেচ্ছাসেবক কাজ
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsOpen(false);
+                        setOpenMobileDropdown(null);
+                      }}
+                      className="w-full block px-4 py-3 bg-red-50 text-red-600 font-bold rounded-xl text-center"
+                    >
+                      <FaSignOutAlt className="inline mr-2" />
+                      লগআউট
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/volunteer/login"
+                      onClick={() => {
+                        setIsOpen(false);
+                        setOpenMobileDropdown(null);
+                      }}
+                      className="block px-4 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl text-center"
+                    >
+                      লগইন
+                    </Link>
+                    <Link
+                      href="/contact"
+                      onClick={() => {
+                        setIsOpen(false);
+                        setOpenMobileDropdown(null);
+                      }}
+                      className="block px-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-bold rounded-xl text-center shadow-lg"
+                    >
+                      {t("nav.contactUs")}
+                    </Link>
+                  </>
+                )}
               </div>
             </motion.div>
           )}

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -15,6 +16,20 @@ import {
 import { toBanglaNumber } from '@/lib/utils';
 import { useTranslation } from '../i18n/I18nProvider';
 import { fetchCmsPage, type CmsPage } from '@/lib/api';
+import { useAuth, type Volunteer } from '../contexts/AuthContext';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+
+function parseJsonField(value: string | string[] | null | undefined): string[] {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
 
 // Sample data for Bangladesh districts, upazilas, and wards
 const districts = [
@@ -140,8 +155,17 @@ const availabilityOptionsData = {
   ]
 };
 
+function availabilityLabelToId(label: string): string {
+  const all = [...availabilityOptionsData.bd, ...availabilityOptionsData.en];
+  const opt = all.find((o) => o.label === label);
+  return opt ? opt.id : '';
+}
+
 export default function VolunteerPage() {
   const { t, language } = useTranslation();
+  const { isAuthenticated, token, refreshVolunteer } = useAuth();
+  const isUpdateMode = isAuthenticated && !!token;
+
   const [formData, setFormData] = useState({
     fullName: '',
     mobile: '',
@@ -158,13 +182,55 @@ export default function VolunteerPage() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submittedUpdate, setSubmittedUpdate] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [profileLoaded, setProfileLoaded] = useState(false);
 
   useEffect(() => {
     fetchCmsPage('volunteer', 'become-volunteer').then(setCmsData);
   }, []);
+
+  useEffect(() => {
+    if (!isUpdateMode || !token) {
+      if (!isUpdateMode) setProfileLoaded(true);
+      return;
+    }
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/volunteers/profile`, {
+          headers: { Accept: 'application/json', Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.message || 'Failed to load profile');
+        const p = data.data as Volunteer;
+        const skillArr = parseJsonField(p.skills);
+        const taskArr = parseJsonField(p.preferred_tasks);
+        const availArr = parseJsonField(p.availability);
+        const districtId = districts.find((d) => d.name === p.district || d.nameEn === p.district)?.id ?? '';
+        const availabilityIds = availArr.map(availabilityLabelToId).filter(Boolean);
+        setFormData({
+          fullName: p.full_name ?? '',
+          mobile: p.mobile ?? '',
+          email: p.email ?? '',
+          password: '',
+          passwordConfirmation: '',
+          district: districtId,
+          upazila: p.upazila ?? '',
+          ward: p.ward ?? '',
+          skills: skillArr,
+          preferredTasks: taskArr,
+          availability: availabilityIds,
+        });
+      } catch {
+        setSubmitError(t('dashboard.profileLoadFailed'));
+      } finally {
+        setProfileLoaded(true);
+      }
+    };
+    fetchProfile();
+  }, [isUpdateMode, token, t]);
 
   const skills = language === 'bd' ? skillsData.bd : skillsData.en;
   const preferredTasks = language === 'bd' ? preferredTasksData.bd : preferredTasksData.en;
@@ -242,15 +308,17 @@ export default function VolunteerPage() {
     if (formData.availability.length === 0) {
       newErrors.availability = t('volunteer.availabilityRequired');
     }
-    if (!formData.password.trim()) {
-      newErrors.password = t('volunteer.passwordRequired');
-    } else if (formData.password.length < 6) {
-      newErrors.password = t('volunteer.passwordMinLength');
-    }
-    if (!formData.passwordConfirmation.trim()) {
-      newErrors.passwordConfirmation = t('volunteer.confirmPasswordRequired');
-    } else if (formData.password !== formData.passwordConfirmation) {
-      newErrors.passwordConfirmation = t('volunteer.passwordMismatch');
+    if (!isUpdateMode) {
+      if (!formData.password.trim()) {
+        newErrors.password = t('volunteer.passwordRequired');
+      } else if (formData.password.length < 6) {
+        newErrors.password = t('volunteer.passwordMinLength');
+      }
+      if (!formData.passwordConfirmation.trim()) {
+        newErrors.passwordConfirmation = t('volunteer.confirmPasswordRequired');
+      } else if (formData.password !== formData.passwordConfirmation) {
+        newErrors.passwordConfirmation = t('volunteer.passwordMismatch');
+      }
     }
 
     setErrors(newErrors);
@@ -264,20 +332,46 @@ export default function VolunteerPage() {
     setSubmitting(true);
     setSubmitError(null);
 
+    const availabilityLabels = formData.availability.map((id) => {
+      const option = availabilityOptions.find((opt) => opt.id === id);
+      return option ? option.label : id;
+    });
+    const districtData = districts.find((d) => d.id === formData.district);
+    const districtName = districtData ? (language === 'bd' ? districtData.name : districtData.nameEn) : formData.district;
+
     try {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-      
-      // Map availability IDs to labels
-      const availabilityLabels = formData.availability.map((id) => {
-        const option = availabilityOptions.find((opt) => opt.id === id);
-        return option ? option.label : id;
-      });
+      if (isUpdateMode && token) {
+        const payload = {
+          full_name: formData.fullName,
+          mobile: formData.mobile,
+          email: formData.email,
+          district: districtName,
+          upazila: formData.upazila,
+          ward: formData.ward,
+          skills: formData.skills,
+          preferred_tasks: formData.preferredTasks,
+          availability: availabilityLabels,
+        };
+        const response = await fetch(`${API_BASE_URL}/volunteers/update-profile`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Failed to update profile');
+        if (data.success) {
+          await refreshVolunteer();
+          setSubmittedUpdate(true);
+        } else {
+          throw new Error(data.message || 'Failed to update profile');
+        }
+        return;
+      }
 
-      // Get district name from ID
-      const districtData = districts.find((d) => d.id === formData.district);
-      const districtName = districtData ? (language === 'bd' ? districtData.name : districtData.nameEn) : formData.district;
-
-      // Prepare payload according to API structure
       const payload = {
         full_name: formData.fullName,
         mobile: formData.mobile,
@@ -292,12 +386,9 @@ export default function VolunteerPage() {
         availability: availabilityLabels,
       };
 
-      const response = await fetch(`${apiBaseUrl}/volunteers/store`, {
+      const response = await fetch(`${API_BASE_URL}/volunteers/store`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload),
       });
 
@@ -307,7 +398,6 @@ export default function VolunteerPage() {
       }
 
       const data = await response.json();
-      
       if (data.success) {
         setSubmitted(true);
       } else {
@@ -327,6 +417,38 @@ export default function VolunteerPage() {
     if (!data) return [];
     return language === 'bd' ? data.bd : data.en;
   };
+
+  if (submittedUpdate) {
+    return (
+      <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen">
+        <div className="flex items-center justify-center min-h-[80vh] px-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="max-w-2xl w-full text-center"
+          >
+            <div className="bg-white rounded-3xl p-12 md:p-16 shadow-2xl border border-slate-200">
+              <div className="inline-flex p-6 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full mb-6">
+                <FaCheckCircle className="text-6xl text-white" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
+                {t('dashboard.profileUpdatedSuccess')}
+              </h2>
+              <p className="text-xl text-slate-600 mb-8">
+                {t('volunteer.applicationSubmitted')}
+              </p>
+              <Link
+                href="/volunteer/dashboard"
+                className="inline-block px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+              >
+                {t('dashboard.backToDashboard')}
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </main>
+    );
+  }
 
   if (submitted) {
     return (
@@ -377,6 +499,14 @@ export default function VolunteerPage() {
     );
   }
 
+  if (isUpdateMode && !profileLoaded) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 via-white to-slate-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600" />
+      </main>
+    );
+  }
+
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
@@ -388,15 +518,15 @@ export default function VolunteerPage() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
-              {t('volunteer.becomeVolunteer')}
+              {isUpdateMode ? t('dashboard.updateProfile') : t('volunteer.becomeVolunteer')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {cmsData?.title || t('volunteer.volunteerRegistration')}
+                {isUpdateMode ? t('dashboard.updateProfilePageTitle') : (cmsData?.title || t('volunteer.volunteerRegistration'))}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {cmsData?.description || t('volunteer.joinUsDesc')}
+              {isUpdateMode ? t('volunteer.personalInfo') : (cmsData?.description || t('volunteer.joinUsDesc'))}
             </p>
           </motion.div>
         </div>
@@ -478,41 +608,45 @@ export default function VolunteerPage() {
                       />
                     </div>
 
-                    {/* Password */}
-                    <div>
-                      <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        {t('volunteer.password')} <span className="text-red-500">*</span>
-                      </label>
-                      {errors.password && (
-                        <p className="text-red-500 text-sm font-bold mb-2">{errors.password}</p>
-                      )}
-                      <input
-                        type="password"
-                        value={formData.password}
-                        onChange={(e) => handleInputChange('password', e.target.value)}
-                        placeholder={t('volunteer.passwordPlaceholder')}
-                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
-                        required
-                      />
-                    </div>
+                    {!isUpdateMode && (
+                    <>
+                      {/* Password */}
+                      <div>
+                        <label className="block text-slate-700 font-bold mb-3 text-lg">
+                          {t('volunteer.password')} <span className="text-red-500">*</span>
+                        </label>
+                        {errors.password && (
+                          <p className="text-red-500 text-sm font-bold mb-2">{errors.password}</p>
+                        )}
+                        <input
+                          type="password"
+                          value={formData.password}
+                          onChange={(e) => handleInputChange('password', e.target.value)}
+                          placeholder={t('volunteer.passwordPlaceholder')}
+                          className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                          required
+                        />
+                      </div>
 
-                    {/* Password Confirmation */}
-                    <div>
-                      <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        {t('volunteer.confirmPassword')} <span className="text-red-500">*</span>
-                      </label>
-                      {errors.passwordConfirmation && (
-                        <p className="text-red-500 text-sm font-bold mb-2">{errors.passwordConfirmation}</p>
-                      )}
-                      <input
-                        type="password"
-                        value={formData.passwordConfirmation}
-                        onChange={(e) => handleInputChange('passwordConfirmation', e.target.value)}
-                        placeholder={t('volunteer.confirmPasswordPlaceholder')}
-                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
-                        required
-                      />
-                    </div>
+                      {/* Password Confirmation */}
+                      <div>
+                        <label className="block text-slate-700 font-bold mb-3 text-lg">
+                          {t('volunteer.confirmPassword')} <span className="text-red-500">*</span>
+                        </label>
+                        {errors.passwordConfirmation && (
+                          <p className="text-red-500 text-sm font-bold mb-2">{errors.passwordConfirmation}</p>
+                        )}
+                        <input
+                          type="password"
+                          value={formData.passwordConfirmation}
+                          onChange={(e) => handleInputChange('passwordConfirmation', e.target.value)}
+                          placeholder={t('volunteer.confirmPasswordPlaceholder')}
+                          className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                          required
+                        />
+                      </div>
+                    </>
+                  )}
                   </div>
                 </div>
 
@@ -702,6 +836,8 @@ export default function VolunteerPage() {
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                         {t('common.submitting')}
                       </>
+                    ) : isUpdateMode ? (
+                      t('common.save')
                     ) : (
                       t('volunteer.submitApplication')
                     )}
@@ -730,6 +866,30 @@ export default function VolunteerPage() {
                     {t('common.reset')}
                   </button>
                 </div>
+                
+                {!isUpdateMode && (
+                <div className="text-center pt-4">
+                  <p className="text-slate-600">
+                    ইতিমধ্যে নিবন্ধিত?{' '}
+                    <Link
+                      href="/volunteer/login"
+                      className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+                    >
+                      লগইন করুন
+                    </Link>
+                  </p>
+                </div>
+                )}
+                {isUpdateMode && (
+                <div className="text-center pt-4">
+                  <Link
+                    href="/volunteer/dashboard"
+                    className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+                  >
+                    {t('dashboard.backToDashboard')}
+                  </Link>
+                </div>
+                )}
               </form>
             </div>
           </motion.div>
