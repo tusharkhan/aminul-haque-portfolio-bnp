@@ -6,8 +6,10 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaLock, FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslation } from '../../i18n/I18nProvider';
 
 export default function VolunteerLoginPage() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +27,7 @@ export default function VolunteerLoginPage() {
       await login(email, password);
       router.push('/volunteer/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed. Please try again.');
+      setError(err instanceof Error ? err.message : t('volunteerLogin.loginFailed'));
     } finally {
       setLoading(false);
     }
@@ -45,11 +47,11 @@ export default function VolunteerLoginPage() {
             <div className="text-center mb-8">
               <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
                 <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                  স্বেচ্ছাসেবক লগইন
+                  {t('volunteerLogin.title')}
                 </span>
               </h1>
               <p className="text-slate-600 text-lg">
-                আপনার অ্যাকাউন্টে প্রবেশ করুন
+                {t('volunteerLogin.subtitle')}
               </p>
             </div>
 
@@ -58,13 +60,13 @@ export default function VolunteerLoginPage() {
               <div>
                 <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                   <FaEnvelope className="text-emerald-600" />
-                  ইমেইল <span className="text-red-500">*</span>
+                  {t('volunteerLogin.email')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="আপনার@ইমেইল.com"
+                  placeholder={t('volunteerLogin.emailPlaceholder')}
                   className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                   required
                   disabled={loading}
@@ -75,14 +77,14 @@ export default function VolunteerLoginPage() {
               <div>
                 <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                   <FaLock className="text-emerald-600" />
-                  পাসওয়ার্ড <span className="text-red-500">*</span>
+                  {t('volunteerLogin.password')} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="আপনার পাসওয়ার্ড"
+                    placeholder={t('volunteerLogin.passwordPlaceholder')}
                     className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg pr-12"
                     required
                     disabled={loading}
@@ -103,7 +105,7 @@ export default function VolunteerLoginPage() {
                   href="/volunteer/forget-password"
                   className="text-emerald-600 hover:text-emerald-700 font-bold text-sm transition-colors"
                 >
-                  পাসওয়ার্ড ভুলে গেছেন?
+                  {t('volunteerLogin.forgotPassword')}
                 </Link>
               </div>
 
@@ -123,11 +125,11 @@ export default function VolunteerLoginPage() {
                 {loading ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                    লগইন করা হচ্ছে...
+                    {t('volunteerLogin.loggingIn')}
                   </>
                 ) : (
                   <>
-                    লগইন করুন
+                    {t('volunteerLogin.loginButton')}
                     <FaArrowRight />
                   </>
                 )}
@@ -136,12 +138,12 @@ export default function VolunteerLoginPage() {
               {/* Register Link */}
               <div className="text-center pt-4">
                 <p className="text-slate-600">
-                  অ্যাকাউন্ট নেই?{' '}
+                  {t('volunteerLogin.noAccount')}{' '}
                   <Link
                     href="/volunteer"
                     className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
                   >
-                    নিবন্ধন করুন
+                    {t('volunteerLogin.register')}
                   </Link>
                 </p>
               </div>

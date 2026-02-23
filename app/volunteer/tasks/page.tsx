@@ -15,22 +15,41 @@ import {
   FaPlayCircle
 } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslation } from '../../i18n/I18nProvider';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
 
 interface Task {
   id: number;
   title: string;
   description: string;
   deadline: string;
+  due_date_formatted?: string;
   priority: 'low' | 'medium' | 'high';
-  location: string;
+  location?: string;
   status: 'pending' | 'in_progress' | 'completed';
   created_at?: string;
   updated_at?: string;
 }
 
+/** API task shape from volunteers/tasks */
+interface ApiTask {
+  id: number;
+  title: string;
+  description: string;
+  status: string;
+  priority: string;
+  due_date: string;
+  due_date_formatted?: string;
+  created_at?: string;
+  updated_at?: string;
+  volunteers?: unknown[];
+}
+
 export default function VolunteerTasksPage() {
-  const { isAuthenticated, volunteer, loading: authLoading } = useAuth();
+  const { isAuthenticated, volunteer, token, loading: authLoading } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,60 +62,51 @@ export default function VolunteerTasksPage() {
   }, [isAuthenticated, authLoading, router]);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && volunteer?.id != null && token) {
       fetchTasks();
+    } else if (!authLoading && isAuthenticated && !token) {
+      setLoading(false);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, volunteer?.id, token]);
 
   const fetchTasks = async () => {
-    // Mock data - simulate API delay
+    if (volunteer?.id == null || !token) return;
     setLoading(true);
     setError(null);
-    
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Mock tasks data
-    const mockTasks: Task[] = [
-      {
-        id: 1,
-        title: 'ক্যাম্পেইন প্রচারণা',
-        description: 'স্থানীয় এলাকায় ক্যাম্পেইন প্রচারণা করুন এবং জনগণের সাথে যোগাযোগ করুন',
-        deadline: '2024-12-31',
-        priority: 'high',
-        location: 'ধানমন্ডি, ঢাকা',
-        status: 'pending',
-      },
-      {
-        id: 2,
-        title: 'ইভেন্ট আয়োজন',
-        description: 'স্থানীয় ইভেন্ট আয়োজন করুন এবং অংশগ্রহণকারীদের নিবন্ধন করুন',
-        deadline: '2024-12-25',
-        priority: 'medium',
-        location: 'গুলশান, ঢাকা',
-        status: 'in_progress',
-      },
-      {
-        id: 3,
-        title: 'সামাজিক মিডিয়া প্রচারণা',
-        description: 'সামাজিক মিডিয়া প্ল্যাটফর্মে আমাদের কর্মসূচি প্রচার করুন',
-        deadline: '2024-12-20',
-        priority: 'high',
-        location: 'অনলাইন',
-        status: 'pending',
-      },
-      {
-        id: 4,
-        title: 'ভোটার নিবন্ধন সহায়তা',
-        description: 'স্থানীয় ভোটারদের নিবন্ধন প্রক্রিয়ায় সহায়তা করুন',
-        deadline: '2024-12-15',
-        priority: 'medium',
-        location: 'মিরপুর, ঢাকা',
-        status: 'completed',
-      },
-    ];
-    
-    setTasks(mockTasks);
-    setLoading(false);
+    try {
+      const res = await fetch(
+        `${API_BASE_URL}/volunteers/tasks?volunteer_id=${volunteer.id}`,
+        {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        throw new Error(json.message || t('tasks.loadFailed'));
+      }
+      const list = (json.data?.data ?? []) as ApiTask[];
+      const mapped: Task[] = list.map((t) => ({
+        id: t.id,
+        title: t.title,
+        description: t.description ?? '',
+        deadline: t.due_date,
+        due_date_formatted: t.due_date_formatted,
+        priority: (t.priority as Task['priority']) || 'medium',
+        location: undefined,
+        status: (t.status as Task['status']) || 'pending',
+        created_at: t.created_at,
+        updated_at: t.updated_at,
+      }));
+      setTasks(mapped);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('tasks.loadFailed'));
+      setTasks([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getPriorityColor = (priority: string) => {
@@ -141,11 +151,11 @@ export default function VolunteerTasksPage() {
   const getPriorityLabel = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'উচ্চ';
+        return t('tasks.priorityHigh');
       case 'medium':
-        return 'মধ্যম';
+        return t('tasks.priorityMedium');
       case 'low':
-        return 'নিম্ন';
+        return t('tasks.priorityLow');
       default:
         return priority;
     }
@@ -154,11 +164,11 @@ export default function VolunteerTasksPage() {
   const getStatusLabel = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'সম্পন্ন';
+        return t('tasks.statusCompleted');
       case 'in_progress':
-        return 'চলমান';
+        return t('tasks.statusInProgress');
       case 'pending':
-        return 'বিচারাধীন';
+        return t('tasks.statusPending');
       default:
         return status;
     }
@@ -173,7 +183,7 @@ export default function VolunteerTasksPage() {
       <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <FaSpinner className="animate-spin text-6xl text-emerald-600 mx-auto mb-4" />
-          <p className="text-xl font-bold text-slate-700">লোড হচ্ছে...</p>
+          <p className="text-xl font-bold text-slate-700">{t('tasks.loading')}</p>
         </div>
       </main>
     );
@@ -194,11 +204,11 @@ export default function VolunteerTasksPage() {
         >
           <h1 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
             <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-              আমার কাজ
+              {t('tasks.title')}
             </span>
           </h1>
           <p className="text-xl text-slate-600">
-            আপনার বরাদ্দকৃত কাজের তালিকা
+            {t('tasks.subtitle')}
           </p>
         </motion.div>
 
@@ -219,9 +229,9 @@ export default function VolunteerTasksPage() {
                   : 'bg-white text-slate-700 hover:bg-slate-100 shadow-md'
               }`}
             >
-              {filterOption === 'all' ? 'সব' : 
-               filterOption === 'pending' ? 'বিচারাধীন' :
-               filterOption === 'in_progress' ? 'চলমান' : 'সম্পন্ন'}
+              {filterOption === 'all' ? t('tasks.filterAll') :
+               filterOption === 'pending' ? t('tasks.filterPending') :
+               filterOption === 'in_progress' ? t('tasks.filterInProgress') : t('tasks.filterCompleted')}
             </button>
           ))}
         </motion.div>
@@ -245,12 +255,12 @@ export default function VolunteerTasksPage() {
           >
             <FaTasks className="text-6xl text-slate-400 mx-auto mb-4" />
             <h3 className="text-2xl font-black text-slate-900 mb-2">
-              কোনো কাজ নেই
+              {t('tasks.noTasks')}
             </h3>
             <p className="text-slate-600">
-              {filter === 'all' 
-                ? 'আপনার জন্য এখনো কোনো কাজ বরাদ্দ করা হয়নি'
-                : `এই বিভাগে কোনো কাজ নেই`}
+              {filter === 'all'
+                ? t('tasks.noTasksAssigned')
+                : t('tasks.noTasksInCategory')}
             </p>
           </motion.div>
         ) : (
@@ -280,19 +290,21 @@ export default function VolunteerTasksPage() {
                     <div className="space-y-3 pt-4 border-t border-slate-200">
                       <div className="flex items-center gap-2 text-slate-600">
                         <FaCalendarAlt className="text-emerald-600" />
-                        <span className="font-semibold">শেষ তারিখ:</span>
-                        <span>{new Date(task.deadline).toLocaleDateString('bn-BD')}</span>
+                        <span className="font-semibold">{t('tasks.deadline')}</span>
+                        <span>{task.due_date_formatted || new Date(task.deadline).toLocaleDateString('bn-BD')}</span>
                       </div>
                       
-                      <div className="flex items-center gap-2 text-slate-600">
-                        <FaMapMarkerAlt className="text-emerald-600" />
-                        <span className="font-semibold">অবস্থান:</span>
-                        <span>{task.location}</span>
-                      </div>
+                      {task.location != null && task.location !== '' && (
+                        <div className="flex items-center gap-2 text-slate-600">
+                          <FaMapMarkerAlt className="text-emerald-600" />
+                          <span className="font-semibold">{t('tasks.location')}</span>
+                          <span>{task.location}</span>
+                        </div>
+                      )}
                       
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className={`px-4 py-2 rounded-xl font-bold text-sm border-2 ${getPriorityColor(task.priority)}`}>
-                          অগ্রাধিকার: {getPriorityLabel(task.priority)}
+                          {t('tasks.priority')} {getPriorityLabel(task.priority)}
                         </span>
                         <span className={`px-4 py-2 rounded-xl font-bold text-sm border-2 ${getStatusColor(task.status)}`}>
                           {getStatusLabel(task.status)}

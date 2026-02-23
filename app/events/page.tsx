@@ -1,5 +1,7 @@
 import EventsClient from './EventsClient';
 
+export const dynamic = "force-dynamic";
+
 interface Event {
   id: number;
   uuid: string;
@@ -36,10 +38,10 @@ function parseBengaliDate(dateStr: string): Date {
 
 async function getEvents(): Promise<{ upcomingEvents: Event[]; pastEvents: Event[] }> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
     // Fetch all events (remove range=current to get both past and future events)
     const response = await fetch(`${apiBaseUrl}/events`, {
-      next: { revalidate: 60 }, // Revalidate every 5 seconds
+      cache: 'no-store', // No caching - always fetch fresh data
     });
     
     if (!response.ok) {

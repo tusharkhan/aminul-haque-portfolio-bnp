@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlay, FaImage, FaTimes } from 'react-icons/fa';
+import Image from 'next/image';
 
 // Helper function to convert YouTube URL to embed URL
 function getYouTubeEmbedUrl(url: string): string {
@@ -78,7 +79,7 @@ export default function VideoImageTabs() {
   ];
 
   return (
-    <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mb-8 flex items-center justify-center gap-4 border-b border-slate-200">
         <button
           onClick={() => setActiveTab('video')}
@@ -136,10 +137,13 @@ export default function VideoImageTabs() {
                       className="relative aspect-video bg-slate-100"
                       onClick={() => setSelectedVideo(embedUrl)}
                     >
-                      <img
+                      <Image
                         src={thumbnail || 'https://images.unsplash.com/photo-1521575107034-e0fa0b594529?w=800&h=450&fit=crop'}
                         alt={video.title}
-                        className="h-full w-full object-cover"
+                        fill
+                        className="object-cover"
+                        unoptimized
+                        loading="lazy"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition">
                         <button className="rounded-full bg-green-700 p-4 text-white shadow-lg hover:bg-green-800 transition">
@@ -157,11 +161,14 @@ export default function VideoImageTabs() {
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {images.map((img, idx) => (
-                <div key={idx} className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-                  <img
+                <div key={idx} className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm relative h-48">
+                  <Image
                     src={img.src}
                     alt={img.alt}
-                    className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    unoptimized
+                    loading="lazy"
                   />
                 </div>
               ))}

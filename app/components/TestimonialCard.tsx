@@ -1,4 +1,5 @@
 import { FaQuoteLeft, FaStar } from 'react-icons/fa';
+import Image from 'next/image';
 
 interface TestimonialCardProps {
   quote: string;
@@ -44,10 +45,14 @@ export default function TestimonialCard({
 
         {/* Author Section */}
         <div className="flex items-center gap-4">
-          <img
+          <Image
             src={image}
             alt={author}
+            width={56}
+            height={56}
             className="w-14 h-14 rounded-full object-cover ring-4 ring-green-100"
+            unoptimized
+            loading="lazy"
           />
           <div>
             <div className="font-bold text-slate-900 text-lg">{author}</div>

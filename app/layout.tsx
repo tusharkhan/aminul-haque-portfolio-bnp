@@ -4,7 +4,10 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import Navbar from './components/Navbar';
 import SiteFooter from './components/SiteFooter';
+import { I18nProvider } from './i18n/I18nProvider';
+import { SettingsProvider } from './contexts/SettingsProvider';
 import { AuthProvider } from './contexts/AuthContext';
+import { getServerLang } from './i18n/getServerLang';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
@@ -28,24 +31,36 @@ export const metadata: Metadata = {
     type: 'website',
   },
   metadataBase: new URL('https://example.com'),
-  icons: { icon: '/favicon.ico' },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '192x192' },
+    ],
+    apple: { url: '/apple-icon.png', sizes: '180x180' },
+  },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const initialLanguage = await getServerLang();
+  
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang={initialLanguage === 'bd' ? 'bn' : 'en'} data-scroll-behavior="smooth">
       <body className={`${poppins.className} bg-white text-slate-900 antialiased `} suppressHydrationWarning>
-        <AuthProvider>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-          </div>
-        </AuthProvider>
+        <I18nProvider initialLanguage={initialLanguage}>
+          <AuthProvider>
+            <SettingsProvider>
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <SiteFooter />
+              </div>
+            </SettingsProvider>
+          </AuthProvider>
+        </I18nProvider>
       </body>
     </html>
   );

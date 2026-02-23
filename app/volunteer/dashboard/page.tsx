@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from 'react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { 
@@ -12,11 +13,29 @@ import {
   FaTasks,
   FaCalendarAlt
 } from 'react-icons/fa';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth, type Volunteer } from '../../contexts/AuthContext';
+import { useTranslation } from '../../i18n/I18nProvider';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+
+function parseJsonField(value: string | string[] | null | undefined): string[] {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
 
 export default function VolunteerDashboardPage() {
-  const { isAuthenticated, volunteer, loading } = useAuth();
+  const { isAuthenticated, token, loading } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
+  const [profile, setProfile] = useState<Volunteer | null>(null);
+  const [fetchingProfile, setFetchingProfile] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -24,7 +43,35 @@ export default function VolunteerDashboardPage() {
     }
   }, [isAuthenticated, loading, router]);
 
-  if (loading) {
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/volunteers/profile`, {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || t('dashboard.profileLoadFailed'));
+        }
+
+        setProfile(data.data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : t('dashboard.profileLoadFailed'));
+      } finally {
+        setFetchingProfile(false);
+      }
+    };
+
+    fetchProfile();
+  }, [token]);
+
+  if (loading || fetchingProfile) {
     return (
       <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
@@ -32,9 +79,28 @@ export default function VolunteerDashboardPage() {
     );
   }
 
-  if (!isAuthenticated || !volunteer) {
+  if (!isAuthenticated || !profile) {
+    if (error) {
+      return (
+        <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen flex items-center justify-center px-4">
+          <div className="bg-white rounded-3xl p-8 shadow-2xl border border-red-200 max-w-md text-center">
+            <p className="text-red-600 font-bold text-lg mb-4">{error}</p>
+            <button
+              onClick={() => router.push('/volunteer/login')}
+              className="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all"
+            >
+              {t('dashboard.loginAgain')}
+            </button>
+          </div>
+        </main>
+      );
+    }
     return null;
   }
+
+  const skills = parseJsonField(profile.skills);
+  const preferredTasks = parseJsonField(profile.preferred_tasks);
+  const availability = parseJsonField(profile.availability);
 
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen py-20 px-4">
@@ -46,11 +112,11 @@ export default function VolunteerDashboardPage() {
         >
           <h1 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
             <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-              স্বেচ্ছাসেবক ড্যাশবোর্ড
+              {t('dashboard.title')}
             </span>
           </h1>
           <p className="text-xl text-slate-600 mb-12">
-            আপনার প্রোফাইল এবং কাজের তথ্য দেখুন
+            {t('dashboard.welcome')} <span className="font-bold text-slate-900">{profile.full_name}</span>
           </p>
         </motion.div>
 
@@ -66,37 +132,37 @@ export default function VolunteerDashboardPage() {
             <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
               <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                 <FaUser className="text-emerald-600" />
-                ব্যক্তিগত তথ্য
+                {t('dashboard.personalInfo')}
               </h2>
               
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider">
-                      পুরো নাম
+                      {t('dashboard.fullName')}
                     </label>
                     <p className="text-xl font-bold text-slate-900">
-                      {volunteer.full_name}
+                      {profile.full_name}
                     </p>
                   </div>
                   
                   <div>
                     <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider flex items-center gap-2">
                       <FaEnvelope className="text-emerald-600" />
-                      ইমেইল
+                      {t('dashboard.email')}
                     </label>
                     <p className="text-xl font-bold text-slate-900">
-                      {volunteer.email}
+                      {profile.email}
                     </p>
                   </div>
                   
                   <div>
                     <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider flex items-center gap-2">
                       <FaPhone className="text-emerald-600" />
-                      মোবাইল
+                      {t('dashboard.mobile')}
                     </label>
                     <p className="text-xl font-bold text-slate-900">
-                      {volunteer.mobile}
+                      {profile.mobile}
                     </p>
                   </div>
                 </div>
@@ -107,48 +173,48 @@ export default function VolunteerDashboardPage() {
             <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
               <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                 <FaMapMarkerAlt className="text-emerald-600" />
-                এলাকা বরাদ্দ
+                {t('dashboard.areaAssignment')}
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider">
-                    জেলা
+                    {t('dashboard.district')}
                   </label>
                   <p className="text-xl font-bold text-slate-900">
-                    {volunteer.district || 'নির্ধারিত হয়নি'}
+                    {profile.district || t('dashboard.notAssigned')}
                   </p>
                 </div>
                 
                 <div>
                   <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider">
-                    উপজেলা
+                    {t('dashboard.upazila')}
                   </label>
                   <p className="text-xl font-bold text-slate-900">
-                    {volunteer.upazila || 'নির্ধারিত হয়নি'}
+                    {profile.upazila || t('dashboard.notAssigned')}
                   </p>
                 </div>
                 
                 <div>
                   <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider">
-                    ওয়ার্ড
+                    {t('dashboard.ward')}
                   </label>
                   <p className="text-xl font-bold text-slate-900">
-                    {volunteer.ward || 'নির্ধারিত হয়নি'}
+                    {profile.ward || t('dashboard.notAssigned')}
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Skills */}
-            {volunteer.skills && volunteer.skills.length > 0 && (
+            {skills.length > 0 && (
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                   <FaTools className="text-emerald-600" />
-                  দক্ষতা
+                  {t('dashboard.skills')}
                 </h2>
                 <div className="flex flex-wrap gap-3">
-                  {volunteer.skills.map((skill, index) => (
+                  {skills.map((skill, index) => (
                     <span
                       key={index}
                       className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-xl font-bold text-sm"
@@ -161,14 +227,14 @@ export default function VolunteerDashboardPage() {
             )}
 
             {/* Preferred Tasks */}
-            {volunteer.preferred_tasks && volunteer.preferred_tasks.length > 0 && (
+            {preferredTasks.length > 0 && (
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                   <FaTasks className="text-emerald-600" />
-                  পছন্দের কাজ
+                  {t('dashboard.preferredTasks')}
                 </h2>
                 <div className="flex flex-wrap gap-3">
-                  {volunteer.preferred_tasks.map((task, index) => (
+                  {preferredTasks.map((task, index) => (
                     <span
                       key={index}
                       className="px-4 py-2 bg-blue-100 text-blue-700 rounded-xl font-bold text-sm"
@@ -181,14 +247,14 @@ export default function VolunteerDashboardPage() {
             )}
 
             {/* Availability */}
-            {volunteer.availability && volunteer.availability.length > 0 && (
+            {availability.length > 0 && (
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                   <FaCalendarAlt className="text-emerald-600" />
-                  উপলব্ধতা
+                  {t('dashboard.availability')}
                 </h2>
                 <div className="space-y-2">
-                  {volunteer.availability.map((avail, index) => (
+                  {availability.map((avail, index) => (
                     <div
                       key={index}
                       className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-semibold"
@@ -209,20 +275,20 @@ export default function VolunteerDashboardPage() {
             className="space-y-6"
           >
             <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-3xl p-8 shadow-2xl text-white">
-              <h3 className="text-2xl font-black mb-4">দ্রুত কাজ</h3>
+              <h3 className="text-2xl font-black mb-4">{t('dashboard.quickActions')}</h3>
               <div className="space-y-4">
                 <a
                   href="/volunteer/tasks"
                   className="block px-6 py-4 bg-white/20 backdrop-blur-sm rounded-xl font-bold hover:bg-white/30 transition-all transform hover:scale-105"
                 >
-                  আমার কাজ দেখুন
+                  {t('dashboard.viewTasks')}
                 </a>
-                <a
+                <Link
                   href="/volunteer"
                   className="block px-6 py-4 bg-white/20 backdrop-blur-sm rounded-xl font-bold hover:bg-white/30 transition-all transform hover:scale-105"
                 >
-                  প্রোফাইল আপডেট করুন
-                </a>
+                  {t('dashboard.updateProfile')}
+                </Link>
               </div>
             </div>
           </motion.div>

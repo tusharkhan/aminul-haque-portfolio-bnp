@@ -3,14 +3,24 @@ import { motion } from 'framer-motion';
 import { FaFileAlt } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { toBanglaNumber } from '@/lib/utils';
+import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
+
+interface ProposalContent {
+  id: number;
+  title: string | null;
+  description: string;
+}
 
 interface Proposal {
   id: number;
   uuid: string;
-  pdf: string;
-  bang_title: string;
-  bang_description: string;
+  title: string;
+  description: string;
   serial: string;
+  contents: ProposalContent[];
+  created_at: string;
 }
 
 interface ManifestoPoint {
@@ -45,17 +55,25 @@ const defaultColors = [
 ];
 
 export default function ManifestoPage() {
+  const { t, language } = useTranslation();
   const router = useRouter();
   const [manifestoPoints, setManifestoPoints] = useState<ManifestoPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [proposalCmsData, setProposalCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('sports-development', 'our-vision').then(setCmsData);
+    fetchCmsPage('sports-development', 'proposal').then(setProposalCmsData);
+  }, []);
 
   useEffect(() => {
     const fetchProposals = async () => {
       try {
         setLoading(true);
         setError(null);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
         const response = await fetch(`${apiBaseUrl}/proposal`, {
           cache: 'no-store',
         });
@@ -82,11 +100,11 @@ export default function ManifestoPage() {
 
         // Map API proposals to manifesto points
         const mappedPoints: ManifestoPoint[] = proposalsData.map((proposal: Proposal, index: number) => ({
-          number: proposal.serial || String(index + 1),
-          title: proposal.bang_title || '',
-          description: proposal.bang_description || '',
+          number: proposal.serial || (language === 'bd' ? toBanglaNumber(index + 1) : String(index + 1)),
+          title: proposal.title || '',
+          description: proposal.description || '',
           color: defaultColors[index % defaultColors.length],
-          pdfUrl: proposal.pdf || '',
+          pdfUrl: '', // No PDF in new API structure
           uuid: proposal.uuid || proposal.id.toString(),
         }));
 
@@ -100,7 +118,7 @@ export default function ManifestoPage() {
     };
 
     fetchProposals();
-  }, []);
+  }, [language]);
 
   const handleViewDetails = (uuid: string) => {
     router.push(`/manifesto/${uuid}`);
@@ -110,7 +128,7 @@ export default function ManifestoPage() {
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-red-50 via-white to-rose-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -118,15 +136,15 @@ export default function ManifestoPage() {
           >
             <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaFileAlt className="inline mr-2" />
-              আমাদের রূপকল্প
+              {t('manifesto.ourVision')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent">
-                বিএনপির ১৮ দফা রূপকল্প
+                {cmsData?.title || t('manifesto.title')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              ক্রীড়া বিষয়ক উন্নয়ন পরিকল্পনা
+              {cmsData?.description || t('manifesto.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -135,7 +153,7 @@ export default function ManifestoPage() {
 
       {/* Manifesto Points */}
       <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -143,35 +161,35 @@ export default function ManifestoPage() {
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-              প্রস্তাবনা সমূহ
+              {proposalCmsData?.title || t('manifesto.proposals')}
             </h2>
             <p className="text-xl text-slate-600">
-              ক্রীড়া খাতের সার্বিক উন্নয়নে আমাদের প্রতিশ্রুতি
+              {proposalCmsData?.description || t('manifesto.proposalsDesc')}
             </p>
           </motion.div>
 
           {loading && (
             <div className="text-center py-20">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
-              <p className="mt-4 text-xl text-slate-600">লোড হচ্ছে...</p>
+              <p className="mt-4 text-xl text-slate-600">{t('common.loading')}</p>
             </div>
           )}
 
           {error && (
             <div className="text-center py-20">
-              <p className="text-xl text-red-600 mb-4">ত্রুটি: {error}</p>
+              <p className="text-xl text-red-600 mb-4">{t('common.error')}: {error}</p>
               <button
                 onClick={() => window.location.reload()}
                 className="px-6 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all"
               >
-                আবার চেষ্টা করুন
+                {t('common.retry')}
               </button>
             </div>
           )}
 
           {!loading && !error && manifestoPoints.length === 0 && (
             <div className="text-center py-20">
-              <p className="text-xl text-slate-600">কোনো প্রস্তাবনা পাওয়া যায়নি</p>
+              <p className="text-xl text-slate-600">{t('manifesto.noProposals')}</p>
             </div>
           )}
 
@@ -191,7 +209,7 @@ export default function ManifestoPage() {
                     {/* Header */}
                     <div className="flex items-start justify-end mb-4">
                       <div className={`px-3 py-1 bg-gradient-to-r ${point.color} text-white font-black rounded-full text-sm`}>
-                        প্রস্তাবনা-{point.number}
+                        {t('manifesto.proposal')}-{point.number}
                       </div>
                     </div>
 
@@ -208,7 +226,7 @@ export default function ManifestoPage() {
                       onClick={() => handleViewDetails(point.uuid)}
                       className={`w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r ${point.color} text-white font-bold rounded-xl hover:shadow-xl transition-all transform hover:scale-105`}
                     >
-                      বিস্তারিত
+                      {t('common.details')}
                     </button>
                   </div>
                 </motion.div>
@@ -230,14 +248,13 @@ export default function ManifestoPage() {
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                আমাদের প্রতিশ্রুতি
+                {t('manifesto.ourPromise')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                বাংলাদেশের ক্রীড়া খাতকে আন্তর্জাতিক মানে উন্নীত করতে আমরা প্রতিশ্রুতিবদ্ধ। 
-                প্রতিটি খেলোয়াড়ের স্বপ্ন পূরণে আমরা সর্বাত্মক সহযোগিতা করব।
+                {t('manifesto.promiseText')}
               </p>
               <button className="px-10 py-4 bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl hover:from-red-600 hover:to-rose-700 transition-all transform hover:scale-105">
-                সম্পূর্ণ রূপকল্প ডাউনলোড করুন
+                {t('manifesto.downloadFullManifesto')}
               </button>
             </div>
           </motion.div>
@@ -246,4 +263,3 @@ export default function ManifestoPage() {
     </main>
   );
 }
-

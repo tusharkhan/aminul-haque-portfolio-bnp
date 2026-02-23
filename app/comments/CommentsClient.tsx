@@ -3,6 +3,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaComment, FaUser, FaPaperPlane, FaClock, FaHeart } from 'react-icons/fa';
+import Image from 'next/image';
+import { toBanglaNumber } from '@/lib/utils';
+import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage, fetchCommentsWeHearYou, type HearYourVoiceData } from '@/lib/api';
 
 interface Comment {
   id: number;
@@ -21,6 +25,7 @@ interface CommentsClientProps {
 }
 
 export default function CommentsClient({ initialComments }: CommentsClientProps) {
+  const { t, language } = useTranslation();
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [formData, setFormData] = useState({
     name: '',
@@ -30,13 +35,22 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
+  const [hearYouData, setHearYouData] = useState<HearYourVoiceData | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('comments', 'your-opinion').then(setCmsData);
+    fetchCmsPage('comments', 'end-section').then(setEndCmsData);
+    fetchCommentsWeHearYou().then(setHearYouData);
+  }, []);
 
   // Poll for updates every 10 seconds
   useEffect(() => {
     const fetchComments = async () => {
       try {
         setIsRefreshing(true);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
         const response = await fetch(`${apiBaseUrl}/comments`, {
           cache: 'no-store', // Always fetch fresh data
         });
@@ -66,7 +80,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
           if (!dateString) return '';
           try {
             const date = new Date(dateString);
-            return date.toLocaleDateString('bn-BD', {
+            return date.toLocaleDateString(language === 'bd' ? 'bn-BD' : 'en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric'
@@ -81,7 +95,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
           .map((comment: any) => ({
             id: comment.id,
             uuid: comment.uuid,
-            name: comment.name || 'আনোনিমাস',
+            name: comment.name || t('comments.anonymous'),
             text: comment.text || comment.message || '',
             message: comment.text || comment.message || '',
             created_at: comment.created_at,
@@ -109,13 +123,13 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
 
     // Cleanup interval on unmount
     return () => clearInterval(interval);
-  }, []);
+  }, [language, t]);
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('bn-BD', { 
+      return date.toLocaleDateString(language === 'bd' ? 'bn-BD' : 'en-US', { 
         year: 'numeric', 
         month: 'long', 
         day: 'numeric' 
@@ -134,14 +148,14 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
     setError(null);
 
     try {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
       const response = await fetch(`${apiBaseUrl}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: formData.name.trim() || 'আনোনিমাস',
+          name: formData.name.trim() || t('comments.anonymous'),
           text: formData.text.trim(),
         }),
       });
@@ -157,7 +171,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
         const newComment: Comment = {
           id: result.data.id,
           uuid: result.data.uuid,
-          name: result.data.name || 'আনোনিমাস',
+          name: result.data.name || t('comments.anonymous'),
           text: result.data.text,
           message: result.data.text, // For backward compatibility
           created_at: result.data.created_at,
@@ -189,11 +203,15 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
     ));
   };
 
+  const getCount = (count: number) => {
+    return language === 'bd' ? toBanglaNumber(count) : count;
+  };
+
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-pink-50 via-white to-rose-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -201,15 +219,15 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
           >
             <span className="inline-block px-6 py-2 bg-pink-100 text-pink-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaComment className="inline mr-2" />
-              আপনার মতামত
+              {t('comments.yourOpinion')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
-                মন্তব্য করুন
+                {cmsData?.title || t('comments.title')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              আপনার চিন্তা, মতামত এবং পরামর্শ আমাদের সাথে শেয়ার করুন
+              {cmsData?.description || t('comments.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -217,7 +235,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
 
       {/* Welcome Section with Image */}
       <section className="py-20 px-4 bg-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Image */}
             <motion.div
@@ -229,10 +247,14 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
             >
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-rose-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                <img
-                  src="/aminul_haque.jpg"
-                  alt="আমিনুল হক"
-                  className="w-full h-[500px] object-cover"
+                <Image
+                  src={hearYouData?.main_image || "/aminul Haque/complain.jpeg"}
+                  alt={hearYouData?.title || t('hero.title')}
+                  width={600}
+                  height={800}
+                  className="w-full h-auto"
+                  loading="lazy"
+                  unoptimized={!!hearYouData?.main_image}
                 />
               </div>
             </motion.div>
@@ -244,24 +266,33 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-pink-600 font-bold text-sm uppercase tracking-wider">আপনার কথা শুনি</span>
+              <span className="text-pink-600 font-bold text-sm uppercase tracking-wider">{t('comments.hearYou')}</span>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
-                আপনার মতামত আমার শক্তি
+                {hearYouData?.title || t('comments.opinionIsStrength')}
               </h2>
-              <div className="space-y-4 text-lg text-slate-700 leading-relaxed">
-                <p>
-                  প্রিয় এলাকাবাসী, আপনাদের মতামত, পরামর্শ এবং চিন্তাভাবনা আমার কাছে অত্যন্ত মূল্যবান।
+              {hearYouData?.content ? (
+                <div
+                  className="space-y-4 text-lg text-slate-700 leading-relaxed text-justify prose prose-lg max-w-none"
+                  dangerouslySetInnerHTML={{ __html: hearYouData.content }}
+                />
+              ) : (
+                <div className="space-y-4 text-lg text-slate-700 leading-relaxed text-justify">
+                  <p>{t('comments.welcomeText1')}</p>
+                  <p>{t('comments.welcomeText2')}</p>
+                </div>
+              )}
+              {hearYouData?.subtitle ? (
+                <p className="font-semibold text-pink-700 mt-4">
+                  {hearYouData.subtitle}
                 </p>
-                <p>
-                  জনগণের প্রতিনিধি হিসেবে আমার দায়িত্ব হলো আপনাদের কথা শোনা এবং সেই অনুযায়ী কাজ করা। আপনাদের প্রতিটি মন্তব্য আমাকে আরও ভালো কাজ করতে অনুপ্রাণিত করে।
+              ) : (
+                <p className="font-semibold text-pink-700 mt-4">
+                  {t('comments.smallCommentBigChange')}
                 </p>
-                <p className="font-semibold text-pink-700">
-                  আপনার ছোট একটি মন্তব্যও বড় পরিবর্তন আনতে পারে - তাই নিঃসংকোচে আপনার মতামত জানান।
-                </p>
-              </div>
+              )}
               <div className="mt-6 p-6 bg-pink-50 rounded-2xl border-l-4 border-pink-600">
                 <p className="text-slate-700">
-                  <strong className="text-pink-700">আমার প্রতিশ্রুতি:</strong> প্রতিটি মন্তব্য পড়া হবে এবং আপনার পরামর্শগুলি আমাদের কাজে প্রতিফলিত করার চেষ্টা করা হবে।
+                  {hearYouData?.quotes || (<><strong className="text-pink-700">{t('comments.myPromise')}:</strong> {t('comments.promiseText')}</>)}
                 </p>
               </div>
             </motion.div>
@@ -271,7 +302,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
 
       {/* Stats Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Comment Form */}
@@ -291,13 +322,13 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                         <FaPaperPlane className="text-white text-xl" />
                       </div>
                       <h2 className="text-2xl font-black text-slate-900">
-                        নতুন মন্তব্য
+                        {t('comments.newComment')}
                       </h2>
                     </div>
 
                     {submitted && (
                       <div className="mb-4 p-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-xl text-center font-semibold shadow-lg">
-                        ✓ আপনার মন্তব্য যুক্ত হয়েছে!
+                        ✓ {t('comments.commentAdded')}
                       </div>
                     )}
 
@@ -310,31 +341,31 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                     <form onSubmit={handleSubmit} className="space-y-4">
                       <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">
-                          আপনার নাম (ঐচ্ছিক)
+                          {t('comments.yourName')}
                         </label>
                         <input
                           type="text"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          placeholder="নাম লিখুন অথবা খালি রাখুন"
+                          placeholder={t('comments.namePlaceholder')}
                           className="w-full px-4 py-3 rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 placeholder-slate-500 focus:border-pink-500 focus:outline-none transition-all"
                           disabled={loading}
                         />
                         <p className="text-xs text-slate-500 mt-1">
-                          * খালি রাখলে 'আনোনিমাস' হিসেবে দেখাবে
+                          {t('comments.nameHint')}
                         </p>
                       </div>
 
                       <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">
-                          আপনার মন্তব্য <span className="text-red-500">*</span>
+                          {t('comments.yourComment')} <span className="text-red-500">*</span>
                         </label>
                         <textarea
                           value={formData.text}
                           onChange={(e) => setFormData({ ...formData, text: e.target.value })}
                           required
                           rows={6}
-                          placeholder="আপনার মতামত লিখুন..."
+                          placeholder={t('comments.commentPlaceholder')}
                           className="w-full px-4 py-3 rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 placeholder-slate-500 focus:border-pink-500 focus:outline-none transition-all resize-none"
                           disabled={loading}
                         />
@@ -348,12 +379,12 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                         {loading ? (
                           <>
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                            <span>পাঠানো হচ্ছে...</span>
+                            <span>{t('comments.sending')}</span>
                           </>
                         ) : (
                           <>
                             <FaPaperPlane />
-                            মন্তব্য পাঠান
+                            {t('comments.sendComment')}
                           </>
                         )}
                       </button>
@@ -367,17 +398,17 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
             <div className="lg:col-span-2">
               <div className="mb-8">
                 <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">
-                  সকল মন্তব্য
+                  {t('comments.allComments')}
                 </h2>
                 <p className="text-slate-600">
-                  {comments.length} টি মন্তব্য পাওয়া গেছে
+                  {getCount(comments.length)} {t('comments.commentsFound')}
                 </p>
               </div>
 
               <div className="space-y-6">
                 {comments.length === 0 ? (
                   <div className="text-center py-12 bg-white rounded-2xl border border-slate-200">
-                    <p className="text-slate-600 text-lg">কোনো মন্তব্য পাওয়া যায়নি। প্রথম মন্তব্য করুন!</p>
+                    <p className="text-slate-600 text-lg">{t('comments.noComments')}</p>
                   </div>
                 ) : (
                   comments.map((comment, idx) => (
@@ -395,11 +426,11 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                           <div className="flex items-center gap-3">
                             <div>
                               <h3 className="font-bold text-slate-900 text-lg">
-                                {comment.name || 'আনোনিমাস'}
+                                {comment.name || t('comments.anonymous')}
                               </h3>
                               <div className="flex items-center gap-2 text-sm text-slate-500">
                                 <FaClock className="text-xs" />
-                                {comment.date || formatDate(comment.created_at) || 'তারিখ নেই'}
+                                {comment.date || formatDate(comment.created_at) || t('comments.noDate')}
                               </div>
                             </div>
                           </div>
@@ -429,10 +460,10 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                আপনার মতামত গুরুত্বপূর্ণ
+                {endCmsData?.title || t('comments.opinionImportant')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                আপনার প্রতিটি মন্তব্য আমাদের আরও ভালো সেবা প্রদানে সাহায্য করে। নিঃসংকোচে আপনার মতামত শেয়ার করুন।
+                {endCmsData?.description || t('comments.ctaText')}
               </p>
             </div>
           </motion.div>
@@ -441,4 +472,3 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
     </main>
   );
 }
-

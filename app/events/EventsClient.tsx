@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import EventCard from '../components/EventCard';
 import { FaCalendarAlt, FaFilter } from 'react-icons/fa';
+import { toBanglaNumber } from '@/lib/utils';
+import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 // Convert Bengali numerals to English numerals
 function convertBengaliToEnglish(bengaliStr: string): string {
@@ -15,13 +18,9 @@ function convertBengaliToEnglish(bengaliStr: string): string {
   return bengaliStr.split('').map(char => bengaliToEnglish[char] || char).join('');
 }
 
-// Parse date string that may contain Bengali numerals
 function parseBengaliDate(dateStr: string): Date {
-  // Convert Bengali numerals to English
   const englishDateStr = convertBengaliToEnglish(dateStr);
   
-  // Parse the date - format: "YYYY-MM-DD HH:mm:ss"
-  // Replace any non-standard separators and parse
   const cleaned = englishDateStr.replace(/\s+/g, ' ').trim();
   return new Date(cleaned);
 }
@@ -45,17 +44,27 @@ interface EventsClientProps {
 }
 
 export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pastEvents: initialPastEvents }: EventsClientProps) {
+  const { t, language } = useTranslation();
   const [filter, setFilter] = useState<'upcoming' | 'past'>('upcoming');
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>(initialUpcomingEvents);
   const [pastEvents, setPastEvents] = useState<Event[]>(initialPastEvents);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [titleFilter, setTitleFilter] = useState<string>('');
+  const [dateFilter, setDateFilter] = useState<string>('');
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('events', 'our-activities').then(setCmsData);
+    fetchCmsPage('events', 'end-section').then(setEndCmsData);
+  }, []);
 
   // Poll for updates every 10 seconds
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         setIsRefreshing(true);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
         const response = await fetch(`${apiBaseUrl}/events`, {
           cache: 'no-store', // Always fetch fresh data
         });
@@ -173,13 +182,64 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
     return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
   };
 
-  const displayEvents = filter === 'upcoming' ? upcomingEvents : pastEvents;
+  // Format date input value (YYYY-MM-DD) to Bengali format
+  const formatDateInputToBengali = (dateString: string): string => {
+    try {
+      const date = new Date(dateString);
+      const months = language === 'bd' 
+        ? ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর']
+        : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const day = language === 'bd' ? toBanglaNumber(date.getDate()) : date.getDate();
+      const month = months[date.getMonth()];
+      const year = language === 'bd' ? toBanglaNumber(date.getFullYear()) : date.getFullYear();
+      return `${day} ${month} ${year}`;
+    } catch (error) {
+      return dateString;
+    }
+  };
+
+  // Filter events by title and date
+  const filteredEvents = (() => {
+    let events = filter === 'upcoming' ? upcomingEvents : pastEvents;
+
+    // Filter by title
+    if (titleFilter.trim()) {
+      const searchTerm = titleFilter.trim().toLowerCase();
+      events = events.filter((event) => {
+        return event.title.toLowerCase().includes(searchTerm);
+      });
+    }
+
+    // Filter by date
+    if (dateFilter) {
+      const filterDate = new Date(dateFilter);
+      const filterDateStart = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate());
+      const filterDateEnd = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate(), 23, 59, 59);
+
+      events = events.filter((event) => {
+        if (!event.event_date_time) return false;
+        const eventDateTime = parseBengaliDate(event.event_date_time);
+        if (isNaN(eventDateTime.getTime())) return false;
+        
+        const eventDate = new Date(eventDateTime.getFullYear(), eventDateTime.getMonth(), eventDateTime.getDate());
+        return eventDate >= filterDateStart && eventDate <= filterDateEnd;
+      });
+    }
+
+    return events;
+  })();
+
+  const displayEvents = filteredEvents;
+
+  const getEventCount = (count: number) => {
+    return language === 'bd' ? toBanglaNumber(count) : count;
+  };
 
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -187,15 +247,15 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
           >
             <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaCalendarAlt className="inline mr-2" />
-              আমাদের কার্যক্রম
+              {t('events.ourActivities')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                ইভেন্ট সমূহ
+                {cmsData?.title || t('events.allEvents')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              আসন্ন এবং অতীতের সকল কার্যক্রম ও অনুষ্ঠান দেখুন
+              {cmsData?.description || t('events.viewAllEvents')}
             </p>
           </motion.div>
         </div>
@@ -203,17 +263,14 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
 
       {/* Filter Section */}
       <section className="py-12 px-4">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Type Filter (Upcoming/Past) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex flex-wrap justify-center gap-3"
+            className="flex flex-wrap justify-center gap-3 mb-8"
           >
-            <div className="flex items-center gap-2 text-emerald-700 font-bold">
-              <FaFilter />
-              <span>ফিল্টার:</span>
-            </div>
             <button
               onClick={() => setFilter('upcoming')}
               className={`px-8 py-3 rounded-xl font-bold transition-all transform hover:scale-105 ${
@@ -222,7 +279,7 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
                   : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-emerald-500 hover:text-emerald-600 shadow-lg'
               }`}
             >
-              আসন্ন ইভেন্ট ({upcomingEvents.length})
+              {t('events.upcoming')} ({getEventCount(upcomingEvents.length)})
             </button>
             <button
               onClick={() => setFilter('past')}
@@ -232,15 +289,77 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
                   : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-slate-500 hover:text-slate-600 shadow-lg'
               }`}
             >
-              অতীতের ইভেন্ট ({pastEvents.length})
+              {t('events.past')} ({getEventCount(pastEvents.length)})
             </button>
+          </motion.div>
+
+          {/* Title and Date Filters */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white rounded-2xl p-6 shadow-xl border border-slate-200"
+          >
+            <div className="flex items-center gap-2 text-emerald-700 font-bold mb-6 text-lg">
+              <FaFilter />
+              <span>{t('events.filterOptions')}</span>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              {/* Title Filter */}
+              <div>
+                <label className="block text-slate-700 font-bold mb-2 text-sm">
+                  {t('events.titleFilter')}
+                </label>
+                <input
+                  type="text"
+                  value={titleFilter}
+                  onChange={(e) => setTitleFilter(e.target.value)}
+                  placeholder={t('events.searchEventTitle')}
+                  className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-emerald-500 focus:outline-none shadow-lg text-slate-700"
+                />
+              </div>
+
+              {/* Date Filter */}
+              <div>
+                <label className="block text-slate-700 font-bold mb-2 text-sm">
+                  {t('events.dateFilter')}
+                </label>
+                <input
+                  type="date"
+                  value={dateFilter}
+                  onChange={(e) => setDateFilter(e.target.value)}
+                  className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-emerald-500 focus:outline-none shadow-lg text-slate-700"
+                />
+              </div>
+            </div>
+
+            {/* Filter Summary and Clear Button */}
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200">
+              <div className="text-sm text-slate-600 font-medium">
+                {getEventCount(filteredEvents.length)} {t('events.eventsFound')}
+                {dateFilter && ` (${t('events.dateFilter')}: ${formatDateInputToBengali(dateFilter)})`}
+                {titleFilter && ` (${t('events.titleFilter')}: ${titleFilter})`}
+              </div>
+              {(titleFilter || dateFilter) && (
+                <button
+                  onClick={() => {
+                    setTitleFilter('');
+                    setDateFilter('');
+                  }}
+                  className="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition-all shadow-lg"
+                >
+                  {t('events.clearAllFilters')}
+                </button>
+              )}
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* Events Grid */}
       <section className="py-12 px-4">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayEvents.map((event, idx) => {
               const { date, time } = parseDateTime(event.event_date_time_formatted);
@@ -274,11 +393,26 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
             <div className="text-center py-20">
               <FaCalendarAlt className="text-6xl text-slate-300 mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-slate-700 mb-2">
-                কোন ইভেন্ট নেই
+                {t('events.noEvents')}
               </h3>
-              <p className="text-slate-500">
-                {filter === 'upcoming' ? 'শীঘ্রই নতুন ইভেন্ট যুক্ত করা হবে' : 'অতীতের কোন ইভেন্ট পাওয়া যায়নি'}
+              <p className="text-slate-500 mb-4">
+                {(titleFilter || dateFilter) 
+                  ? t('events.noEventsForFilter')
+                  : filter === 'upcoming' 
+                    ? t('events.upcomingEventsComingSoon')
+                    : t('events.noPastEvents')}
               </p>
+              {(titleFilter || dateFilter) && (
+                <button
+                  onClick={() => {
+                    setTitleFilter('');
+                    setDateFilter('');
+                  }}
+                  className="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all"
+                >
+                  {t('events.clearAllFilters')}
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -296,17 +430,17 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                ইভেন্ট সম্পর্কে জানুন
+                {endCmsData?.title || t('events.learnAboutEvents')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                আমাদের আসন্ন ইভেন্ট সম্পর্কে সর্বশেষ আপডেট পেতে যোগাযোগ করুন
+                {endCmsData?.description || t('events.latestUpdates')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/contact"
                   className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105"
                 >
-                  যোগাযোগ করুন
+                  {t('nav.contactUs')}
                 </a>
               </div>
             </div>
@@ -316,4 +450,3 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
     </main>
   );
 }
-

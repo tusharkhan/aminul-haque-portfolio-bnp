@@ -1,5 +1,9 @@
+"use client";
+
 import Link from 'next/link';
+import Image from 'next/image';
 import { FaArrowRight, FaClock, FaNewspaper, FaImage } from 'react-icons/fa';
+import { useTranslation } from '@/app/i18n/I18nProvider';
 
 export default function PressReleaseCard({
   title,
@@ -16,6 +20,8 @@ export default function PressReleaseCard({
   slug: string;
   hasVideo?: boolean;
 }) {
+  const { t } = useTranslation();
+  
   return (
     <article className="group h-full flex flex-col rounded-2xl overflow-hidden relative">
       <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all"></div>
@@ -23,15 +29,18 @@ export default function PressReleaseCard({
         {/* Image Section */}
         {image && (
           <div className="relative h-48 bg-gradient-to-br from-blue-50 to-cyan-50 overflow-hidden">
-            <img
+            <Image
               src={image}
               alt={title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              unoptimized
+              loading="lazy"
             />
             {hasVideo && (
               <div className="absolute top-4 right-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5">
                 <span>🎥</span>
-                ভিডিও
+                {t('pressReleaseCard.video')}
               </div>
             )}
           </div>
@@ -43,7 +52,7 @@ export default function PressReleaseCard({
           <div className="flex items-center gap-4 text-xs text-slate-500 mb-4">
             <span className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full font-bold">
               <FaNewspaper />
-              প্রেস রিলিজ
+              {t('pressReleaseCard.pressRelease')}
             </span>
             <span className="flex items-center gap-1.5">
               <FaClock />
@@ -66,7 +75,7 @@ export default function PressReleaseCard({
             href={`/press-release/${slug}`}
             className="inline-flex items-center gap-2 text-sm font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent hover:opacity-80 transition-all"
           >
-            সম্পূর্ণ পড়ুন
+            {t('pressReleaseCard.readFull')}
             <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

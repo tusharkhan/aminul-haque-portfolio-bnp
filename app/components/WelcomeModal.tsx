@@ -2,8 +2,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import Image from 'next/image';
+import { useTranslation } from '../i18n/I18nProvider';
 
 export default function WelcomeModal() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -48,16 +51,19 @@ export default function WelcomeModal() {
               <button
                 onClick={closeModal}
                 className="absolute -top-2 -right-2 z-10 w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center shadow-2xl transition-all transform hover:scale-110 hover:rotate-90"
-                aria-label="বন্ধ করুন"
+                aria-label={t('common.close')}
               >
                 <FaTimes className="text-xl" />
               </button>
 
               {/* Image Container */}
-              <img
+              <Image
                 src="/aminul_nomination_post.webp"
-                alt="আমিনুল হক মনোনয়ন পোস্ট"
+                alt={t('hero.title')}
+                width={600}
+                height={800}
                 className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl"
+                loading="lazy"
               />
             </motion.div>
           </div>
@@ -66,4 +72,3 @@ export default function WelcomeModal() {
     </AnimatePresence>
   );
 }
-
