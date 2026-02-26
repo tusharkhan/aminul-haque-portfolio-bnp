@@ -34,7 +34,7 @@ interface Task {
   updated_at?: string;
 }
 
-/** API task shape from GET /volunteers/tasks/{id} */
+/** API task shape from GET /volunteers/tasks/{id} and change-status response */
 interface ApiTask {
   id: number;
   title: string;
@@ -46,6 +46,7 @@ interface ApiTask {
   created_at?: string;
   updated_at?: string;
   volunteers?: unknown[];
+  evidences?: unknown[];
 }
 
 export default function TaskDetailPage() {
@@ -129,17 +130,17 @@ export default function TaskDetailPage() {
     setEvidenceFiles(prev => prev.filter((_, i) => i !== index));
   };
 
-  const mapApiTaskToTask = (t: ApiTask): Task => ({
-    id: t.id,
-    title: t.title,
-    description: t.description ?? '',
-    deadline: t.due_date,
-    due_date_formatted: t.due_date_formatted,
-    priority: (t.priority as Task['priority']) || 'medium',
+  const mapApiTaskToTask = (apiTask: ApiTask): Task => ({
+    id: apiTask.id,
+    title: apiTask.title,
+    description: apiTask.description ?? '',
+    deadline: apiTask.due_date,
+    due_date_formatted: apiTask.due_date_formatted,
+    priority: (apiTask.priority as Task['priority']) || 'medium',
     location: undefined,
-    status: (t.status as Task['status']) || 'pending',
-    created_at: t.created_at,
-    updated_at: t.updated_at,
+    status: (apiTask.status as Task['status']) || 'pending',
+    created_at: apiTask.created_at,
+    updated_at: apiTask.updated_at,
   });
 
   const handleStatusUpdate = async () => {
@@ -149,15 +150,39 @@ export default function TaskDetailPage() {
     setSubmitError(null);
 
     try {
-      const res = await fetch(`${API_BASE_URL}/volunteers/tasks/${taskId}/change-status`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      const isCompletedWithPayload =
+        newStatus === 'completed' && (evidenceFiles.length > 0 || completionNotes.trim() !== '');
+
+      let res: Response;
+      if (isCompletedWithPayload) {
+        const formData = new FormData();
+        formData.append('status', newStatus);
+        if (completionNotes.trim()) {
+          formData.append('completion_notes', completionNotes.trim());
+        }
+        evidenceFiles.forEach((file) => {
+          formData.append('evidences[]', file);
+        });
+        res = await fetch(`${API_BASE_URL}/volunteers/tasks/${taskId}/change-status`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+      } else {
+        res = await fetch(`${API_BASE_URL}/volunteers/tasks/${taskId}/change-status`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: newStatus }),
+        });
+      }
+
       const json = await res.json();
 
       if (!res.ok || !json.success) {
