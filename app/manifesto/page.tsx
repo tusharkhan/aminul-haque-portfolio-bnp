@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toBanglaNumber } from "@/lib/utils";
 import { useTranslation } from "../i18n/I18nProvider";
 import { fetchCmsPage, type CmsPage } from "@/lib/api";
+import { syncedFetch } from "@/lib/languageSync";
 
 interface ProposalContent {
   id: number;
@@ -76,7 +77,7 @@ export default function ManifestoPage() {
         const apiBaseUrl =
           process.env.NEXT_PUBLIC_API_BASE_URL ||
           "https://admin.aminul-haque.com/api/v1";
-        const response = await fetch(`${apiBaseUrl}/proposal`, {
+        const response = await syncedFetch(`${apiBaseUrl}/proposal`, {
           cache: "no-store",
         });
 

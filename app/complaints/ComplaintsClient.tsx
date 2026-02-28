@@ -21,6 +21,7 @@ import {
   fetchComplaintHearYourVoice,
   type ComplaintHearYourVoice,
 } from "@/lib/api";
+import { syncedFetch } from "@/lib/languageSync";
 
 interface Category {
   id: number;
@@ -66,7 +67,7 @@ export default function ComplaintsClient({
     const apiBaseUrl =
       process.env.NEXT_PUBLIC_API_BASE_URL ||
       "https://admin.aminul-haque.com/api/v1";
-    fetch(`${apiBaseUrl}/complains-category`, { cache: "no-store" })
+    syncedFetch(`${apiBaseUrl}/complains-category`, { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.data)) {
