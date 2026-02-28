@@ -32,9 +32,10 @@ interface ComplaintsClientProps {
 }
 
 export default function ComplaintsClient({
-  categories,
+  categories: initialCategories,
 }: ComplaintsClientProps) {
   const { t, language } = useTranslation();
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -59,6 +60,32 @@ export default function ComplaintsClient({
     fetchCmsPage("complaint", "end-section").then(setEndCmsData);
     fetchComplaintHearYourVoice().then(setHearVoiceData);
   }, []);
+
+  // Re-fetch complaint categories whenever the language changes
+  useEffect(() => {
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL ||
+      "https://admin.aminul-haque.com/api/v1";
+    fetch(`${apiBaseUrl}/complains-category`, { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data)) {
+          setCategories(data.data);
+          // Reset selected category if it no longer exists in the new list
+          setFormData((prev) => ({
+            ...prev,
+            category: data.data.some(
+              (c: Category) => String(c.id) === prev.category,
+            )
+              ? prev.category
+              : "",
+          }));
+        }
+      })
+      .catch(() => {
+        // Keep previous categories on error
+      });
+  }, [language]);
 
   const thanasBd = [
     "উত্তরা",
