@@ -1,8 +1,16 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "https://admin.nurul-haque-nur.com/api/v1";
 
 export interface Volunteer {
   id: number;
@@ -38,16 +46,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('volunteer_token');
-    const storedVolunteer = localStorage.getItem('volunteer_data');
+    const storedToken = localStorage.getItem("volunteer_token");
+    const storedVolunteer = localStorage.getItem("volunteer_data");
 
     if (storedToken && storedVolunteer) {
       try {
         setToken(storedToken);
         setVolunteer(JSON.parse(storedVolunteer));
       } catch {
-        localStorage.removeItem('volunteer_token');
-        localStorage.removeItem('volunteer_data');
+        localStorage.removeItem("volunteer_token");
+        localStorage.removeItem("volunteer_data");
       }
     }
     setLoading(false);
@@ -55,15 +63,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     const res = await fetch(`${API_BASE_URL}/volunteers/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       body: JSON.stringify({ email, password }),
     });
 
     const data = await res.json();
 
     if (!res.ok || !data.success) {
-      throw new Error(data.message || 'লগইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।');
+      throw new Error(data.message || "লগইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।");
     }
 
     const apiToken: string = data.data.token;
@@ -71,17 +82,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setToken(apiToken);
     setVolunteer(vol);
-    localStorage.setItem('volunteer_token', apiToken);
-    localStorage.setItem('volunteer_data', JSON.stringify(vol));
+    localStorage.setItem("volunteer_token", apiToken);
+    localStorage.setItem("volunteer_data", JSON.stringify(vol));
   };
 
   const logout = async () => {
     if (token) {
       try {
         await fetch(`${API_BASE_URL}/volunteers/logout`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            Accept: 'application/json',
+            Accept: "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
@@ -92,21 +103,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setVolunteer(null);
     setToken(null);
-    localStorage.removeItem('volunteer_token');
-    localStorage.removeItem('volunteer_data');
+    localStorage.removeItem("volunteer_token");
+    localStorage.removeItem("volunteer_data");
   };
 
   const refreshVolunteer = async () => {
-    const t = localStorage.getItem('volunteer_token');
+    const t = localStorage.getItem("volunteer_token");
     if (!t) return;
     try {
       const res = await fetch(`${API_BASE_URL}/volunteers/profile`, {
-        headers: { Accept: 'application/json', Authorization: `Bearer ${t}` },
+        headers: { Accept: "application/json", Authorization: `Bearer ${t}` },
       });
       const data = await res.json();
       if (res.ok && data.success && data.data) {
         setVolunteer(data.data);
-        localStorage.setItem('volunteer_data', JSON.stringify(data.data));
+        localStorage.setItem("volunteer_data", JSON.stringify(data.data));
       }
     } catch {
       // Keep existing state on failure
@@ -133,8 +144,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
-

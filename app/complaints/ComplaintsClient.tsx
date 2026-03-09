@@ -66,7 +66,7 @@ export default function ComplaintsClient({
   useEffect(() => {
     const apiBaseUrl =
       process.env.NEXT_PUBLIC_API_BASE_URL ||
-      "https://admin.aminul-haque.com/api/v1";
+      "https://admin.nurul-haque-nur.com/api/v1";
     syncedFetch(`${apiBaseUrl}/complains-category`, { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
@@ -145,7 +145,7 @@ export default function ComplaintsClient({
     try {
       const apiBaseUrl =
         process.env.NEXT_PUBLIC_API_BASE_URL ||
-        "https://admin.aminul-haque.com/api/v1";
+        "https://admin.nurul-haque-nur.com/api/v1";
 
       // Create FormData for file upload
       const formDataToSend = new FormData();

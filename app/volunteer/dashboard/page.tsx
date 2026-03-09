@@ -1,22 +1,24 @@
 "use client";
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { 
-  FaUser, 
-  FaEnvelope, 
-  FaPhone, 
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import {
+  FaUser,
+  FaEnvelope,
+  FaPhone,
   FaMapMarkerAlt,
   FaTools,
   FaTasks,
-  FaCalendarAlt
-} from 'react-icons/fa';
-import { useAuth, type Volunteer } from '../../contexts/AuthContext';
-import { useTranslation } from '../../i18n/I18nProvider';
+  FaCalendarAlt,
+} from "react-icons/fa";
+import { useAuth, type Volunteer } from "../../contexts/AuthContext";
+import { useTranslation } from "../../i18n/I18nProvider";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "https://admin.nurul-haque-nur.com/api/v1";
 
 function parseJsonField(value: string | string[] | null | undefined): string[] {
   if (!value) return [];
@@ -39,7 +41,7 @@ export default function VolunteerDashboardPage() {
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.push('/volunteer/login');
+      router.push("/volunteer/login");
     }
   }, [isAuthenticated, loading, router]);
 
@@ -50,19 +52,21 @@ export default function VolunteerDashboardPage() {
       try {
         const res = await fetch(`${API_BASE_URL}/volunteers/profile`, {
           headers: {
-            Accept: 'application/json',
+            Accept: "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
         const data = await res.json();
 
         if (!res.ok || !data.success) {
-          throw new Error(data.message || t('dashboard.profileLoadFailed'));
+          throw new Error(data.message || t("dashboard.profileLoadFailed"));
         }
 
         setProfile(data.data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : t('dashboard.profileLoadFailed'));
+        setError(
+          err instanceof Error ? err.message : t("dashboard.profileLoadFailed"),
+        );
       } finally {
         setFetchingProfile(false);
       }
@@ -86,10 +90,10 @@ export default function VolunteerDashboardPage() {
           <div className="bg-white rounded-3xl p-8 shadow-2xl border border-red-200 max-w-md text-center">
             <p className="text-red-600 font-bold text-lg mb-4">{error}</p>
             <button
-              onClick={() => router.push('/volunteer/login')}
+              onClick={() => router.push("/volunteer/login")}
               className="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all"
             >
-              {t('dashboard.loginAgain')}
+              {t("dashboard.loginAgain")}
             </button>
           </div>
         </main>
@@ -112,11 +116,14 @@ export default function VolunteerDashboardPage() {
         >
           <h1 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
             <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-              {t('dashboard.title')}
+              {t("dashboard.title")}
             </span>
           </h1>
           <p className="text-xl text-slate-600 mb-12">
-            {t('dashboard.welcome')} <span className="font-bold text-slate-900">{profile.full_name}</span>
+            {t("dashboard.welcome")}{" "}
+            <span className="font-bold text-slate-900">
+              {profile.full_name}
+            </span>
           </p>
         </motion.div>
 
@@ -132,34 +139,34 @@ export default function VolunteerDashboardPage() {
             <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
               <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                 <FaUser className="text-emerald-600" />
-                {t('dashboard.personalInfo')}
+                {t("dashboard.personalInfo")}
               </h2>
-              
+
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider">
-                      {t('dashboard.fullName')}
+                      {t("dashboard.fullName")}
                     </label>
                     <p className="text-xl font-bold text-slate-900">
                       {profile.full_name}
                     </p>
                   </div>
-                  
+
                   <div>
                     <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider flex items-center gap-2">
                       <FaEnvelope className="text-emerald-600" />
-                      {t('dashboard.email')}
+                      {t("dashboard.email")}
                     </label>
                     <p className="text-xl font-bold text-slate-900">
                       {profile.email}
                     </p>
                   </div>
-                  
+
                   <div>
                     <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider flex items-center gap-2">
                       <FaPhone className="text-emerald-600" />
-                      {t('dashboard.mobile')}
+                      {t("dashboard.mobile")}
                     </label>
                     <p className="text-xl font-bold text-slate-900">
                       {profile.mobile}
@@ -173,34 +180,34 @@ export default function VolunteerDashboardPage() {
             <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
               <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                 <FaMapMarkerAlt className="text-emerald-600" />
-                {t('dashboard.areaAssignment')}
+                {t("dashboard.areaAssignment")}
               </h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider">
-                    {t('dashboard.district')}
+                    {t("dashboard.district")}
                   </label>
                   <p className="text-xl font-bold text-slate-900">
-                    {profile.district || t('dashboard.notAssigned')}
+                    {profile.district || t("dashboard.notAssigned")}
                   </p>
                 </div>
-                
+
                 <div>
                   <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider">
-                    {t('dashboard.upazila')}
+                    {t("dashboard.upazila")}
                   </label>
                   <p className="text-xl font-bold text-slate-900">
-                    {profile.upazila || t('dashboard.notAssigned')}
+                    {profile.upazila || t("dashboard.notAssigned")}
                   </p>
                 </div>
-                
+
                 <div>
                   <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider">
-                    {t('dashboard.ward')}
+                    {t("dashboard.ward")}
                   </label>
                   <p className="text-xl font-bold text-slate-900">
-                    {profile.ward || t('dashboard.notAssigned')}
+                    {profile.ward || t("dashboard.notAssigned")}
                   </p>
                 </div>
               </div>
@@ -211,7 +218,7 @@ export default function VolunteerDashboardPage() {
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                   <FaTools className="text-emerald-600" />
-                  {t('dashboard.skills')}
+                  {t("dashboard.skills")}
                 </h2>
                 <div className="flex flex-wrap gap-3">
                   {skills.map((skill, index) => (
@@ -231,7 +238,7 @@ export default function VolunteerDashboardPage() {
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                   <FaTasks className="text-emerald-600" />
-                  {t('dashboard.preferredTasks')}
+                  {t("dashboard.preferredTasks")}
                 </h2>
                 <div className="flex flex-wrap gap-3">
                   {preferredTasks.map((task, index) => (
@@ -251,7 +258,7 @@ export default function VolunteerDashboardPage() {
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
                   <FaCalendarAlt className="text-emerald-600" />
-                  {t('dashboard.availability')}
+                  {t("dashboard.availability")}
                 </h2>
                 <div className="space-y-2">
                   {availability.map((avail, index) => (
@@ -275,19 +282,21 @@ export default function VolunteerDashboardPage() {
             className="space-y-6"
           >
             <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-3xl p-8 shadow-2xl text-white">
-              <h3 className="text-2xl font-black mb-4">{t('dashboard.quickActions')}</h3>
+              <h3 className="text-2xl font-black mb-4">
+                {t("dashboard.quickActions")}
+              </h3>
               <div className="space-y-4">
                 <a
                   href="/volunteer/tasks"
                   className="block px-6 py-4 bg-white/20 backdrop-blur-sm rounded-xl font-bold hover:bg-white/30 transition-all transform hover:scale-105"
                 >
-                  {t('dashboard.viewTasks')}
+                  {t("dashboard.viewTasks")}
                 </a>
                 <Link
                   href="/volunteer"
                   className="block px-6 py-4 bg-white/20 backdrop-blur-sm rounded-xl font-bold hover:bg-white/30 transition-all transform hover:scale-105"
                 >
-                  {t('dashboard.updateProfile')}
+                  {t("dashboard.updateProfile")}
                 </Link>
               </div>
             </div>
@@ -297,4 +306,3 @@ export default function VolunteerDashboardPage() {
     </main>
   );
 }
-

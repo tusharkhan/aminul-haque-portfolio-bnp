@@ -71,7 +71,7 @@ export default function TournamentClient() {
       try {
         const apiBaseUrl =
           process.env.NEXT_PUBLIC_API_BASE_URL ||
-          "https://admin.aminul-haque.com/api/v1";
+          "https://admin.nurul-haque-nur.com/api/v1";
         const response = await syncedFetch(`${apiBaseUrl}/tournaments`);
         if (!response.ok) {
           throw new Error("Failed to fetch tournaments");

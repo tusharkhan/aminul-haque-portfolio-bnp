@@ -218,7 +218,7 @@ export default function KheladhulaClient() {
         setError(null);
         const apiBaseUrl =
           process.env.NEXT_PUBLIC_API_BASE_URL ||
-          "https://admin.aminul-haque.com/api/v1";
+          "https://admin.nurul-haque-nur.com/api/v1";
 
         // Always fetch all albums without pagination parameters
         const url = `${apiBaseUrl}/sports/list`;

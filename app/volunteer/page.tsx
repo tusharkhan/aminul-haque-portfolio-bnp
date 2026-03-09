@@ -1,24 +1,26 @@
 "use client";
 
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  FaUser, 
-  FaPhone, 
-  FaEnvelope, 
-  FaMapMarkerAlt, 
-  FaTools, 
-  FaTasks, 
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  FaUser,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaTools,
+  FaTasks,
   FaCalendarAlt,
-  FaCheckCircle
-} from 'react-icons/fa';
-import { toBanglaNumber } from '@/lib/utils';
-import { useTranslation } from '../i18n/I18nProvider';
-import { fetchCmsPage, type CmsPage } from '@/lib/api';
-import { useAuth, type Volunteer } from '../contexts/AuthContext';
+  FaCheckCircle,
+} from "react-icons/fa";
+import { toBanglaNumber } from "@/lib/utils";
+import { useTranslation } from "../i18n/I18nProvider";
+import { fetchCmsPage, type CmsPage } from "@/lib/api";
+import { useAuth, type Volunteer } from "../contexts/AuthContext";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "https://admin.nurul-haque-nur.com/api/v1";
 
 function parseJsonField(value: string | string[] | null | undefined): string[] {
   if (!value) return [];
@@ -33,132 +35,154 @@ function parseJsonField(value: string | string[] | null | undefined): string[] {
 
 // Sample data for Bangladesh districts, upazilas, and wards
 const districts = [
-  { id: 'dhaka', name: 'ঢাকা', nameEn: 'Dhaka' },
-  { id: 'chittagong', name: 'চট্টগ্রাম', nameEn: 'Chittagong' },
-  { id: 'sylhet', name: 'সিলেট', nameEn: 'Sylhet' },
-  { id: 'rajshahi', name: 'রাজশাহী', nameEn: 'Rajshahi' },
-  { id: 'khulna', name: 'খুলনা', nameEn: 'Khulna' },
-  { id: 'barisal', name: 'বরিশাল', nameEn: 'Barisal' },
-  { id: 'rangpur', name: 'রংপুর', nameEn: 'Rangpur' },
-  { id: 'mymensingh', name: 'ময়মনসিংহ', nameEn: 'Mymensingh' },
+  { id: "dhaka", name: "ঢাকা", nameEn: "Dhaka" },
+  { id: "chittagong", name: "চট্টগ্রাম", nameEn: "Chittagong" },
+  { id: "sylhet", name: "সিলেট", nameEn: "Sylhet" },
+  { id: "rajshahi", name: "রাজশাহী", nameEn: "Rajshahi" },
+  { id: "khulna", name: "খুলনা", nameEn: "Khulna" },
+  { id: "barisal", name: "বরিশাল", nameEn: "Barisal" },
+  { id: "rangpur", name: "রংপুর", nameEn: "Rangpur" },
+  { id: "mymensingh", name: "ময়মনসিংহ", nameEn: "Mymensingh" },
 ];
 
-const upazilasByDistrict: { [key: string]: { bd: string[], en: string[] } } = {
+const upazilasByDistrict: { [key: string]: { bd: string[]; en: string[] } } = {
   dhaka: {
-    bd: ['গুলশান', 'ধানমন্ডি', 'মিরপুর', 'উত্তরা', 'ঢাকা সদর', 'সাভার', 'কেরানীগঞ্জ'],
-    en: ['Gulshan', 'Dhanmondi', 'Mirpur', 'Uttara', 'Dhaka Sadar', 'Savar', 'Keraniganj']
+    bd: [
+      "গুলশান",
+      "ধানমন্ডি",
+      "মিরপুর",
+      "উত্তরা",
+      "ঢাকা সদর",
+      "সাভার",
+      "কেরানীগঞ্জ",
+    ],
+    en: [
+      "Gulshan",
+      "Dhanmondi",
+      "Mirpur",
+      "Uttara",
+      "Dhaka Sadar",
+      "Savar",
+      "Keraniganj",
+    ],
   },
   chittagong: {
-    bd: ['কক্সবাজার', 'চট্টগ্রাম সদর', 'হাটহাজারী', 'রাউজান', 'ফটিকছড়ি'],
-    en: ['Cox\'s Bazar', 'Chittagong Sadar', 'Hathazari', 'Raozan', 'Fatikchhari']
+    bd: ["কক্সবাজার", "চট্টগ্রাম সদর", "হাটহাজারী", "রাউজান", "ফটিকছড়ি"],
+    en: [
+      "Cox's Bazar",
+      "Chittagong Sadar",
+      "Hathazari",
+      "Raozan",
+      "Fatikchhari",
+    ],
   },
   sylhet: {
-    bd: ['সিলেট সদর', 'বালাগঞ্জ', 'বিয়ানীবাজার', 'বিশ্বনাথ', 'বালাগঞ্জ'],
-    en: ['Sylhet Sadar', 'Balaganj', 'Beanibazar', 'Bishwanath', 'Balaganj']
+    bd: ["সিলেট সদর", "বালাগঞ্জ", "বিয়ানীবাজার", "বিশ্বনাথ", "বালাগঞ্জ"],
+    en: ["Sylhet Sadar", "Balaganj", "Beanibazar", "Bishwanath", "Balaganj"],
   },
   rajshahi: {
-    bd: ['রাজশাহী সদর', 'বোয়ালিয়া', 'পবা', 'দুপচাঁচিয়া'],
-    en: ['Rajshahi Sadar', 'Boalia', 'Paba', 'Durgapur']
+    bd: ["রাজশাহী সদর", "বোয়ালিয়া", "পবা", "দুপচাঁচিয়া"],
+    en: ["Rajshahi Sadar", "Boalia", "Paba", "Durgapur"],
   },
   khulna: {
-    bd: ['খুলনা সদর', 'দাকোপ', 'ডুমুরিয়া', 'দিঘলিয়া'],
-    en: ['Khulna Sadar', 'Dakop', 'Dumuria', 'Dighulia']
+    bd: ["খুলনা সদর", "দাকোপ", "ডুমুরিয়া", "দিঘলিয়া"],
+    en: ["Khulna Sadar", "Dakop", "Dumuria", "Dighulia"],
   },
   barisal: {
-    bd: ['বরিশাল সদর', 'বাবুগঞ্জ', 'বাকেরগঞ্জ', 'বানারীপাড়া'],
-    en: ['Barisal Sadar', 'Babuganj', 'Bakerganj', 'Banaripara']
+    bd: ["বরিশাল সদর", "বাবুগঞ্জ", "বাকেরগঞ্জ", "বানারীপাড়া"],
+    en: ["Barisal Sadar", "Babuganj", "Bakerganj", "Banaripara"],
   },
   rangpur: {
-    bd: ['রংপুর সদর', 'বদরগঞ্জ', 'গঙ্গাচড়া', 'কাউনিয়া'],
-    en: ['Rangpur Sadar', 'Badarganj', 'Gangachara', 'Kaunia']
+    bd: ["রংপুর সদর", "বদরগঞ্জ", "গঙ্গাচড়া", "কাউনিয়া"],
+    en: ["Rangpur Sadar", "Badarganj", "Gangachara", "Kaunia"],
   },
   mymensingh: {
-    bd: ['ময়মনসিংহ সদর', 'গফরগাঁও', 'গৌরীপুর', 'ঈশ্বরগঞ্জ'],
-    en: ['Mymensingh Sadar', 'Gafargaon', 'Gouripur', 'Ishwarganj']
+    bd: ["ময়মনসিংহ সদর", "গফরগাঁও", "গৌরীপুর", "ঈশ্বরগঞ্জ"],
+    en: ["Mymensingh Sadar", "Gafargaon", "Gouripur", "Ishwarganj"],
   },
 };
 
 const skillsData = {
   bd: [
-    'কম্পিউটার/প্রযুক্তি',
-    'শিক্ষা/প্রশিক্ষণ',
-    'স্বাস্থ্যসেবা',
-    'সামাজিক কাজ',
-    'মিডিয়া/প্রচারণা',
-    'ইভেন্ট ব্যবস্থাপনা',
-    'অনুবাদ',
-    'গ্রাফিক ডিজাইন',
-    'ফটোগ্রাফি',
-    'ভিডিও সম্পাদনা',
-    'লেখালেখি',
-    'অন্যান্য'
+    "কম্পিউটার/প্রযুক্তি",
+    "শিক্ষা/প্রশিক্ষণ",
+    "স্বাস্থ্যসেবা",
+    "সামাজিক কাজ",
+    "মিডিয়া/প্রচারণা",
+    "ইভেন্ট ব্যবস্থাপনা",
+    "অনুবাদ",
+    "গ্রাফিক ডিজাইন",
+    "ফটোগ্রাফি",
+    "ভিডিও সম্পাদনা",
+    "লেখালেখি",
+    "অন্যান্য",
   ],
   en: [
-    'Computer/Technology',
-    'Education/Training',
-    'Healthcare',
-    'Social Work',
-    'Media/Promotion',
-    'Event Management',
-    'Translation',
-    'Graphic Design',
-    'Photography',
-    'Video Editing',
-    'Writing',
-    'Others'
-  ]
+    "Computer/Technology",
+    "Education/Training",
+    "Healthcare",
+    "Social Work",
+    "Media/Promotion",
+    "Event Management",
+    "Translation",
+    "Graphic Design",
+    "Photography",
+    "Video Editing",
+    "Writing",
+    "Others",
+  ],
 };
 
 const preferredTasksData = {
   bd: [
-    'ক্যাম্পেইন সহায়তা',
-    'ইভেন্ট আয়োজন',
-    'সামাজিক যোগাযোগ',
-    'ডেটা এন্ট্রি',
-    'ফোন কল',
-    'দরজায় দরজায় প্রচারণা',
-    'সামাজিক মিডিয়া ব্যবস্থাপনা',
-    'সামগ্রিক সহায়তা',
-    'অন্যান্য'
+    "ক্যাম্পেইন সহায়তা",
+    "ইভেন্ট আয়োজন",
+    "সামাজিক যোগাযোগ",
+    "ডেটা এন্ট্রি",
+    "ফোন কল",
+    "দরজায় দরজায় প্রচারণা",
+    "সামাজিক মিডিয়া ব্যবস্থাপনা",
+    "সামগ্রিক সহায়তা",
+    "অন্যান্য",
   ],
   en: [
-    'Campaign Support',
-    'Event Organization',
-    'Social Communication',
-    'Data Entry',
-    'Phone Calls',
-    'Door-to-Door Canvassing',
-    'Social Media Management',
-    'General Support',
-    'Others'
-  ]
+    "Campaign Support",
+    "Event Organization",
+    "Social Communication",
+    "Data Entry",
+    "Phone Calls",
+    "Door-to-Door Canvassing",
+    "Social Media Management",
+    "General Support",
+    "Others",
+  ],
 };
 
 const availabilityOptionsData = {
   bd: [
-    { id: 'weekday-morning', label: 'সপ্তাহের দিন (সকাল ৯টা-১২টা)' },
-    { id: 'weekday-afternoon', label: 'সপ্তাহের দিন (দুপুর ১২টা-৫টা)' },
-    { id: 'weekday-evening', label: 'সপ্তাহের দিন (সন্ধ্যা ৫টা-৮টা)' },
-    { id: 'weekend-morning', label: 'সপ্তাহান্তে (সকাল ৯টা-১২টা)' },
-    { id: 'weekend-afternoon', label: 'সপ্তাহান্তে (দুপুর ১২টা-৫টা)' },
-    { id: 'weekend-evening', label: 'সপ্তাহান্তে (সন্ধ্যা ৫টা-৮টা)' },
-    { id: 'flexible', label: 'নমনীয় সময়' },
+    { id: "weekday-morning", label: "সপ্তাহের দিন (সকাল ৯টা-১২টা)" },
+    { id: "weekday-afternoon", label: "সপ্তাহের দিন (দুপুর ১২টা-৫টা)" },
+    { id: "weekday-evening", label: "সপ্তাহের দিন (সন্ধ্যা ৫টা-৮টা)" },
+    { id: "weekend-morning", label: "সপ্তাহান্তে (সকাল ৯টা-১২টা)" },
+    { id: "weekend-afternoon", label: "সপ্তাহান্তে (দুপুর ১২টা-৫টা)" },
+    { id: "weekend-evening", label: "সপ্তাহান্তে (সন্ধ্যা ৫টা-৮টা)" },
+    { id: "flexible", label: "নমনীয় সময়" },
   ],
   en: [
-    { id: 'weekday-morning', label: 'Weekdays (9 AM - 12 PM)' },
-    { id: 'weekday-afternoon', label: 'Weekdays (12 PM - 5 PM)' },
-    { id: 'weekday-evening', label: 'Weekdays (5 PM - 8 PM)' },
-    { id: 'weekend-morning', label: 'Weekends (9 AM - 12 PM)' },
-    { id: 'weekend-afternoon', label: 'Weekends (12 PM - 5 PM)' },
-    { id: 'weekend-evening', label: 'Weekends (5 PM - 8 PM)' },
-    { id: 'flexible', label: 'Flexible Hours' },
-  ]
+    { id: "weekday-morning", label: "Weekdays (9 AM - 12 PM)" },
+    { id: "weekday-afternoon", label: "Weekdays (12 PM - 5 PM)" },
+    { id: "weekday-evening", label: "Weekdays (5 PM - 8 PM)" },
+    { id: "weekend-morning", label: "Weekends (9 AM - 12 PM)" },
+    { id: "weekend-afternoon", label: "Weekends (12 PM - 5 PM)" },
+    { id: "weekend-evening", label: "Weekends (5 PM - 8 PM)" },
+    { id: "flexible", label: "Flexible Hours" },
+  ],
 };
 
 function availabilityLabelToId(label: string): string {
   const all = [...availabilityOptionsData.bd, ...availabilityOptionsData.en];
   const opt = all.find((o) => o.label === label);
-  return opt ? opt.id : '';
+  return opt ? opt.id : "";
 }
 
 export default function VolunteerPage() {
@@ -167,14 +191,14 @@ export default function VolunteerPage() {
   const isUpdateMode = isAuthenticated && !!token;
 
   const [formData, setFormData] = useState({
-    fullName: '',
-    mobile: '',
-    email: '',
-    password: '',
-    passwordConfirmation: '',
-    district: '',
-    upazila: '',
-    ward: '',
+    fullName: "",
+    mobile: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+    district: "",
+    upazila: "",
+    ward: "",
     skills: [] as string[],
     preferredTasks: [] as string[],
     availability: [] as string[],
@@ -189,7 +213,7 @@ export default function VolunteerPage() {
   const [profileLoaded, setProfileLoaded] = useState(false);
 
   useEffect(() => {
-    fetchCmsPage('volunteer', 'become-volunteer').then(setCmsData);
+    fetchCmsPage("volunteer", "become-volunteer").then(setCmsData);
   }, []);
 
   useEffect(() => {
@@ -200,31 +224,40 @@ export default function VolunteerPage() {
     const fetchProfile = async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/volunteers/profile`, {
-          headers: { Accept: 'application/json', Authorization: `Bearer ${token}` },
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
         const data = await res.json();
-        if (!res.ok || !data.success) throw new Error(data.message || 'Failed to load profile');
+        if (!res.ok || !data.success)
+          throw new Error(data.message || "Failed to load profile");
         const p = data.data as Volunteer;
         const skillArr = parseJsonField(p.skills);
         const taskArr = parseJsonField(p.preferred_tasks);
         const availArr = parseJsonField(p.availability);
-        const districtId = districts.find((d) => d.name === p.district || d.nameEn === p.district)?.id ?? '';
-        const availabilityIds = availArr.map(availabilityLabelToId).filter(Boolean);
+        const districtId =
+          districts.find(
+            (d) => d.name === p.district || d.nameEn === p.district,
+          )?.id ?? "";
+        const availabilityIds = availArr
+          .map(availabilityLabelToId)
+          .filter(Boolean);
         setFormData({
-          fullName: p.full_name ?? '',
-          mobile: p.mobile ?? '',
-          email: p.email ?? '',
-          password: '',
-          passwordConfirmation: '',
+          fullName: p.full_name ?? "",
+          mobile: p.mobile ?? "",
+          email: p.email ?? "",
+          password: "",
+          passwordConfirmation: "",
           district: districtId,
-          upazila: p.upazila ?? '',
-          ward: p.ward ?? '',
+          upazila: p.upazila ?? "",
+          ward: p.ward ?? "",
           skills: skillArr,
           preferredTasks: taskArr,
           availability: availabilityIds,
         });
       } catch {
-        setSubmitError(t('dashboard.profileLoadFailed'));
+        setSubmitError(t("dashboard.profileLoadFailed"));
       } finally {
         setProfileLoaded(true);
       }
@@ -232,10 +265,14 @@ export default function VolunteerPage() {
     fetchProfile();
   }, [isUpdateMode, token, t]);
 
-  const skills = language === 'bd' ? skillsData.bd : skillsData.en;
-  const preferredTasks = language === 'bd' ? preferredTasksData.bd : preferredTasksData.en;
-  const availabilityOptions = language === 'bd' ? availabilityOptionsData.bd : availabilityOptionsData.en;
-  const wards = Array.from({ length: 9 }, (_, i) => language === 'bd' ? `ওয়ার্ড ${toBanglaNumber(i + 1)}` : `Ward ${i + 1}`);
+  const skills = language === "bd" ? skillsData.bd : skillsData.en;
+  const preferredTasks =
+    language === "bd" ? preferredTasksData.bd : preferredTasksData.en;
+  const availabilityOptions =
+    language === "bd" ? availabilityOptionsData.bd : availabilityOptionsData.en;
+  const wards = Array.from({ length: 9 }, (_, i) =>
+    language === "bd" ? `ওয়ার্ড ${toBanglaNumber(i + 1)}` : `Ward ${i + 1}`,
+  );
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -256,12 +293,15 @@ export default function VolunteerPage() {
     setFormData((prev) => ({
       ...prev,
       district: districtId,
-      upazila: '', // Reset upazila when district changes
-      ward: '', // Reset ward when district changes
+      upazila: "", // Reset upazila when district changes
+      ward: "", // Reset ward when district changes
     }));
   };
 
-  const handleCheckboxChange = (field: 'skills' | 'preferredTasks' | 'availability', value: string) => {
+  const handleCheckboxChange = (
+    field: "skills" | "preferredTasks" | "availability",
+    value: string,
+  ) => {
     setFormData((prev) => {
       const currentArray = prev[field];
       const newArray = currentArray.includes(value)
@@ -278,46 +318,46 @@ export default function VolunteerPage() {
     const newErrors: Record<string, string> = {};
 
     if (!formData.fullName.trim()) {
-      newErrors.fullName = t('volunteer.nameRequired');
+      newErrors.fullName = t("volunteer.nameRequired");
     }
     if (!formData.mobile.trim()) {
-      newErrors.mobile = t('volunteer.mobileRequired');
-    } else if (!/^01[3-9]\d{8}$/.test(formData.mobile.replace(/\s/g, ''))) {
-      newErrors.mobile = t('volunteer.validMobile');
+      newErrors.mobile = t("volunteer.mobileRequired");
+    } else if (!/^01[3-9]\d{8}$/.test(formData.mobile.replace(/\s/g, ""))) {
+      newErrors.mobile = t("volunteer.validMobile");
     }
     if (!formData.email.trim()) {
-      newErrors.email = t('volunteer.emailRequired');
+      newErrors.email = t("volunteer.emailRequired");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = t('volunteer.validEmail');
+      newErrors.email = t("volunteer.validEmail");
     }
     if (!formData.district) {
-      newErrors.district = t('volunteer.districtRequired');
+      newErrors.district = t("volunteer.districtRequired");
     }
     if (!formData.upazila) {
-      newErrors.upazila = t('volunteer.upazilaRequired');
+      newErrors.upazila = t("volunteer.upazilaRequired");
     }
     if (!formData.ward) {
-      newErrors.ward = t('volunteer.wardRequired');
+      newErrors.ward = t("volunteer.wardRequired");
     }
     if (formData.skills.length === 0) {
-      newErrors.skills = t('volunteer.skillsRequired');
+      newErrors.skills = t("volunteer.skillsRequired");
     }
     if (formData.preferredTasks.length === 0) {
-      newErrors.preferredTasks = t('volunteer.tasksRequired');
+      newErrors.preferredTasks = t("volunteer.tasksRequired");
     }
     if (formData.availability.length === 0) {
-      newErrors.availability = t('volunteer.availabilityRequired');
+      newErrors.availability = t("volunteer.availabilityRequired");
     }
     if (!isUpdateMode) {
       if (!formData.password.trim()) {
-        newErrors.password = t('volunteer.passwordRequired');
+        newErrors.password = t("volunteer.passwordRequired");
       } else if (formData.password.length < 6) {
-        newErrors.password = t('volunteer.passwordMinLength');
+        newErrors.password = t("volunteer.passwordMinLength");
       }
       if (!formData.passwordConfirmation.trim()) {
-        newErrors.passwordConfirmation = t('volunteer.confirmPasswordRequired');
+        newErrors.passwordConfirmation = t("volunteer.confirmPasswordRequired");
       } else if (formData.password !== formData.passwordConfirmation) {
-        newErrors.passwordConfirmation = t('volunteer.passwordMismatch');
+        newErrors.passwordConfirmation = t("volunteer.passwordMismatch");
       }
     }
 
@@ -337,7 +377,11 @@ export default function VolunteerPage() {
       return option ? option.label : id;
     });
     const districtData = districts.find((d) => d.id === formData.district);
-    const districtName = districtData ? (language === 'bd' ? districtData.name : districtData.nameEn) : formData.district;
+    const districtName = districtData
+      ? language === "bd"
+        ? districtData.name
+        : districtData.nameEn
+      : formData.district;
 
     try {
       if (isUpdateMode && token) {
@@ -352,22 +396,26 @@ export default function VolunteerPage() {
           preferred_tasks: formData.preferredTasks,
           availability: availabilityLabels,
         };
-        const response = await fetch(`${API_BASE_URL}/volunteers/update-profile`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`,
+        const response = await fetch(
+          `${API_BASE_URL}/volunteers/update-profile`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(payload),
           },
-          body: JSON.stringify(payload),
-        });
+        );
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || 'Failed to update profile');
+        if (!response.ok)
+          throw new Error(data.message || "Failed to update profile");
         if (data.success) {
           await refreshVolunteer();
           setSubmittedUpdate(true);
         } else {
-          throw new Error(data.message || 'Failed to update profile');
+          throw new Error(data.message || "Failed to update profile");
         }
         return;
       }
@@ -387,25 +435,36 @@ export default function VolunteerPage() {
       };
 
       const response = await fetch(`${API_BASE_URL}/volunteers/store`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: 'Failed to submit volunteer application' }));
-        throw new Error(errorData.message || `Failed to submit: ${response.statusText}`);
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: "Failed to submit volunteer application" }));
+        throw new Error(
+          errorData.message || `Failed to submit: ${response.statusText}`,
+        );
       }
 
       const data = await response.json();
       if (data.success) {
         setSubmitted(true);
       } else {
-        throw new Error(data.message || 'Failed to submit volunteer application');
+        throw new Error(
+          data.message || "Failed to submit volunteer application",
+        );
       }
     } catch (error) {
-      console.error('Error submitting volunteer form:', error);
-      setSubmitError(error instanceof Error ? error.message : t('volunteer.submissionError'));
+      console.error("Error submitting volunteer form:", error);
+      setSubmitError(
+        error instanceof Error ? error.message : t("volunteer.submissionError"),
+      );
     } finally {
       setSubmitting(false);
     }
@@ -415,7 +474,7 @@ export default function VolunteerPage() {
     if (!formData.district) return [];
     const data = upazilasByDistrict[formData.district];
     if (!data) return [];
-    return language === 'bd' ? data.bd : data.en;
+    return language === "bd" ? data.bd : data.en;
   };
 
   if (submittedUpdate) {
@@ -432,16 +491,16 @@ export default function VolunteerPage() {
                 <FaCheckCircle className="text-6xl text-white" />
               </div>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-                {t('dashboard.profileUpdatedSuccess')}
+                {t("dashboard.profileUpdatedSuccess")}
               </h2>
               <p className="text-xl text-slate-600 mb-8">
-                {t('volunteer.applicationSubmitted')}
+                {t("volunteer.applicationSubmitted")}
               </p>
               <Link
                 href="/volunteer/dashboard"
                 className="inline-block px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
               >
-                {t('dashboard.backToDashboard')}
+                {t("dashboard.backToDashboard")}
               </Link>
             </div>
           </motion.div>
@@ -464,23 +523,23 @@ export default function VolunteerPage() {
                 <FaCheckCircle className="text-6xl text-white" />
               </div>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-                {t('volunteer.thankYou')}
+                {t("volunteer.thankYou")}
               </h2>
               <p className="text-xl text-slate-600 mb-8">
-                {t('volunteer.applicationSubmitted')}
+                {t("volunteer.applicationSubmitted")}
               </p>
               <button
                 onClick={() => {
                   setSubmitted(false);
                   setFormData({
-                    fullName: '',
-                    mobile: '',
-                    email: '',
-                    password: '',
-                    passwordConfirmation: '',
-                    district: '',
-                    upazila: '',
-                    ward: '',
+                    fullName: "",
+                    mobile: "",
+                    email: "",
+                    password: "",
+                    passwordConfirmation: "",
+                    district: "",
+                    upazila: "",
+                    ward: "",
                     skills: [],
                     preferredTasks: [],
                     availability: [],
@@ -490,7 +549,7 @@ export default function VolunteerPage() {
                 }}
                 className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
               >
-                {t('volunteer.newApplication')}
+                {t("volunteer.newApplication")}
               </button>
             </div>
           </motion.div>
@@ -518,15 +577,21 @@ export default function VolunteerPage() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
-              {isUpdateMode ? t('dashboard.updateProfile') : t('volunteer.becomeVolunteer')}
+              {isUpdateMode
+                ? t("dashboard.updateProfile")
+                : t("volunteer.becomeVolunteer")}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {isUpdateMode ? t('dashboard.updateProfilePageTitle') : (cmsData?.title || t('volunteer.volunteerRegistration'))}
+                {isUpdateMode
+                  ? t("dashboard.updateProfilePageTitle")
+                  : cmsData?.title || t("volunteer.volunteerRegistration")}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {isUpdateMode ? t('volunteer.personalInfo') : (cmsData?.description || t('volunteer.joinUsDesc'))}
+              {isUpdateMode
+                ? t("volunteer.personalInfo")
+                : cmsData?.description || t("volunteer.joinUsDesc")}
             </p>
           </motion.div>
         </div>
@@ -548,23 +613,28 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaUser className="text-emerald-600" />
-                    {t('volunteer.personalInfo')}
+                    {t("volunteer.personalInfo")}
                   </h2>
                   <div className="space-y-6">
                     {/* Full Name */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                         <FaUser className="text-emerald-600" />
-                        {t('volunteer.fullName')} <span className="text-red-500">*</span>
+                        {t("volunteer.fullName")}{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       {errors.fullName && (
-                        <p className="text-red-500 text-sm font-bold mb-2">{errors.fullName}</p>
+                        <p className="text-red-500 text-sm font-bold mb-2">
+                          {errors.fullName}
+                        </p>
                       )}
                       <input
                         type="text"
                         value={formData.fullName}
-                        onChange={(e) => handleInputChange('fullName', e.target.value)}
-                        placeholder={t('volunteer.enterFullName')}
+                        onChange={(e) =>
+                          handleInputChange("fullName", e.target.value)
+                        }
+                        placeholder={t("volunteer.enterFullName")}
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
                       />
@@ -574,15 +644,20 @@ export default function VolunteerPage() {
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                         <FaPhone className="text-emerald-600" />
-                        {t('volunteer.mobileNumber')} <span className="text-red-500">*</span>
+                        {t("volunteer.mobileNumber")}{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       {errors.mobile && (
-                        <p className="text-red-500 text-sm font-bold mb-2">{errors.mobile}</p>
+                        <p className="text-red-500 text-sm font-bold mb-2">
+                          {errors.mobile}
+                        </p>
                       )}
                       <input
                         type="tel"
                         value={formData.mobile}
-                        onChange={(e) => handleInputChange('mobile', e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("mobile", e.target.value)
+                        }
                         placeholder="01XXXXXXXXX"
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
@@ -593,60 +668,80 @@ export default function VolunteerPage() {
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                         <FaEnvelope className="text-emerald-600" />
-                        {t('volunteer.emailAddress')} <span className="text-red-500">*</span>
+                        {t("volunteer.emailAddress")}{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       {errors.email && (
-                        <p className="text-red-500 text-sm font-bold mb-2">{errors.email}</p>
+                        <p className="text-red-500 text-sm font-bold mb-2">
+                          {errors.email}
+                        </p>
                       )}
                       <input
                         type="email"
                         value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        placeholder={t('contactForm.emailPlaceholder')}
+                        onChange={(e) =>
+                          handleInputChange("email", e.target.value)
+                        }
+                        placeholder={t("contactForm.emailPlaceholder")}
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
                       />
                     </div>
 
                     {!isUpdateMode && (
-                    <>
-                      {/* Password */}
-                      <div>
-                        <label className="block text-slate-700 font-bold mb-3 text-lg">
-                          {t('volunteer.password')} <span className="text-red-500">*</span>
-                        </label>
-                        {errors.password && (
-                          <p className="text-red-500 text-sm font-bold mb-2">{errors.password}</p>
-                        )}
-                        <input
-                          type="password"
-                          value={formData.password}
-                          onChange={(e) => handleInputChange('password', e.target.value)}
-                          placeholder={t('volunteer.passwordPlaceholder')}
-                          className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
-                          required
-                        />
-                      </div>
+                      <>
+                        {/* Password */}
+                        <div>
+                          <label className="block text-slate-700 font-bold mb-3 text-lg">
+                            {t("volunteer.password")}{" "}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          {errors.password && (
+                            <p className="text-red-500 text-sm font-bold mb-2">
+                              {errors.password}
+                            </p>
+                          )}
+                          <input
+                            type="password"
+                            value={formData.password}
+                            onChange={(e) =>
+                              handleInputChange("password", e.target.value)
+                            }
+                            placeholder={t("volunteer.passwordPlaceholder")}
+                            className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                            required
+                          />
+                        </div>
 
-                      {/* Password Confirmation */}
-                      <div>
-                        <label className="block text-slate-700 font-bold mb-3 text-lg">
-                          {t('volunteer.confirmPassword')} <span className="text-red-500">*</span>
-                        </label>
-                        {errors.passwordConfirmation && (
-                          <p className="text-red-500 text-sm font-bold mb-2">{errors.passwordConfirmation}</p>
-                        )}
-                        <input
-                          type="password"
-                          value={formData.passwordConfirmation}
-                          onChange={(e) => handleInputChange('passwordConfirmation', e.target.value)}
-                          placeholder={t('volunteer.confirmPasswordPlaceholder')}
-                          className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
-                          required
-                        />
-                      </div>
-                    </>
-                  )}
+                        {/* Password Confirmation */}
+                        <div>
+                          <label className="block text-slate-700 font-bold mb-3 text-lg">
+                            {t("volunteer.confirmPassword")}{" "}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          {errors.passwordConfirmation && (
+                            <p className="text-red-500 text-sm font-bold mb-2">
+                              {errors.passwordConfirmation}
+                            </p>
+                          )}
+                          <input
+                            type="password"
+                            value={formData.passwordConfirmation}
+                            onChange={(e) =>
+                              handleInputChange(
+                                "passwordConfirmation",
+                                e.target.value,
+                              )
+                            }
+                            placeholder={t(
+                              "volunteer.confirmPasswordPlaceholder",
+                            )}
+                            className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                            required
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -654,16 +749,19 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaMapMarkerAlt className="text-emerald-600" />
-                    {t('volunteer.area')}
+                    {t("volunteer.area")}
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* District */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        {t('volunteer.district')} <span className="text-red-500">*</span>
+                        {t("volunteer.district")}{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       {errors.district && (
-                        <p className="text-red-500 text-sm font-bold mb-2">{errors.district}</p>
+                        <p className="text-red-500 text-sm font-bold mb-2">
+                          {errors.district}
+                        </p>
                       )}
                       <select
                         value={formData.district}
@@ -671,10 +769,14 @@ export default function VolunteerPage() {
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
                       >
-                        <option value="">{t('volunteer.selectDistrict')}</option>
+                        <option value="">
+                          {t("volunteer.selectDistrict")}
+                        </option>
                         {districts.map((district) => (
                           <option key={district.id} value={district.id}>
-                            {language === 'bd' ? district.name : district.nameEn}
+                            {language === "bd"
+                              ? district.name
+                              : district.nameEn}
                           </option>
                         ))}
                       </select>
@@ -683,19 +785,24 @@ export default function VolunteerPage() {
                     {/* Upazila */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        {t('volunteer.upazila')} <span className="text-red-500">*</span>
+                        {t("volunteer.upazila")}{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       {errors.upazila && (
-                        <p className="text-red-500 text-sm font-bold mb-2">{errors.upazila}</p>
+                        <p className="text-red-500 text-sm font-bold mb-2">
+                          {errors.upazila}
+                        </p>
                       )}
                       <select
                         value={formData.upazila}
-                        onChange={(e) => handleInputChange('upazila', e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("upazila", e.target.value)
+                        }
                         disabled={!formData.district}
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         required
                       >
-                        <option value="">{t('volunteer.selectUpazila')}</option>
+                        <option value="">{t("volunteer.selectUpazila")}</option>
                         {getAvailableUpazilas().map((upazila) => (
                           <option key={upazila} value={upazila}>
                             {upazila}
@@ -707,19 +814,24 @@ export default function VolunteerPage() {
                     {/* Ward */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        {t('volunteer.ward')} <span className="text-red-500">*</span>
+                        {t("volunteer.ward")}{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       {errors.ward && (
-                        <p className="text-red-500 text-sm font-bold mb-2">{errors.ward}</p>
+                        <p className="text-red-500 text-sm font-bold mb-2">
+                          {errors.ward}
+                        </p>
                       )}
                       <select
                         value={formData.ward}
-                        onChange={(e) => handleInputChange('ward', e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("ward", e.target.value)
+                        }
                         disabled={!formData.upazila}
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         required
                       >
-                        <option value="">{t('volunteer.selectWard')}</option>
+                        <option value="">{t("volunteer.selectWard")}</option>
                         {wards.map((ward) => (
                           <option key={ward} value={ward}>
                             {ward}
@@ -734,10 +846,12 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaTools className="text-emerald-600" />
-                    {t('volunteer.skills')}
+                    {t("volunteer.skills")}
                   </h2>
                   {errors.skills && (
-                    <p className="text-red-500 text-sm font-bold mb-2">{errors.skills}</p>
+                    <p className="text-red-500 text-sm font-bold mb-2">
+                      {errors.skills}
+                    </p>
                   )}
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {skills.map((skill) => (
@@ -748,7 +862,7 @@ export default function VolunteerPage() {
                         <input
                           type="checkbox"
                           checked={formData.skills.includes(skill)}
-                          onChange={() => handleCheckboxChange('skills', skill)}
+                          onChange={() => handleCheckboxChange("skills", skill)}
                           className="w-5 h-5 text-emerald-600 focus:ring-emerald-500 focus:ring-2 rounded"
                         />
                         <span className="ml-3 text-slate-700 font-semibold group-hover:text-emerald-600 transition-colors">
@@ -763,10 +877,12 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaTasks className="text-emerald-600" />
-                    {t('volunteer.preferredTasks')}
+                    {t("volunteer.preferredTasks")}
                   </h2>
                   {errors.preferredTasks && (
-                    <p className="text-red-500 text-sm font-bold mb-2">{errors.preferredTasks}</p>
+                    <p className="text-red-500 text-sm font-bold mb-2">
+                      {errors.preferredTasks}
+                    </p>
                   )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {preferredTasks.map((task) => (
@@ -777,7 +893,9 @@ export default function VolunteerPage() {
                         <input
                           type="checkbox"
                           checked={formData.preferredTasks.includes(task)}
-                          onChange={() => handleCheckboxChange('preferredTasks', task)}
+                          onChange={() =>
+                            handleCheckboxChange("preferredTasks", task)
+                          }
                           className="w-5 h-5 text-emerald-600 focus:ring-emerald-500 focus:ring-2 rounded"
                         />
                         <span className="ml-3 text-slate-700 font-semibold group-hover:text-emerald-600 transition-colors">
@@ -792,10 +910,12 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaCalendarAlt className="text-emerald-600" />
-                    {t('volunteer.availability')}
+                    {t("volunteer.availability")}
                   </h2>
                   {errors.availability && (
-                    <p className="text-red-500 text-sm font-bold mb-2">{errors.availability}</p>
+                    <p className="text-red-500 text-sm font-bold mb-2">
+                      {errors.availability}
+                    </p>
                   )}
                   <div className="space-y-3">
                     {availabilityOptions.map((option) => (
@@ -806,7 +926,9 @@ export default function VolunteerPage() {
                         <input
                           type="checkbox"
                           checked={formData.availability.includes(option.id)}
-                          onChange={() => handleCheckboxChange('availability', option.id)}
+                          onChange={() =>
+                            handleCheckboxChange("availability", option.id)
+                          }
                           className="w-5 h-5 text-emerald-600 focus:ring-emerald-500 focus:ring-2 rounded"
                         />
                         <span className="ml-3 text-slate-700 font-semibold group-hover:text-emerald-600 transition-colors">
@@ -834,26 +956,26 @@ export default function VolunteerPage() {
                     {submitting ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        {t('common.submitting')}
+                        {t("common.submitting")}
                       </>
                     ) : isUpdateMode ? (
-                      t('common.save')
+                      t("common.save")
                     ) : (
-                      t('volunteer.submitApplication')
+                      t("volunteer.submitApplication")
                     )}
                   </button>
                   <button
                     type="button"
                     onClick={() => {
                       setFormData({
-                        fullName: '',
-                        mobile: '',
-                        email: '',
-                        password: '',
-                        passwordConfirmation: '',
-                        district: '',
-                        upazila: '',
-                        ward: '',
+                        fullName: "",
+                        mobile: "",
+                        email: "",
+                        password: "",
+                        passwordConfirmation: "",
+                        district: "",
+                        upazila: "",
+                        ward: "",
                         skills: [],
                         preferredTasks: [],
                         availability: [],
@@ -863,32 +985,32 @@ export default function VolunteerPage() {
                     }}
                     className="px-8 py-4 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-all"
                   >
-                    {t('common.reset')}
+                    {t("common.reset")}
                   </button>
                 </div>
-                
+
                 {!isUpdateMode && (
-                <div className="text-center pt-4">
-                  <p className="text-slate-600">
-                    ইতিমধ্যে নিবন্ধিত?{' '}
-                    <Link
-                      href="/volunteer/login"
-                      className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
-                    >
-                      লগইন করুন
-                    </Link>
-                  </p>
-                </div>
+                  <div className="text-center pt-4">
+                    <p className="text-slate-600">
+                      ইতিমধ্যে নিবন্ধিত?{" "}
+                      <Link
+                        href="/volunteer/login"
+                        className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+                      >
+                        লগইন করুন
+                      </Link>
+                    </p>
+                  </div>
                 )}
                 {isUpdateMode && (
-                <div className="text-center pt-4">
-                  <Link
-                    href="/volunteer/dashboard"
-                    className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
-                  >
-                    {t('dashboard.backToDashboard')}
-                  </Link>
-                </div>
+                  <div className="text-center pt-4">
+                    <Link
+                      href="/volunteer/dashboard"
+                      className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+                    >
+                      {t("dashboard.backToDashboard")}
+                    </Link>
+                  </div>
                 )}
               </form>
             </div>

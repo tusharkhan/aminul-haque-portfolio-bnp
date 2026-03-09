@@ -1,25 +1,36 @@
-import EventDetailClient from './EventDetailClient';
+import EventDetailClient from "./EventDetailClient";
 
 export const dynamic = "force-dynamic";
 
 // Convert Bengali numerals to English numerals
 function convertBengaliToEnglish(bengaliStr: string): string {
   const bengaliToEnglish: { [key: string]: string } = {
-    '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
-    '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9'
+    "০": "0",
+    "১": "1",
+    "২": "2",
+    "৩": "3",
+    "৪": "4",
+    "৫": "5",
+    "৬": "6",
+    "৭": "7",
+    "৮": "8",
+    "৯": "9",
   };
-  
-  return bengaliStr.split('').map(char => bengaliToEnglish[char] || char).join('');
+
+  return bengaliStr
+    .split("")
+    .map((char) => bengaliToEnglish[char] || char)
+    .join("");
 }
 
 // Parse date string that may contain Bengali numerals
 function parseBengaliDate(dateStr: string): Date {
   // Convert Bengali numerals to English
   const englishDateStr = convertBengaliToEnglish(dateStr);
-  
+
   // Parse the date - format: "YYYY-MM-DD HH:mm:ss"
   // Replace any non-standard separators and parse
-  const cleaned = englishDateStr.replace(/\s+/g, ' ').trim();
+  const cleaned = englishDateStr.replace(/\s+/g, " ").trim();
   return new Date(cleaned);
 }
 
@@ -39,9 +50,11 @@ interface Event {
 // Fetch all events to generate static params
 async function getAllEvents(): Promise<Event[]> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL ||
+      "https://admin.nurul-haque-nur.com/api/v1";
     const response = await fetch(`${apiBaseUrl}/events`, {
-      cache: 'no-store', // No caching - always fetch fresh data
+      cache: "no-store", // No caching - always fetch fresh data
     });
 
     if (!response.ok) {
@@ -61,12 +74,12 @@ async function getAllEvents(): Promise<Event[]> {
     } else if (data.events && Array.isArray(data.events)) {
       eventsData = data.events;
     } else {
-      console.error('Invalid API response format:', data);
+      console.error("Invalid API response format:", data);
       return [];
     }
 
     const activeEvents = eventsData
-      .filter((event: any) => event.status === 'active' || !event.status)
+      .filter((event: any) => event.status === "active" || !event.status)
       .map((event: any) => ({
         id: event.id,
         uuid: event.uuid,
@@ -74,7 +87,7 @@ async function getAllEvents(): Promise<Event[]> {
         event_date_time: event.event_date_time,
         event_date_time_formatted: event.event_date_time_formatted,
         address: event.address,
-        description: event.description || '',
+        description: event.description || "",
         image: event.image,
         map_embed: event.map_embed,
         status: event.status,
@@ -82,7 +95,7 @@ async function getAllEvents(): Promise<Event[]> {
 
     return activeEvents;
   } catch (err) {
-    console.error('Error fetching events:', err);
+    console.error("Error fetching events:", err);
     return [];
   }
 }
@@ -90,11 +103,13 @@ async function getAllEvents(): Promise<Event[]> {
 // Fetch individual event by ID or UUID
 async function getEvent(slug: string): Promise<any | null> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-    
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL ||
+      "https://admin.nurul-haque-nur.com/api/v1";
+
     // Try fetching by slug (could be ID or UUID)
     const response = await fetch(`${apiBaseUrl}/events/${slug}`, {
-      cache: 'no-store', // No caching - always fetch fresh data
+      cache: "no-store", // No caching - always fetch fresh data
     });
 
     if (!response.ok) {
@@ -113,30 +128,30 @@ async function getEvent(slug: string): Promise<any | null> {
     } else if (data.id || data.uuid) {
       eventData = data;
     } else {
-      console.error('Invalid API response format:', data);
+      console.error("Invalid API response format:", data);
       return null;
     }
 
-    if (!eventData || (eventData.status && eventData.status !== 'active')) {
+    if (!eventData || (eventData.status && eventData.status !== "active")) {
       return null;
     }
 
     // Parse date and time from event_date_time_formatted
     const parseDateTime = (formatted: string) => {
-      if (!formatted) return { date: '', time: '' };
+      if (!formatted) return { date: "", time: "" };
       try {
-        const parts = formatted.trim().split(' ');
+        const parts = formatted.trim().split(" ");
         if (parts.length >= 5) {
           const date = `${parts[0]} ${parts[1]} ${parts[2]}`;
           const time = `${parts[3]} ${parts[4]}`;
           return { date, time };
         } else if (parts.length >= 3) {
-          return { date: formatted, time: '' };
+          return { date: formatted, time: "" };
         }
       } catch (e) {
-        console.error('Error parsing date:', e);
+        console.error("Error parsing date:", e);
       }
-      return { date: formatted, time: '' };
+      return { date: formatted, time: "" };
     };
 
     // Check if event is past
@@ -145,38 +160,45 @@ async function getEvent(slug: string): Promise<any | null> {
     const isPast = eventDateTime < now;
 
     // Extract location from address
-    const addressParts = (eventData.address || '').split(',').map((s: string) => s.trim());
-    const location = addressParts[0] || '';
-    const fullAddress = eventData.address || '';
+    const addressParts = (eventData.address || "")
+      .split(",")
+      .map((s: string) => s.trim());
+    const location = addressParts[0] || "";
+    const fullAddress = eventData.address || "";
 
     // Parse map embed URL
-    let mapEmbedUrl = '';
+    let mapEmbedUrl = "";
     if (eventData.map_embed) {
       // Extract iframe src from map_embed HTML
       const iframeMatch = eventData.map_embed.match(/src=["']([^"']+)["']/);
       if (iframeMatch) {
         mapEmbedUrl = iframeMatch[1];
-      } else if (eventData.map_embed.startsWith('http')) {
+      } else if (eventData.map_embed.startsWith("http")) {
         mapEmbedUrl = eventData.map_embed;
       }
     }
 
     // Handle image URL
-    let imageUrl = '/aminul_haque.jpg';
+    let imageUrl = "/aminul_haque.jpg";
     if (eventData.image) {
       const image = eventData.image.trim();
-      if (image.startsWith('http://') || image.startsWith('https://')) {
-        const baseStorageUrl = 'https://admin.aminul-haque.com/storage';
-        const baseStorageUrlHttp = 'http://admin.aminul-haque.com/storage';
-        if (image !== baseStorageUrl && image !== baseStorageUrlHttp && image.length > baseStorageUrl.length) {
+      if (image.startsWith("http://") || image.startsWith("https://")) {
+        const baseStorageUrl = "https://admin.aminul-haque.com/storage";
+        const baseStorageUrlHttp = "http://admin.aminul-haque.com/storage";
+        if (
+          image !== baseStorageUrl &&
+          image !== baseStorageUrlHttp &&
+          image.length > baseStorageUrl.length
+        ) {
           imageUrl = image;
         }
-      } else if (image.startsWith('/')) {
+      } else if (image.startsWith("/")) {
         imageUrl = image;
       } else if (image) {
-        imageUrl = image.startsWith('storage/') || image.startsWith('/storage/')
-          ? `https://admin.aminul-haque.com/${image.replace(/^\//, '')}`
-          : image;
+        imageUrl =
+          image.startsWith("storage/") || image.startsWith("/storage/")
+            ? `https://admin.aminul-haque.com/${image.replace(/^\//, "")}`
+            : image;
       }
     }
 
@@ -184,23 +206,26 @@ async function getEvent(slug: string): Promise<any | null> {
 
     // Map API response to component format
     return {
-      title: eventData.title || 'Untitled Event',
+      title: eventData.title || "Untitled Event",
       date: date,
       time: time,
       location: location,
       fullAddress: fullAddress,
       mapLocation: {
-        embedUrl: mapEmbedUrl || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.564!2d90.3795!3d23.8759!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDUyJzMzLjIiTiA5MMKwMjInNDYuMiJF!5e0!3m2!1sen!2sbd!4v1234567890',
+        embedUrl:
+          mapEmbedUrl ||
+          "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.564!2d90.3795!3d23.8759!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDUyJzMzLjIiTiA5MMKwMjInNDYuMiJF!5e0!3m2!1sen!2sbd!4v1234567890",
       },
-      description: eventData.description || '',
+      description: eventData.description || "",
       isPast: isPast,
       hasVideo: false, // API doesn't provide video info yet
       videos: [],
       image: imageUrl,
-      confirmationMessage: 'নিবন্ধনের পর আপনি ইমেইল এবং এসএমএসের মাধ্যমে নিশ্চিতকরণ বার্তা পাবেন।',
+      confirmationMessage:
+        "নিবন্ধনের পর আপনি ইমেইল এবং এসএমএসের মাধ্যমে নিশ্চিতকরণ বার্তা পাবেন।",
     };
   } catch (err) {
-    console.error('Error fetching event:', err);
+    console.error("Error fetching event:", err);
     return null;
   }
 }
@@ -208,7 +233,7 @@ async function getEvent(slug: string): Promise<any | null> {
 export async function generateStaticParams() {
   const events = await getAllEvents();
   // Return both ID and UUID as slugs to support both formats
-  const params = events.flatMap(event => [
+  const params = events.flatMap((event) => [
     { slug: event.id.toString() },
     { slug: event.uuid },
   ]);
@@ -226,5 +251,3 @@ export default async function EventDetailPage({ params }: PageProps) {
   const event = await getEvent(slug);
   return <EventDetailClient event={event} />;
 }
-
-

@@ -151,7 +151,7 @@ export default function GalleryClient() {
         setError(null);
         const apiBaseUrl =
           process.env.NEXT_PUBLIC_API_BASE_URL ||
-          "https://admin.aminul-haque.com/api/v1";
+          "https://admin.nurul-haque-nur.com/api/v1";
 
         const params = new URLSearchParams();
         params.set("page", page.toString());

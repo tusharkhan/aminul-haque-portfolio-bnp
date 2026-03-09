@@ -14,7 +14,7 @@ import { useTranslation } from "../../i18n/I18nProvider";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "https://admin.aminul-haque.com/api/v1";
+  "https://admin.nurul-haque-nur.com/api/v1";
 
 type Step = "email" | "otp" | "password" | "success";
 
@@ -45,13 +45,17 @@ export default function ForgetPasswordPage() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || t("volunteerForgotPassword.requestFailed"));
+        throw new Error(
+          data.message || t("volunteerForgotPassword.requestFailed"),
+        );
       }
 
       setStep("otp");
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t("volunteerForgotPassword.requestFailed")
+        err instanceof Error
+          ? err.message
+          : t("volunteerForgotPassword.requestFailed"),
       );
     } finally {
       setLoading(false);
@@ -75,13 +79,17 @@ export default function ForgetPasswordPage() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || t("volunteerForgotPassword.requestFailed"));
+        throw new Error(
+          data.message || t("volunteerForgotPassword.requestFailed"),
+        );
       }
 
       setStep("password");
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t("volunteerForgotPassword.requestFailed")
+        err instanceof Error
+          ? err.message
+          : t("volunteerForgotPassword.requestFailed"),
       );
     } finally {
       setLoading(false);
@@ -120,13 +128,17 @@ export default function ForgetPasswordPage() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || t("volunteerForgotPassword.requestFailed"));
+        throw new Error(
+          data.message || t("volunteerForgotPassword.requestFailed"),
+        );
       }
 
       setStep("success");
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t("volunteerForgotPassword.requestFailed")
+        err instanceof Error
+          ? err.message
+          : t("volunteerForgotPassword.requestFailed"),
       );
     } finally {
       setLoading(false);
@@ -229,7 +241,9 @@ export default function ForgetPasswordPage() {
                 <p className="text-slate-600 text-lg">
                   {t("volunteerForgotPassword.otpSubtitle")}
                 </p>
-                <p className="text-sm text-slate-500 mt-2 font-medium">{email}</p>
+                <p className="text-sm text-slate-500 mt-2 font-medium">
+                  {email}
+                </p>
               </div>
 
               <form onSubmit={handleVerifyOtp} className="space-y-6">
@@ -319,7 +333,9 @@ export default function ForgetPasswordPage() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder={t("volunteerForgotPassword.newPasswordPlaceholder")}
+                    placeholder={t(
+                      "volunteerForgotPassword.newPasswordPlaceholder",
+                    )}
                     className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                     required
                     minLength={6}
@@ -337,7 +353,9 @@ export default function ForgetPasswordPage() {
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder={t("volunteerForgotPassword.confirmPasswordPlaceholder")}
+                    placeholder={t(
+                      "volunteerForgotPassword.confirmPasswordPlaceholder",
+                    )}
                     className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                     required
                     minLength={6}

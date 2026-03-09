@@ -116,7 +116,7 @@ export default function CampaignGallerySection() {
       try {
         const apiBaseUrl =
           process.env.NEXT_PUBLIC_API_BASE_URL ||
-          "https://admin.aminul-haque.com/api/v1";
+          "https://admin.nurul-haque-nur.com/api/v1";
         const response = await syncedFetch(`${apiBaseUrl}/albums/list`, {
           cache: "no-store",
         });

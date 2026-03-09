@@ -1,4 +1,4 @@
-import SurveyDetailClient from './SurveyDetailClient';
+import SurveyDetailClient from "./SurveyDetailClient";
 
 interface SurveyQuestion {
   id: number;
@@ -26,7 +26,9 @@ interface SurveyData {
 // Fetch all surveys to generate static params
 async function getAllSurveys(): Promise<Array<{ uuid: string; id: number }>> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL ||
+      "https://admin.nurul-haque-nur.com/api/v1";
     const response = await fetch(`${apiBaseUrl}/surveys`, {
       next: { revalidate: 60 },
     });
@@ -37,7 +39,7 @@ async function getAllSurveys(): Promise<Array<{ uuid: string; id: number }>> {
     }
 
     const data = await response.json();
-    
+
     let surveysData: any[] = [];
     if (data.success && data.data && Array.isArray(data.data)) {
       surveysData = data.data;
@@ -48,13 +50,13 @@ async function getAllSurveys(): Promise<Array<{ uuid: string; id: number }>> {
     }
 
     return surveysData
-      .filter((survey: any) => survey.status === 'active')
+      .filter((survey: any) => survey.status === "active")
       .map((survey: any) => ({
         uuid: survey.uuid,
         id: survey.id,
       }));
   } catch (err) {
-    console.error('Error fetching surveys:', err);
+    console.error("Error fetching surveys:", err);
     return [];
   }
 }
@@ -69,7 +71,9 @@ export async function generateStaticParams() {
 // Fetch individual survey by UUID or ID
 async function getSurvey(id: string): Promise<SurveyData | null> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL ||
+      "https://admin.nurul-haque-nur.com/api/v1";
     const response = await fetch(`${apiBaseUrl}/survey/${id}`, {
       next: { revalidate: 60 },
     });
@@ -80,14 +84,14 @@ async function getSurvey(id: string): Promise<SurveyData | null> {
     }
 
     const data = await response.json();
-    
+
     if (data.success && data.data) {
       return data.data;
     }
-    
+
     return null;
   } catch (err) {
-    console.error('Error fetching survey:', err);
+    console.error("Error fetching survey:", err);
     return null;
   }
 }
@@ -103,4 +107,3 @@ export default async function SurveyDetailPage({ params }: PageProps) {
   const survey = await getSurvey(id);
   return <SurveyDetailClient survey={survey} />;
 }
-

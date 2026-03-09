@@ -3,7 +3,7 @@ import type { Language } from './types';
 
 const DEFAULT_LANGUAGE: Language = 'bd';
 const COOKIE_NAME = 'lang';
-const API_URL = 'https://admin.aminul-haque.com/api/v1/settings/change-language';
+const API_URL = 'https://admin.nurul-haque-nur.com/api/v1/settings/change-language';
 
 export async function getServerLang(): Promise<Language> {
   const cookieStore = await cookies();

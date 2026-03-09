@@ -123,7 +123,7 @@ export default function VoterCenterPage() {
     if (wardQuery) params.append("ward", wardQuery);
     if (voterAreaQuery) params.append("voter_area", voterAreaQuery);
     params.append("page", page.toString());
-    return `https://admin.aminul-haque.com/api/v1/voters?${params.toString()}`;
+    return `https://admin.nurul-haque-nur.com/api/v1/voters?${params.toString()}`;
   };
 
   const handleSearch = async (e: React.FormEvent) => {

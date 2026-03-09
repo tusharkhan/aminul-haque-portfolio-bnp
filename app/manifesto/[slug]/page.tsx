@@ -1,6 +1,6 @@
-import ProposalDetailClient from './ProposalDetailClient';
+import ProposalDetailClient from "./ProposalDetailClient";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 interface ProposalContent {
   id: number;
@@ -21,9 +21,11 @@ interface Proposal {
 // Fetch all proposals (no cache)
 async function getAllProposals(): Promise<Proposal[]> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL ||
+      "https://admin.nurul-haque-nur.com/api/v1";
     const response = await fetch(`${apiBaseUrl}/proposal`, {
-      cache: 'no-store',
+      cache: "no-store",
     });
 
     if (!response.ok) {
@@ -49,7 +51,7 @@ async function getAllProposals(): Promise<Proposal[]> {
 
     return proposalsData;
   } catch (err) {
-    console.error('Error fetching proposals:', err);
+    console.error("Error fetching proposals:", err);
     return [];
   }
 }
@@ -59,15 +61,15 @@ async function getProposal(slug: string): Promise<Proposal | null> {
   try {
     // Fetch all proposals and find the one matching the slug
     const proposals = await getAllProposals();
-    
+
     // Try to find by UUID first, then by ID
     const proposal = proposals.find(
-      (p) => p.uuid === slug || p.id.toString() === slug
+      (p) => p.uuid === slug || p.id.toString() === slug,
     );
 
     return proposal || null;
   } catch (err) {
-    console.error('Error fetching proposal:', err);
+    console.error("Error fetching proposal:", err);
     return null;
   }
 }
@@ -83,4 +85,3 @@ export default async function ProposalDetailPage({ params }: PageProps) {
   const proposal = await getProposal(slug);
   return <ProposalDetailClient proposal={proposal} />;
 }
-

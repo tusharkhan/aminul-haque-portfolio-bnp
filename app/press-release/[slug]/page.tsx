@@ -12,7 +12,7 @@ async function getNewsBySlug(slug: string) {
   try {
     const apiBaseUrl =
       process.env.NEXT_PUBLIC_API_BASE_URL ||
-      "https://admin.aminul-haque.com/api/v1";
+      "https://admin.nurul-haque-nur.com/api/v1";
 
     // Try different endpoint patterns
     const endpoints = [
@@ -72,7 +72,7 @@ export default async function PressReleaseDetailPage({ params }: PageProps) {
       : null;
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_API_BASE_URL ||
-    "https://admin.aminul-haque.com/api/v1";
+    "https://admin.nurul-haque-nur.com/api/v1";
 
   // Build image URLs
   const images: string[] = [];

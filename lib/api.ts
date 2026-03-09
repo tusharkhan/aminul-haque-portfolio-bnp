@@ -1,7 +1,7 @@
 import { IconType } from "react-icons";
 import { waitForLanguageSync } from './languageSync';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.nurul-haque-nur.com/api/v1';
 
 // ─── Settings ──────────────────────────────────────────────
 
