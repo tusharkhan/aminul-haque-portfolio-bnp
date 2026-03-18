@@ -16,7 +16,7 @@ const manifestos = [
     titleKey: "home.aminulManifesto",
     descKey: "home.aminulManifestoDesc",
     icon: FaFileAlt,
-    color: "from-emerald-500 to-green-600",
+    color: "from-red-500 to-red-600",
     link: "/aminul-manifesto"
   },
   {
@@ -30,7 +30,7 @@ const manifestos = [
     titleKey: "home.bnp19Points",
     descKey: "home.bnp19Desc",
     icon: FaChartLine,
-    color: "from-green-500 to-emerald-600",
+    color: "from-red-500 to-red-600",
     link: "/bnp-19-point"
   },
 ];
@@ -84,7 +84,7 @@ export default function ManifestoHighlightsSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
+          <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
             {t('home.ourPromise')}
           </span>
           <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
@@ -136,7 +136,7 @@ export default function ManifestoHighlightsSection() {
             transition={{ duration: 0.6 }}
             className="relative lg:sticky lg:top-24"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
               <div className="relative pb-[56.25%] h-0">
                 <iframe

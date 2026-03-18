@@ -487,7 +487,7 @@ export default function VolunteerPage() {
             className="max-w-2xl w-full text-center"
           >
             <div className="bg-white rounded-3xl p-12 md:p-16 shadow-2xl border border-slate-200">
-              <div className="inline-flex p-6 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full mb-6">
+              <div className="inline-flex p-6 bg-gradient-to-br from-red-500 to-red-600 rounded-full mb-6">
                 <FaCheckCircle className="text-6xl text-white" />
               </div>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
@@ -498,7 +498,7 @@ export default function VolunteerPage() {
               </p>
               <Link
                 href="/volunteer/dashboard"
-                className="inline-block px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+                className="inline-block px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105"
               >
                 {t("dashboard.backToDashboard")}
               </Link>
@@ -519,7 +519,7 @@ export default function VolunteerPage() {
             className="max-w-2xl w-full text-center"
           >
             <div className="bg-white rounded-3xl p-12 md:p-16 shadow-2xl border border-slate-200">
-              <div className="inline-flex p-6 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full mb-6">
+              <div className="inline-flex p-6 bg-gradient-to-br from-red-500 to-red-600 rounded-full mb-6">
                 <FaCheckCircle className="text-6xl text-white" />
               </div>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
@@ -547,7 +547,7 @@ export default function VolunteerPage() {
                   setErrors({});
                   setSubmitError(null);
                 }}
-                className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+                className="px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105"
               >
                 {t("volunteer.newApplication")}
               </button>
@@ -561,7 +561,7 @@ export default function VolunteerPage() {
   if (isUpdateMode && !profileLoaded) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 via-white to-slate-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600" />
       </main>
     );
   }
@@ -569,20 +569,20 @@ export default function VolunteerPage() {
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <section className="relative py-32 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50">
+      <section className="relative py-32 px-4 bg-gradient-to-br from-red-50 via-white to-red-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
+            <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               {isUpdateMode
                 ? t("dashboard.updateProfile")
                 : t("volunteer.becomeVolunteer")}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
-              <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
                 {isUpdateMode
                   ? t("dashboard.updateProfilePageTitle")
                   : cmsData?.title || t("volunteer.volunteerRegistration")}
@@ -606,20 +606,20 @@ export default function VolunteerPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Personal Information Section */}
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
-                    <FaUser className="text-emerald-600" />
+                    <FaUser className="text-red-600" />
                     {t("volunteer.personalInfo")}
                   </h2>
                   <div className="space-y-6">
                     {/* Full Name */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
-                        <FaUser className="text-emerald-600" />
+                        <FaUser className="text-red-600" />
                         {t("volunteer.fullName")}{" "}
                         <span className="text-red-500">*</span>
                       </label>
@@ -635,7 +635,7 @@ export default function VolunteerPage() {
                           handleInputChange("fullName", e.target.value)
                         }
                         placeholder={t("volunteer.enterFullName")}
-                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                         required
                       />
                     </div>
@@ -643,7 +643,7 @@ export default function VolunteerPage() {
                     {/* Mobile */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
-                        <FaPhone className="text-emerald-600" />
+                        <FaPhone className="text-red-600" />
                         {t("volunteer.mobileNumber")}{" "}
                         <span className="text-red-500">*</span>
                       </label>
@@ -659,7 +659,7 @@ export default function VolunteerPage() {
                           handleInputChange("mobile", e.target.value)
                         }
                         placeholder="01XXXXXXXXX"
-                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                         required
                       />
                     </div>
@@ -667,7 +667,7 @@ export default function VolunteerPage() {
                     {/* Email */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
-                        <FaEnvelope className="text-emerald-600" />
+                        <FaEnvelope className="text-red-600" />
                         {t("volunteer.emailAddress")}{" "}
                         <span className="text-red-500">*</span>
                       </label>
@@ -683,7 +683,7 @@ export default function VolunteerPage() {
                           handleInputChange("email", e.target.value)
                         }
                         placeholder={t("contactForm.emailPlaceholder")}
-                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                         required
                       />
                     </div>
@@ -708,7 +708,7 @@ export default function VolunteerPage() {
                               handleInputChange("password", e.target.value)
                             }
                             placeholder={t("volunteer.passwordPlaceholder")}
-                            className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                            className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                             required
                           />
                         </div>
@@ -736,7 +736,7 @@ export default function VolunteerPage() {
                             placeholder={t(
                               "volunteer.confirmPasswordPlaceholder",
                             )}
-                            className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                            className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                             required
                           />
                         </div>
@@ -748,7 +748,7 @@ export default function VolunteerPage() {
                 {/* Area Section */}
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
-                    <FaMapMarkerAlt className="text-emerald-600" />
+                    <FaMapMarkerAlt className="text-red-600" />
                     {t("volunteer.area")}
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -766,7 +766,7 @@ export default function VolunteerPage() {
                       <select
                         value={formData.district}
                         onChange={(e) => handleDistrictChange(e.target.value)}
-                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                         required
                       >
                         <option value="">
@@ -799,7 +799,7 @@ export default function VolunteerPage() {
                           handleInputChange("upazila", e.target.value)
                         }
                         disabled={!formData.district}
-                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         required
                       >
                         <option value="">{t("volunteer.selectUpazila")}</option>
@@ -828,7 +828,7 @@ export default function VolunteerPage() {
                           handleInputChange("ward", e.target.value)
                         }
                         disabled={!formData.upazila}
-                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         required
                       >
                         <option value="">{t("volunteer.selectWard")}</option>
@@ -845,7 +845,7 @@ export default function VolunteerPage() {
                 {/* Skills Section */}
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
-                    <FaTools className="text-emerald-600" />
+                    <FaTools className="text-red-600" />
                     {t("volunteer.skills")}
                   </h2>
                   {errors.skills && (
@@ -857,15 +857,15 @@ export default function VolunteerPage() {
                     {skills.map((skill) => (
                       <label
                         key={skill}
-                        className="flex items-center p-4 rounded-xl border-2 border-slate-200 hover:border-emerald-500 cursor-pointer transition-all group"
+                        className="flex items-center p-4 rounded-xl border-2 border-slate-200 hover:border-red-500 cursor-pointer transition-all group"
                       >
                         <input
                           type="checkbox"
                           checked={formData.skills.includes(skill)}
                           onChange={() => handleCheckboxChange("skills", skill)}
-                          className="w-5 h-5 text-emerald-600 focus:ring-emerald-500 focus:ring-2 rounded"
+                          className="w-5 h-5 text-red-600 focus:ring-red-500 focus:ring-2 rounded"
                         />
-                        <span className="ml-3 text-slate-700 font-semibold group-hover:text-emerald-600 transition-colors">
+                        <span className="ml-3 text-slate-700 font-semibold group-hover:text-red-600 transition-colors">
                           {skill}
                         </span>
                       </label>
@@ -876,7 +876,7 @@ export default function VolunteerPage() {
                 {/* Preferred Tasks Section */}
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
-                    <FaTasks className="text-emerald-600" />
+                    <FaTasks className="text-red-600" />
                     {t("volunteer.preferredTasks")}
                   </h2>
                   {errors.preferredTasks && (
@@ -888,7 +888,7 @@ export default function VolunteerPage() {
                     {preferredTasks.map((task) => (
                       <label
                         key={task}
-                        className="flex items-center p-4 rounded-xl border-2 border-slate-200 hover:border-emerald-500 cursor-pointer transition-all group"
+                        className="flex items-center p-4 rounded-xl border-2 border-slate-200 hover:border-red-500 cursor-pointer transition-all group"
                       >
                         <input
                           type="checkbox"
@@ -896,9 +896,9 @@ export default function VolunteerPage() {
                           onChange={() =>
                             handleCheckboxChange("preferredTasks", task)
                           }
-                          className="w-5 h-5 text-emerald-600 focus:ring-emerald-500 focus:ring-2 rounded"
+                          className="w-5 h-5 text-red-600 focus:ring-red-500 focus:ring-2 rounded"
                         />
-                        <span className="ml-3 text-slate-700 font-semibold group-hover:text-emerald-600 transition-colors">
+                        <span className="ml-3 text-slate-700 font-semibold group-hover:text-red-600 transition-colors">
                           {task}
                         </span>
                       </label>
@@ -909,7 +909,7 @@ export default function VolunteerPage() {
                 {/* Availability Section */}
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
-                    <FaCalendarAlt className="text-emerald-600" />
+                    <FaCalendarAlt className="text-red-600" />
                     {t("volunteer.availability")}
                   </h2>
                   {errors.availability && (
@@ -921,7 +921,7 @@ export default function VolunteerPage() {
                     {availabilityOptions.map((option) => (
                       <label
                         key={option.id}
-                        className="flex items-center p-4 rounded-xl border-2 border-slate-200 hover:border-emerald-500 cursor-pointer transition-all group"
+                        className="flex items-center p-4 rounded-xl border-2 border-slate-200 hover:border-red-500 cursor-pointer transition-all group"
                       >
                         <input
                           type="checkbox"
@@ -929,9 +929,9 @@ export default function VolunteerPage() {
                           onChange={() =>
                             handleCheckboxChange("availability", option.id)
                           }
-                          className="w-5 h-5 text-emerald-600 focus:ring-emerald-500 focus:ring-2 rounded"
+                          className="w-5 h-5 text-red-600 focus:ring-red-500 focus:ring-2 rounded"
                         />
-                        <span className="ml-3 text-slate-700 font-semibold group-hover:text-emerald-600 transition-colors">
+                        <span className="ml-3 text-slate-700 font-semibold group-hover:text-red-600 transition-colors">
                           {option.label}
                         </span>
                       </label>
@@ -951,7 +951,7 @@ export default function VolunteerPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex-1 px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                    className="flex-1 px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                   >
                     {submitting ? (
                       <>
@@ -995,7 +995,7 @@ export default function VolunteerPage() {
                       ইতিমধ্যে নিবন্ধিত?{" "}
                       <Link
                         href="/volunteer/login"
-                        className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+                        className="text-red-600 hover:text-red-700 font-bold transition-colors"
                       >
                         লগইন করুন
                       </Link>
@@ -1006,7 +1006,7 @@ export default function VolunteerPage() {
                   <div className="text-center pt-4">
                     <Link
                       href="/volunteer/dashboard"
-                      className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+                      className="text-red-600 hover:text-red-700 font-bold transition-colors"
                     >
                       {t("dashboard.backToDashboard")}
                     </Link>

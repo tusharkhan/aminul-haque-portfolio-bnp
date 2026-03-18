@@ -312,19 +312,19 @@ export default function EventsClient({
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <section className="relative py-32 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50">
+      <section className="relative py-32 px-4 bg-gradient-to-br from-red-50 via-white to-red-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
+            <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaCalendarAlt className="inline mr-2" />
               {t("events.ourActivities")}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
-              <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
                 {cmsData?.title || t("events.allEvents")}
               </span>
             </h1>
@@ -349,8 +349,8 @@ export default function EventsClient({
               onClick={() => setFilter("upcoming")}
               className={`px-8 py-3 rounded-xl font-bold transition-all transform hover:scale-105 ${
                 filter === "upcoming"
-                  ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-xl"
-                  : "bg-white text-slate-700 border-2 border-slate-200 hover:border-emerald-500 hover:text-emerald-600 shadow-lg"
+                  ? "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-xl"
+                  : "bg-white text-slate-700 border-2 border-slate-200 hover:border-red-500 hover:text-red-600 shadow-lg"
               }`}
             >
               {t("events.upcoming")} ({getEventCount(upcomingEvents.length)})
@@ -374,7 +374,7 @@ export default function EventsClient({
             transition={{ duration: 0.6, delay: 0.2 }}
             className="bg-white rounded-2xl p-6 shadow-xl border border-slate-200"
           >
-            <div className="flex items-center gap-2 text-emerald-700 font-bold mb-6 text-lg">
+            <div className="flex items-center gap-2 text-red-700 font-bold mb-6 text-lg">
               <FaFilter />
               <span>{t("events.filterOptions")}</span>
             </div>
@@ -390,7 +390,7 @@ export default function EventsClient({
                   value={titleFilter}
                   onChange={(e) => setTitleFilter(e.target.value)}
                   placeholder={t("events.searchEventTitle")}
-                  className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-emerald-500 focus:outline-none shadow-lg text-slate-700"
+                  className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-red-500 focus:outline-none shadow-lg text-slate-700"
                 />
               </div>
 
@@ -403,7 +403,7 @@ export default function EventsClient({
                   type="date"
                   value={dateFilter}
                   onChange={(e) => setDateFilter(e.target.value)}
-                  className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-emerald-500 focus:outline-none shadow-lg text-slate-700"
+                  className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-red-500 focus:outline-none shadow-lg text-slate-700"
                 />
               </div>
             </div>
@@ -485,7 +485,7 @@ export default function EventsClient({
                     setTitleFilter("");
                     setDateFilter("");
                   }}
-                  className="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all"
+                  className="px-6 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all"
                 >
                   {t("events.clearAllFilters")}
                 </button>
@@ -515,7 +515,7 @@ export default function EventsClient({
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/contact"
-                  className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105"
+                  className="px-10 py-4 bg-gradient-to-r from-red-600 to-red-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-red-700 hover:to-red-700 transition-all transform hover:scale-105"
                 >
                   {t("nav.contactUs")}
                 </a>

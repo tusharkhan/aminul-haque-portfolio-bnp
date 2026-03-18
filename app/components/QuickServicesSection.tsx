@@ -98,17 +98,17 @@ export default function QuickServicesSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="group relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all"></div>
             <Link href="/press-release" className="relative block bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all border border-slate-200 h-full hover:-translate-y-2">
               <div className="flex flex-col h-full">
-                <div className="flex-shrink-0 p-5 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl mb-6 w-fit">
+                <div className="flex-shrink-0 p-5 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl mb-6 w-fit">
                   <FaNewspaper className="text-4xl text-white" />
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 mb-3">{t('home.pressRelease')}</h3>
                 <p className="text-slate-600 leading-relaxed mb-6 flex-1">
                   {t('home.pressReleaseDesc')}
                 </p>
-                <div className="flex items-center gap-2 text-emerald-600 font-bold group-hover:gap-3 transition-all">
+                <div className="flex items-center gap-2 text-red-600 font-bold group-hover:gap-3 transition-all">
                   {t('home.viewAllReleases')} <FaArrowRight />
                 </div>
               </div>

@@ -691,15 +691,15 @@ export default function VoterCenterPage() {
                 ) : searchResults.length > 0 ? (
                   <>
                     {/* Success Message with Total Count */}
-                    <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 text-center">
+                    <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 text-center">
                       <div className="text-5xl mb-3">✅</div>
-                      <h3 className="text-2xl font-bold text-green-800">
+                      <h3 className="text-2xl font-bold text-red-800">
                         {totalVoters === 1
                           ? t("voterCenter.infoFound")
                           : `${language === "bd" ? toBanglaNumber(totalVoters) : totalVoters} ${t("voterCenter.votersFound")}`}
                       </h3>
                       {totalVoters > searchResults.length && (
-                        <p className="text-green-600 mt-2 text-sm">
+                        <p className="text-red-600 mt-2 text-sm">
                           {language === "bd"
                             ? `${toBanglaNumber(searchResults.length)} জন দেখানো হচ্ছে - স্ক্রোল করুন আরও দেখতে`
                             : `Showing ${searchResults.length} - Scroll to load more`}
@@ -819,7 +819,7 @@ export default function VoterCenterPage() {
                           className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200"
                         >
                           <h3 className="text-xl font-black text-slate-900 mb-4 flex items-center gap-3">
-                            <FaBuilding className="text-emerald-600" />
+                            <FaBuilding className="text-red-600" />
                             {t("voterCenter.votingCenterDetails")}
                           </h3>
                           <div className="space-y-4">
@@ -833,7 +833,7 @@ export default function VoterCenterPage() {
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {voter.voter_area && (
-                                <div className="p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border-l-4 border-emerald-600">
+                                <div className="p-4 bg-gradient-to-r from-red-50 to-red-50 rounded-xl border-l-4 border-red-600">
                                   <p className="text-sm text-slate-600 mb-1">
                                     {t("voterCenter.voterArea")}
                                   </p>
@@ -967,7 +967,7 @@ export default function VoterCenterPage() {
                     setHasNextPage(false);
                     setCurrentPage(1);
                   }}
-                  className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+                  className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105"
                 >
                   {t("common.close")}
                 </button>
@@ -997,13 +997,13 @@ export default function VoterCenterPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/contact"
-                  className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105"
+                  className="px-10 py-4 bg-gradient-to-r from-red-600 to-red-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-red-700 hover:to-red-700 transition-all transform hover:scale-105"
                 >
                   {t("nav.contactUs")}
                 </a>
                 <a
                   href="tel:+880 1552-161616"
-                  className="px-10 py-4 bg-white text-emerald-600 font-bold rounded-xl shadow-xl hover:shadow-2xl border-2 border-emerald-600 hover:bg-emerald-50 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                  className="px-10 py-4 bg-white text-red-600 font-bold rounded-xl shadow-xl hover:shadow-2xl border-2 border-red-600 hover:bg-red-50 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
                 >
                   <FaPhone />
                   {t("common.callUs")}

@@ -79,8 +79,8 @@ export default function ContactForm() {
 
   if (submitted) {
     return (
-      <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-12 text-center">
-        <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6">
+      <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-12 text-center">
+        <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center mx-auto mb-6">
           <FaCheckCircle className="text-4xl text-white" />
         </div>
         <h3 className="text-2xl font-bold text-slate-900 mb-3">
@@ -114,7 +114,7 @@ export default function ContactForm() {
             onChange={handleChange}
             required
             disabled={loading}
-            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder={t("contactForm.namePlaceholder")}
           />
         </div>
@@ -137,7 +137,7 @@ export default function ContactForm() {
             onChange={handleChange}
             required
             disabled={loading}
-            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder={t("contactForm.emailPlaceholder")}
           />
         </div>
@@ -159,7 +159,7 @@ export default function ContactForm() {
             required
             rows={6}
             disabled={loading}
-            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder={t("contactForm.messagePlaceholder")}
           />
         </div>
@@ -169,7 +169,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-green-600 to-green-700 px-8 py-4 text-white font-bold text-lg shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        className="w-full flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 px-8 py-4 text-white font-bold text-lg shadow-lg hover:shadow-xl hover:from-red-700 hover:to-red-800 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
       >
         {loading ? (
           <>

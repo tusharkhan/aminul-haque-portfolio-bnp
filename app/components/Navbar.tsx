@@ -90,10 +90,10 @@ export default function Navbar() {
             className="flex items-center space-x-2 xl:space-x-3 group flex-shrink-0"
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl blur opacity-50 group-hover:opacity-75 transition-all"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-xl blur opacity-50 group-hover:opacity-75 transition-all"></div>
             </div>
             <div>
-              <div className="text-lg xl:text-xl font-black bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              <div className="text-lg xl:text-xl font-black bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
                 {t("hero.title")}
               </div>
               <div className="text-[10px] xl:text-xs font-semibold text-slate-600 hidden sm:block">
@@ -121,13 +121,13 @@ export default function Navbar() {
                       className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg flex items-center gap-1 xl:gap-2 ${
                         isDropdownActive
                           ? "text-white"
-                          : "text-slate-700 hover:text-emerald-600"
+                          : "text-slate-700 hover:text-red-600"
                       }`}
                     >
                       {isDropdownActive && (
                         <motion.div
                           layoutId="activeTab"
-                          className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-lg"
+                          className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-lg"
                           initial={false}
                           transition={{
                             type: "spring",
@@ -161,8 +161,8 @@ export default function Navbar() {
                                 href={dropItem.href}
                                 className={`block px-4 py-3 font-bold text-sm transition-all ${
                                   isActive
-                                    ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white"
-                                    : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                    ? "bg-gradient-to-r from-red-500 to-red-600 text-white"
+                                    : "text-slate-700 hover:bg-red-50 hover:text-red-600"
                                 }`}
                               >
                                 {t(dropItem.labelKey)}
@@ -184,13 +184,13 @@ export default function Navbar() {
                   className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg whitespace-nowrap ${
                     isActive
                       ? "text-white"
-                      : "text-slate-700 hover:text-emerald-600"
+                      : "text-slate-700 hover:text-red-600"
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-lg"
+                      className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-lg"
                       initial={false}
                       transition={{
                         type: "spring",
@@ -211,7 +211,7 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setOpenUserDropdown(!openUserDropdown)}
-                  className="flex items-center gap-2 px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
+                  className="flex items-center gap-2 px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 whitespace-nowrap"
                 >
                   <FaUser />
                   {volunteer?.full_name || "User"}
@@ -233,7 +233,7 @@ export default function Navbar() {
                       <Link
                         href="/volunteer/dashboard"
                         onClick={() => setOpenUserDropdown(false)}
-                        className="flex items-center gap-3 px-4 py-3 font-bold text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all"
+                        className="flex items-center gap-3 px-4 py-3 font-bold text-sm text-slate-700 hover:bg-red-50 hover:text-red-600 transition-all"
                       >
                         <FaUser />
                         {t("nav.profile")}
@@ -241,7 +241,7 @@ export default function Navbar() {
                       <Link
                         href="/volunteer/tasks"
                         onClick={() => setOpenUserDropdown(false)}
-                        className="flex items-center gap-3 px-4 py-3 font-bold text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all"
+                        className="flex items-center gap-3 px-4 py-3 font-bold text-sm text-slate-700 hover:bg-red-50 hover:text-red-600 transition-all"
                       >
                         <FaTasks />
                         {t("nav.volunteerTasks")}
@@ -267,7 +267,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/contact"
-                  className="px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
+                  className="px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 whitespace-nowrap"
                 >
                   {t("nav.contact")}
                 </Link>
@@ -278,7 +278,7 @@ export default function Navbar() {
             <button
               onClick={toggleLanguage}
               disabled={isChangingLanguage}
-              className="relative w-20 h-9 bg-gradient-to-r from-slate-100 to-slate-200 rounded-full p-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 shadow-inner disabled:opacity-70"
+              className="relative w-20 h-9 bg-gradient-to-r from-slate-100 to-slate-200 rounded-full p-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-inner disabled:opacity-70"
               aria-label="Toggle language"
             >
               {/* Background labels */}
@@ -296,13 +296,13 @@ export default function Navbar() {
               </div>
               {/* Sliding indicator */}
               <motion.div
-                className="absolute top-1 w-9 h-7 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 shadow-lg"
+                className="absolute top-1 w-9 h-7 rounded-full bg-gradient-to-r from-red-500 to-red-600 shadow-lg"
                 animate={{ x: language === "en" ? 40 : 0 }}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
               />
               {isChangingLanguage && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded-full">
-                  <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
                 </div>
               )}
             </button>
@@ -325,7 +325,7 @@ export default function Navbar() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 10, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="text-sm font-bold text-emerald-600"
+                    className="text-sm font-bold text-red-600"
                   >
                     বাংলা
                   </motion.span>
@@ -336,14 +336,14 @@ export default function Navbar() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 10, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="text-sm font-bold text-emerald-600"
+                    className="text-sm font-bold text-red-600"
                   >
                     EN
                   </motion.span>
                 )}
               </AnimatePresence>
               {isChangingLanguage && (
-                <div className="w-3 h-3 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                <div className="w-3 h-3 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
               )}
             </button>
 
@@ -384,7 +384,7 @@ export default function Navbar() {
                               isMobileDropdownOpen ? null : item.labelKey,
                             )
                           }
-                          className="w-full flex items-center justify-between px-4 py-2 font-bold text-sm text-emerald-700 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-all"
+                          className="w-full flex items-center justify-between px-4 py-2 font-bold text-sm text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-all"
                         >
                           <span>{translatedLabel}</span>
                           <FaChevronDown
@@ -413,7 +413,7 @@ export default function Navbar() {
                                       }}
                                       className={`block px-6 py-3 font-bold rounded-xl transition-all ${
                                         isActive
-                                          ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg"
+                                          ? "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg"
                                           : "bg-slate-50 text-slate-700 hover:bg-slate-100"
                                       }`}
                                     >
@@ -440,7 +440,7 @@ export default function Navbar() {
                       }}
                       className={`block px-4 py-3 font-bold rounded-xl transition-all ${
                         isActive
-                          ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg"
+                          ? "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg"
                           : "bg-slate-50 text-slate-700 hover:bg-slate-100"
                       }`}
                     >
@@ -456,7 +456,7 @@ export default function Navbar() {
                         setIsOpen(false);
                         setOpenMobileDropdown(null);
                       }}
-                      className="block px-4 py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-center"
+                      className="block px-4 py-3 bg-red-50 text-red-700 font-bold rounded-xl text-center"
                     >
                       <FaUser className="inline mr-2" />
                       {t("nav.profile")}
@@ -467,7 +467,7 @@ export default function Navbar() {
                         setIsOpen(false);
                         setOpenMobileDropdown(null);
                       }}
-                      className="block px-4 py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-center"
+                      className="block px-4 py-3 bg-red-50 text-red-700 font-bold rounded-xl text-center"
                     >
                       <FaTasks className="inline mr-2" />
                       {t("nav.volunteerTasks")}

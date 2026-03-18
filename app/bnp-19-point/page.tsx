@@ -1,10 +1,10 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FaFileAlt, FaFlag } from 'react-icons/fa';
-import { toBanglaNumber } from '@/lib/utils';
-import { useTranslation } from '../i18n/I18nProvider';
-import { fetchCmsPage, type CmsPage } from '@/lib/api';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { FaFileAlt, FaFlag } from "react-icons/fa";
+import { toBanglaNumber } from "@/lib/utils";
+import { useTranslation } from "../i18n/I18nProvider";
+import { fetchCmsPage, type CmsPage } from "@/lib/api";
 
 export default function BNP19PointPage() {
   const { t, language } = useTranslation();
@@ -12,45 +12,62 @@ export default function BNP19PointPage() {
   const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
 
   useEffect(() => {
-    fetchCmsPage('bnp-19-point', 'historic-program').then(setCmsData);
-    fetchCmsPage('bnp-19-point', 'end-section').then(setEndCmsData);
+    fetchCmsPage("bnp-19-point", "historic-program").then(setCmsData);
+    fetchCmsPage("bnp-19-point", "end-section").then(setEndCmsData);
   }, []);
 
   // 19 points with translation keys
   const pointKeys = [
-    'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10',
-    'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19'
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "p5",
+    "p6",
+    "p7",
+    "p8",
+    "p9",
+    "p10",
+    "p11",
+    "p12",
+    "p13",
+    "p14",
+    "p15",
+    "p16",
+    "p17",
+    "p18",
+    "p19",
   ];
 
   // Convert number based on language
   const formatNumber = (num: number) => {
-    return language === 'bd' ? toBanglaNumber(num) : num.toString();
+    return language === "bd" ? toBanglaNumber(num) : num.toString();
   };
 
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <section className="relative py-32 px-4 bg-gradient-to-br from-green-50 via-white to-emerald-50">
+      <section className="relative py-32 px-4 bg-gradient-to-br from-red-50 via-white to-red-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block px-6 py-2 bg-green-100 text-green-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
+            <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaFlag className="inline mr-2" />
-              {t('bnp19Point.heroTag')}
+              {t("bnp19Point.heroTag")}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
-              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                {cmsData?.title || t('bnp19Point.heroTitle')}
+              <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
+                {cmsData?.title || t("bnp19Point.heroTitle")}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto mb-4">
-              {cmsData?.description || t('bnp19Point.heroSubtitle')}
+              {cmsData?.description || t("bnp19Point.heroSubtitle")}
             </p>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              {t('bnp19Point.heroDesc')}
+              {t("bnp19Point.heroDesc")}
             </p>
           </motion.div>
         </div>
@@ -65,12 +82,12 @@ export default function BNP19PointPage() {
             viewport={{ once: true }}
             className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200"
           >
-            <FaFileAlt className="text-6xl text-green-600 mx-auto mb-6" />
+            <FaFileAlt className="text-6xl text-red-600 mx-auto mb-6" />
             <h2 className="text-4xl font-black text-slate-900 mb-6 text-center">
-              {t('bnp19Point.introTitle')}
+              {t("bnp19Point.introTitle")}
             </h2>
             <p className="text-xl text-slate-700 leading-relaxed text-center">
-              {t('bnp19Point.introText')}
+              {t("bnp19Point.introText")}
             </p>
           </motion.div>
         </div>
@@ -86,7 +103,7 @@ export default function BNP19PointPage() {
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-              {t('bnp19Point.pointsTitle')}
+              {t("bnp19Point.pointsTitle")}
             </h2>
           </motion.div>
 
@@ -100,10 +117,10 @@ export default function BNP19PointPage() {
                 transition={{ duration: 0.6, delay: (idx % 12) * 0.05 }}
                 className="group relative h-full"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-all"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-all"></div>
                 <div className="relative bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all border border-slate-200 h-full flex flex-col">
                   <div className="flex flex-col items-center text-center mb-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center text-white font-black text-2xl shadow-lg mb-3">
+                    <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center text-white font-black text-2xl shadow-lg mb-3">
                       {formatNumber(idx + 1)}
                     </div>
                     <h3 className="text-lg font-black text-slate-900 leading-tight">
@@ -132,16 +149,16 @@ export default function BNP19PointPage() {
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {endCmsData?.title || t('bnp19Point.ctaTitle')}
+                {endCmsData?.title || t("bnp19Point.ctaTitle")}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {endCmsData?.description || t('bnp19Point.ctaText')}
+                {endCmsData?.description || t("bnp19Point.ctaText")}
               </p>
               <a
                 href="/contact"
-                className="inline-block px-10 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-green-700 hover:to-emerald-700 transition-all transform hover:scale-105"
+                className="inline-block px-10 py-4 bg-gradient-to-r from-red-600 to-red-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-red-700 hover:to-red-700 transition-all transform hover:scale-105"
               >
-                {t('bnp19Point.ctaButton')}
+                {t("bnp19Point.ctaButton")}
               </a>
             </div>
           </motion.div>

@@ -108,7 +108,7 @@ export default function TournamentClient() {
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
               {t("tournament.activeTournaments")}
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-green-600 mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-red-600 mx-auto rounded-full"></div>
           </motion.div>
 
           {loading ? (
@@ -117,7 +117,7 @@ export default function TournamentClient() {
               animate={{ opacity: 1 }}
               className="text-center py-16"
             >
-              <FaSpinner className="text-5xl text-emerald-500 mx-auto mb-4 animate-spin" />
+              <FaSpinner className="text-5xl text-red-500 mx-auto mb-4 animate-spin" />
               <p className="text-xl text-slate-500">{t("common.loading")}</p>
             </motion.div>
           ) : error ? (
@@ -165,7 +165,7 @@ export default function TournamentClient() {
 
                       {/* Sport Badge */}
                       <div className="absolute top-4 left-4">
-                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-full text-sm font-bold shadow-lg">
+                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full text-sm font-bold shadow-lg">
                           {tournament.sports_icon && (
                             <Image
                               src={tournament.sports_icon}
@@ -205,8 +205,8 @@ export default function TournamentClient() {
                       {/* Info Items */}
                       <div className="space-y-3 mb-6">
                         <div className="flex items-center gap-3 text-slate-600">
-                          <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <FaCalendarAlt className="text-emerald-600 text-sm" />
+                          <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <FaCalendarAlt className="text-red-600 text-sm" />
                           </div>
                           <div>
                             <span className="text-xs text-slate-400 block">
@@ -264,7 +264,7 @@ export default function TournamentClient() {
                       {/* Join Button */}
                       <button
                         onClick={() => setSelectedTournament(tournament)}
-                        className="w-full py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-2 group"
+                        className="w-full py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 flex items-center justify-center gap-2 group"
                       >
                         <FaTrophy className="group-hover:rotate-12 transition-transform" />
                         {t("tournament.joinNow")}
@@ -331,8 +331,8 @@ export default function TournamentClient() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-emerald-50 rounded-xl p-4">
-                    <div className="flex items-center gap-2 text-emerald-600 mb-1">
+                  <div className="bg-red-50 rounded-xl p-4">
+                    <div className="flex items-center gap-2 text-red-600 mb-1">
                       <FaCalendarAlt />
                       <span className="text-xs font-medium">
                         {t("tournament.startDate")}
@@ -386,7 +386,7 @@ export default function TournamentClient() {
                     href={selectedTournament.registration_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-3"
+                    className="w-full py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 flex items-center justify-center gap-3"
                   >
                     <FaExternalLinkAlt />
                     {t("tournament.joinNow")}

@@ -86,17 +86,17 @@ export default function SiteFooter() {
   const email = settings?.company_email || 'captainaminulhoquedhaka16@gmail.com';
 
   return (
-    <footer className="bg-gradient-to-b from-slate-50 to-slate-100 border-t-4 border-emerald-500">
+    <footer className="bg-gradient-to-b from-slate-50 to-slate-100 border-t-4 border-red-500">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* About Section */}
           <div>
             <div className="flex items-center mb-6">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl blur opacity-50"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-xl blur opacity-50"></div>
               </div>
               <div>
-                <div className="text-xl font-black bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                <div className="text-xl font-black bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
                   {t('hero.title')}
                 </div>
                 <div className="text-xs font-semibold text-slate-600">{t('footer.servingPeople')}</div>
@@ -123,7 +123,7 @@ export default function SiteFooter() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-black text-slate-900 mb-6 pb-2 border-b-2 border-emerald-500">
+            <h3 className="text-xl font-black text-slate-900 mb-6 pb-2 border-b-2 border-red-500">
               {t('footer.quickLinks')}
             </h3>
             <ul className="space-y-3">
@@ -131,7 +131,7 @@ export default function SiteFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-slate-700 hover:text-emerald-600 font-semibold transition-all hover:translate-x-2 inline-block"
+                    className="text-slate-700 hover:text-red-600 font-semibold transition-all hover:translate-x-2 inline-block"
                   >
                     → {t(link.titleKey)}
                   </Link>
@@ -166,7 +166,7 @@ export default function SiteFooter() {
             </h3>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <div className="p-2 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg">
+                <div className="p-2 bg-gradient-to-br from-red-500 to-red-600 rounded-lg">
                   <FaMapMarkerAlt className="text-white" />
                 </div>
                 <div>
@@ -203,7 +203,7 @@ export default function SiteFooter() {
               href="https://play.google.com/store/apps/details?id=com.aminul_haque.portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+              className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105"
             >
               <FaGooglePlay className="text-2xl" />
               <div className="text-left">
@@ -218,7 +218,7 @@ export default function SiteFooter() {
         <div className="pt-8 border-t border-slate-300">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-slate-600 font-semibold text-center md:text-left">
-              © {formatYear(new Date().getFullYear())} <Link href="https://www.facebook.com/rkoshahedhossain" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 hover:underline transition-colors">
+              © {formatYear(new Date().getFullYear())} <Link href="https://www.facebook.com/rkoshahedhossain" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:text-red-700 hover:underline transition-colors">
                 {language === 'bd' ? 'আর.কে.ও. শাহেদ' : 'R.K.O. Shahed'}
               </Link>। {t('footer.rights')}।
             </p>

@@ -91,17 +91,17 @@ export default function TestimonialCarousel({ testimonials, autoPlay = true, int
           <>
             <button
               onClick={goToPrevious}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-4 md:-translate-x-12 rounded-full bg-white shadow-lg p-3 hover:bg-green-50 transition border border-green-200"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-4 md:-translate-x-12 rounded-full bg-white shadow-lg p-3 hover:bg-red-50 transition border border-red-200"
               aria-label="Previous testimonial"
             >
-              <FaChevronLeft className="h-5 w-5 text-green-700" />
+              <FaChevronLeft className="h-5 w-5 text-red-700" />
             </button>
             <button
               onClick={goToNext}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-4 md:translate-x-12 rounded-full bg-white shadow-lg p-3 hover:bg-green-50 transition border border-green-200"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-4 md:translate-x-12 rounded-full bg-white shadow-lg p-3 hover:bg-red-50 transition border border-red-200"
               aria-label="Next testimonial"
             >
-              <FaChevronRight className="h-5 w-5 text-green-700" />
+              <FaChevronRight className="h-5 w-5 text-red-700" />
             </button>
           </>
         )}
@@ -114,7 +114,7 @@ export default function TestimonialCarousel({ testimonials, autoPlay = true, int
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`h-2 rounded-full transition-all ${
-                  index === currentIndex ? 'w-8 bg-green-700' : 'w-2 bg-gray-300'
+                  index === currentIndex ? 'w-8 bg-red-700' : 'w-2 bg-gray-300'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />

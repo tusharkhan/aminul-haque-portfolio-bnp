@@ -30,11 +30,11 @@ export default function EventCard({
   
   return (
     <article className="group h-full flex flex-col rounded-2xl overflow-hidden relative">
-      <div className={`absolute inset-0 bg-gradient-to-r ${isPast ? 'from-slate-500 to-slate-600' : 'from-emerald-500 to-green-600'} rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all duration-300`}></div>
+      <div className={`absolute inset-0 bg-gradient-to-r ${isPast ? 'from-slate-500 to-slate-600' : 'from-red-500 to-red-600'} rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all duration-300`}></div>
       <div className="relative bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-slate-200 overflow-hidden">
         {/* Image/Header */}
         {image ? (
-          <div className="relative w-full h-64 bg-gradient-to-br from-emerald-50 to-green-50 overflow-hidden flex items-center justify-center">
+          <div className="relative w-full h-64 bg-gradient-to-br from-red-50 to-red-50 overflow-hidden flex items-center justify-center">
             <Image
               src={image}
               alt={title}
@@ -50,7 +50,7 @@ export default function EventCard({
               </div>
             )}
             {!isPast && (
-              <div className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
+              <div className="absolute top-4 left-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
                 {t('eventCard.comingSoon')}
               </div>
             )}
@@ -61,8 +61,8 @@ export default function EventCard({
             )}
           </div>
         ) : (
-          <div className={`relative h-64 bg-gradient-to-br ${isPast ? 'from-slate-100 to-slate-200' : 'from-emerald-50 to-green-50'} flex items-center justify-center`}>
-            <FaCalendar className={`text-6xl ${isPast ? 'text-slate-400' : 'text-emerald-300'}`} />
+          <div className={`relative h-64 bg-gradient-to-br ${isPast ? 'from-slate-100 to-slate-200' : 'from-red-50 to-red-50'} flex items-center justify-center`}>
+            <FaCalendar className={`text-6xl ${isPast ? 'text-slate-400' : 'text-red-300'}`} />
             {isPast && hasVideo && (
               <div className="absolute top-4 right-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 z-10">
                 <FaVideo />
@@ -70,7 +70,7 @@ export default function EventCard({
               </div>
             )}
             {!isPast && (
-              <div className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
+              <div className="absolute top-4 left-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
                 {t('eventCard.comingSoon')}
               </div>
             )}
@@ -86,7 +86,7 @@ export default function EventCard({
         <div className="flex-1 flex flex-col p-6">
           {/* Date & Time */}
           <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 mb-4">
-            <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-lg font-bold">
+            <span className="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-700 rounded-lg font-bold">
               <FaCalendar />
               {date}
             </span>
@@ -97,7 +97,7 @@ export default function EventCard({
           </div>
 
           {/* Title */}
-          <h3 className={`text-xl font-bold mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2 ${isPast ? 'text-slate-700' : 'text-slate-900'}`}>
+          <h3 className={`text-xl font-bold mb-3 group-hover:text-red-600 transition-colors line-clamp-2 ${isPast ? 'text-slate-700' : 'text-slate-900'}`}>
             {title}
           </h3>
 
@@ -115,7 +115,7 @@ export default function EventCard({
           {/* View Details Link */}
           <Link 
             href={`/events/${slug}`}
-            className={`inline-flex items-center gap-2 text-sm font-bold ${isPast ? 'text-slate-600 hover:text-slate-800' : 'text-emerald-600 hover:text-emerald-700'} transition-all`}
+            className={`inline-flex items-center gap-2 text-sm font-bold ${isPast ? 'text-slate-600 hover:text-slate-800' : 'text-red-600 hover:text-red-700'} transition-all`}
           >
             {t('eventCard.viewDetails')}
             <FaArrowRight className="group-hover:translate-x-1 transition-transform" />

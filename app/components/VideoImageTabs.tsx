@@ -85,7 +85,7 @@ export default function VideoImageTabs() {
           onClick={() => setActiveTab('video')}
           className={`relative px-6 py-3 text-lg font-semibold transition-colors ${
             activeTab === 'video'
-              ? 'text-green-700'
+              ? 'text-red-700'
               : 'text-slate-600 hover:text-slate-900'
           }`}
         >
@@ -94,7 +94,7 @@ export default function VideoImageTabs() {
           {activeTab === 'video' && (
             <motion.div
               layoutId="activeTab"
-              className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-700"
+              className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-700"
             />
           )}
         </button>
@@ -102,7 +102,7 @@ export default function VideoImageTabs() {
           onClick={() => setActiveTab('image')}
           className={`relative px-6 py-3 text-lg font-semibold transition-colors ${
             activeTab === 'image'
-              ? 'text-green-700'
+              ? 'text-red-700'
               : 'text-slate-600 hover:text-slate-900'
           }`}
         >
@@ -111,7 +111,7 @@ export default function VideoImageTabs() {
           {activeTab === 'image' && (
             <motion.div
               layoutId="activeTab"
-              className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-700"
+              className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-700"
             />
           )}
         </button>
@@ -146,7 +146,7 @@ export default function VideoImageTabs() {
                         loading="lazy"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition">
-                        <button className="rounded-full bg-green-700 p-4 text-white shadow-lg hover:bg-green-800 transition">
+                        <button className="rounded-full bg-red-700 p-4 text-white shadow-lg hover:bg-red-800 transition">
                           <FaPlay className="h-6 w-6" />
                         </button>
                       </div>

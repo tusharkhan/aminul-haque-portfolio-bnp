@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { FaArrowRight, FaClock, FaUser, FaTag } from 'react-icons/fa';
 
 const categoryColors: { [key: string]: string } = {
-  'শিক্ষা': 'from-emerald-500 to-green-600',
+  'শিক্ষা': 'from-red-500 to-red-600',
   'কৃষি': 'from-blue-500 to-cyan-600',
   'সংস্কৃতি': 'from-purple-500 to-pink-600',
   'যুব উন্নয়ন': 'from-amber-500 to-orange-600',

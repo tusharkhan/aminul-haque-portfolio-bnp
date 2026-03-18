@@ -214,7 +214,7 @@ export default function SurveyDetailClient({
             </p>
             <Link
               href="/surveys"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
             >
               <FaArrowLeft /> {t("surveysPage.backToSurveys")}
             </Link>
@@ -234,7 +234,7 @@ export default function SurveyDetailClient({
             className="max-w-2xl w-full text-center"
           >
             <div className="bg-white rounded-3xl p-12 md:p-16 shadow-2xl border border-slate-200">
-              <div className="inline-flex p-6 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full mb-6">
+              <div className="inline-flex p-6 bg-gradient-to-br from-red-500 to-red-600 rounded-full mb-6">
                 <FaCheckCircle className="text-6xl text-white" />
               </div>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
@@ -246,7 +246,7 @@ export default function SurveyDetailClient({
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/surveys"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105"
                 >
                   <FaArrowLeft /> {t("surveysPage.viewOtherSurveys")}
                 </Link>
@@ -278,11 +278,11 @@ export default function SurveyDetailClient({
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Header */}
-      <section className="relative py-20 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50">
+      <section className="relative py-20 px-4 bg-gradient-to-br from-red-50 via-white to-red-50">
         <div className="mx-auto max-w-4xl">
           <Link
             href="/surveys"
-            className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-bold mb-6 transition-all"
+            className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold mb-6 transition-all"
           >
             <FaArrowLeft /> {t("surveysPage.backToSurveys")}
           </Link>
@@ -334,7 +334,7 @@ export default function SurveyDetailClient({
             {/* Questions */}
             <div className="mb-12">
               <h2 className="text-3xl font-black text-slate-900 mb-8 flex items-center gap-2">
-                <FaQuestionCircle className="text-emerald-600" />
+                <FaQuestionCircle className="text-red-600" />
                 {t("surveysPage.questions")}
               </h2>
               <div className="space-y-8">
@@ -362,7 +362,7 @@ export default function SurveyDetailClient({
                         {question.formatted_options.map((option, optIdx) => (
                           <label
                             key={optIdx}
-                            className="flex items-center p-4 rounded-xl border-2 border-slate-200 hover:border-emerald-500 cursor-pointer transition-all group"
+                            className="flex items-center p-4 rounded-xl border-2 border-slate-200 hover:border-red-500 cursor-pointer transition-all group"
                           >
                             <input
                               type="radio"
@@ -375,9 +375,9 @@ export default function SurveyDetailClient({
                               onChange={(e) =>
                                 handleAnswerChange(question.id, e.target.value)
                               }
-                              className="w-5 h-5 text-emerald-600 focus:ring-emerald-500 focus:ring-2"
+                              className="w-5 h-5 text-red-600 focus:ring-red-500 focus:ring-2"
                             />
-                            <span className="ml-3 text-slate-700 font-semibold group-hover:text-emerald-600 transition-colors">
+                            <span className="ml-3 text-slate-700 font-semibold group-hover:text-red-600 transition-colors">
                               {option}
                             </span>
                           </label>
@@ -391,7 +391,7 @@ export default function SurveyDetailClient({
                         }
                         placeholder={t("surveysPage.enterYourAnswer")}
                         rows={4}
-                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
+                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-slate-700 font-medium"
                       />
                     )}
                   </motion.div>
@@ -420,7 +420,7 @@ export default function SurveyDetailClient({
                     value={formData.name}
                     onChange={(e) => handleInputChange("name", e.target.value)}
                     placeholder={t("surveysPage.enterName")}
-                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
+                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-slate-700 font-medium"
                     required
                   />
                 </div>
@@ -439,7 +439,7 @@ export default function SurveyDetailClient({
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                     placeholder={t("surveysPage.enterEmail")}
-                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
+                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-slate-700 font-medium"
                     required
                   />
                 </div>
@@ -458,7 +458,7 @@ export default function SurveyDetailClient({
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
                     placeholder={t("surveysPage.enterPhone")}
-                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
+                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-slate-700 font-medium"
                     required
                   />
                 </div>
@@ -477,7 +477,7 @@ export default function SurveyDetailClient({
                     value={formData.area}
                     onChange={(e) => handleInputChange("area", e.target.value)}
                     placeholder={t("surveysPage.enterArea")}
-                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-700 font-medium"
+                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-slate-700 font-medium"
                     required
                   />
                 </div>
@@ -496,7 +496,7 @@ export default function SurveyDetailClient({
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                className="flex-1 px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>

@@ -343,13 +343,13 @@ export default function ComplaintsClient({
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-green-50 border-2 border-green-200 rounded-3xl p-8 text-center"
+              className="bg-red-50 border-2 border-red-200 rounded-3xl p-8 text-center"
             >
-              <FaCheckCircle className="text-6xl text-green-600 mx-auto mb-4" />
-              <h3 className="text-3xl font-bold text-green-800 mb-3">
+              <FaCheckCircle className="text-6xl text-red-600 mx-auto mb-4" />
+              <h3 className="text-3xl font-bold text-red-800 mb-3">
                 {t("complaints.complaintSubmitted")}
               </h3>
-              <p className="text-lg text-green-700">
+              <p className="text-lg text-red-700">
                 {t("complaints.complaintRecorded")}
               </p>
             </motion.div>
@@ -692,7 +692,7 @@ export default function ComplaintsClient({
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="tel:+8801552161616"
-                  className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                  className="px-10 py-4 bg-gradient-to-r from-red-600 to-red-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-red-700 hover:to-red-700 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
                 >
                   <FaPhone />
                   {t("common.callUs")}

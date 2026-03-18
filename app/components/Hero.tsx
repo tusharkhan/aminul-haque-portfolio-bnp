@@ -46,7 +46,7 @@ export default function Hero() {
           <div className="flex items-center gap-4">
             <Link
               href="/about"
-              className="px-8 py-4 bg-emerald-600 text-white font-bold rounded-xl shadow-xl hover:bg-emerald-700 hover:shadow-2xl transition-all transform hover:scale-105"
+              className="px-8 py-4 bg-red-600 text-white font-bold rounded-xl shadow-xl hover:bg-red-700 hover:shadow-2xl transition-all transform hover:scale-105"
             >
               {t("hero.learnMore")}
             </Link>
@@ -65,8 +65,8 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="relative order-1 md:order-2 mb-12 md:mb-0"
         >
-          <div className="absolute inset-0 bg-emerald-500 rounded-3xl blur-2xl opacity-20"></div>
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white h-[400px] sm:h-[500px] md:h-[600px] bg-gradient-to-b from-emerald-200 to-emerald-300">
+          <div className="absolute inset-0 bg-red-500 rounded-3xl blur-2xl opacity-20"></div>
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white h-[400px] sm:h-[500px] md:h-[600px] bg-gradient-to-b from-red-200 to-red-300">
             <Image
               src={mainImage}
               alt={t("hero.title")}

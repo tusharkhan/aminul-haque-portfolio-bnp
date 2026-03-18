@@ -30,10 +30,10 @@ export default function AminulManifestoPage() {
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50 overflow-hidden">
+      <section className="relative py-20 md:py-32 px-4 bg-gradient-to-br from-red-50 via-white to-red-50 overflow-hidden">
         {/* Decorative Elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-emerald-200/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-green-200/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 bg-red-200/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-red-200/30 rounded-full blur-3xl"></div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
@@ -41,19 +41,19 @@ export default function AminulManifestoPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
+            <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
               {language === "bd" ? "ঢাকা-১৬" : "Dhaka-16"}
             </span>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 mb-4">
-              <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
                 {cms?.header?.title}
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-emerald-700 font-bold mb-6">
+            <p className="text-xl md:text-2xl text-red-700 font-bold mb-6">
               {cms?.header?.subtitle}
             </p>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 inline-block shadow-xl border border-emerald-100">
-              <p className="text-3xl md:text-4xl font-black text-emerald-600 mb-2">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 inline-block shadow-xl border border-red-100">
+              <p className="text-3xl md:text-4xl font-black text-red-600 mb-2">
                 {cms?.header?.quotation_title}
               </p>
               <p className="text-lg text-slate-600">
@@ -96,14 +96,14 @@ export default function AminulManifestoPage() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute inset-0 rounded-3xl blur-2xl opacity-20 bg-gradient-to-r from-emerald-500 to-green-600"></div>
+            <div className="absolute inset-0 rounded-3xl blur-2xl opacity-20 bg-gradient-to-r from-red-500 to-red-600"></div>
             <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
               <div className="text-center mb-8">
-                <FaHeart className="text-5xl md:text-6xl text-emerald-600 mx-auto mb-4" />
+                <FaHeart className="text-5xl md:text-6xl text-red-600 mx-auto mb-4" />
                 <h2 className="text-2xl md:text-3xl font-black text-slate-900">
                   {cms?.plans?.title}
                 </h2>
-                <p className="text-emerald-600 font-bold mt-2">
+                <p className="text-red-600 font-bold mt-2">
                   {cms?.plans?.subtitle}
                 </p>
               </div>
@@ -136,9 +136,9 @@ export default function AminulManifestoPage() {
                   </p>
                 </div>
               )}
-              <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 mt-8">
-                <FaQuoteLeft className="text-3xl text-emerald-400 mb-4" />
-                <p className="text-xl md:text-2xl font-bold text-emerald-700 italic">
+              <div className="bg-red-50 rounded-2xl p-6 border border-red-100 mt-8">
+                <FaQuoteLeft className="text-3xl text-red-400 mb-4" />
+                <p className="text-xl md:text-2xl font-bold text-red-700 italic">
                   {cms?.plans?.quotes}
                 </p>
               </div>
@@ -149,7 +149,7 @@ export default function AminulManifestoPage() {
 
       {/* Manifesto Title Section */}
       <section className="px-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center py-12 rounded-3xl bg-gradient-to-r from-emerald-600 to-green-700">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center py-12 rounded-3xl bg-gradient-to-r from-red-600 to-red-700">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -216,7 +216,7 @@ export default function AminulManifestoPage() {
                         {section.text_list.map((item, itemIdx) => (
                           <li key={itemIdx} className="flex items-start gap-3">
                             <FaCheck
-                              className={`text-sm mt-1 flex-shrink-0 text-emerald-500 group-hover:text-emerald-600 transition-colors duration-300`}
+                              className={`text-sm mt-1 flex-shrink-0 text-red-500 group-hover:text-red-600 transition-colors duration-300`}
                             />
                             <span className="text-slate-700 text-sm md:text-base leading-relaxed">
                               {item}
@@ -242,7 +242,7 @@ export default function AminulManifestoPage() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30 bg-gradient-to-r from-emerald-500 to-green-600"></div>
+            <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30 bg-gradient-to-r from-red-500 to-red-600"></div>
             <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl text-center border border-slate-200">
               <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-6">
                 {cms?.conclusion?.title}
@@ -253,8 +253,8 @@ export default function AminulManifestoPage() {
                   dangerouslySetInnerHTML={{ __html: cms.conclusion.content }}
                 />
               )}
-              <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 my-8">
-                <p className="text-xl md:text-2xl font-bold text-emerald-700">
+              <div className="bg-red-50 rounded-2xl p-6 border border-red-100 my-8">
+                <p className="text-xl md:text-2xl font-bold text-red-700">
                   {cms?.conclusion?.quotes}
                 </p>
               </div>
@@ -265,11 +265,11 @@ export default function AminulManifestoPage() {
                 <p className="text-lg text-slate-600">
                   {cms?.conclusion?.short_title_second}
                 </p>
-                <p className="text-2xl font-black text-emerald-600 mt-4">
+                <p className="text-2xl font-black text-red-600 mt-4">
                   {cms?.conclusion?.slogan}
                 </p>
                 <div className="mt-8 pt-6 border-t border-slate-200">
-                  <p className="text-3xl font-black text-emerald-600">
+                  <p className="text-3xl font-black text-red-600">
                     - {cms?.conclusion?.from_name}
                   </p>
                 </div>

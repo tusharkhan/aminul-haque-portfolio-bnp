@@ -147,7 +147,7 @@ export default function ForgetPasswordPage() {
 
   const cardContent = (
     <div className="relative">
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20" />
+      <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-3xl blur-2xl opacity-20" />
       <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
         <AnimatePresence mode="wait">
           {step === "email" && (
@@ -160,7 +160,7 @@ export default function ForgetPasswordPage() {
             >
               <div className="text-center mb-8">
                 <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-                  <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
                     {t("volunteerForgotPassword.title")}
                   </span>
                 </h1>
@@ -172,7 +172,7 @@ export default function ForgetPasswordPage() {
               <form onSubmit={handleSendOtp} className="space-y-6">
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
-                    <FaEnvelope className="text-emerald-600" />
+                    <FaEnvelope className="text-red-600" />
                     {t("volunteerForgotPassword.email")}{" "}
                     <span className="text-red-500">*</span>
                   </label>
@@ -181,7 +181,7 @@ export default function ForgetPasswordPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={t("volunteerForgotPassword.emailPlaceholder")}
-                    className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                    className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                     required
                     disabled={loading}
                   />
@@ -196,7 +196,7 @@ export default function ForgetPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  className="w-full px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>
@@ -214,7 +214,7 @@ export default function ForgetPasswordPage() {
                 <div className="text-center pt-4">
                   <Link
                     href="/volunteer/login"
-                    className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+                    className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold transition-colors"
                   >
                     <FaArrowLeft />
                     {t("volunteerForgotPassword.backToLogin")}
@@ -234,7 +234,7 @@ export default function ForgetPasswordPage() {
             >
               <div className="text-center mb-8">
                 <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-                  <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
                     {t("volunteerForgotPassword.otpTitle")}
                   </span>
                 </h1>
@@ -249,7 +249,7 @@ export default function ForgetPasswordPage() {
               <form onSubmit={handleVerifyOtp} className="space-y-6">
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
-                    <FaKey className="text-emerald-600" />
+                    <FaKey className="text-red-600" />
                     OTP <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -260,7 +260,7 @@ export default function ForgetPasswordPage() {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
                     placeholder={t("volunteerForgotPassword.otpPlaceholder")}
-                    className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg text-center tracking-[0.5em]"
+                    className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg text-center tracking-[0.5em]"
                     required
                     disabled={loading}
                   />
@@ -275,7 +275,7 @@ export default function ForgetPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  className="w-full px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>
@@ -294,7 +294,7 @@ export default function ForgetPasswordPage() {
                     setOtp("");
                     setError(null);
                   }}
-                  className="w-full text-center text-slate-600 hover:text-emerald-600 font-bold text-sm transition-colors"
+                  className="w-full text-center text-slate-600 hover:text-red-600 font-bold text-sm transition-colors"
                 >
                   <FaArrowLeft className="inline mr-2" />
                   {t("volunteerForgotPassword.backToLogin")}
@@ -313,7 +313,7 @@ export default function ForgetPasswordPage() {
             >
               <div className="text-center mb-8">
                 <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-                  <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
                     {t("volunteerForgotPassword.passwordTitle")}
                   </span>
                 </h1>
@@ -325,7 +325,7 @@ export default function ForgetPasswordPage() {
               <form onSubmit={handleResetPassword} className="space-y-6">
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
-                    <FaLock className="text-emerald-600" />
+                    <FaLock className="text-red-600" />
                     {t("volunteerForgotPassword.newPassword")}{" "}
                     <span className="text-red-500">*</span>
                   </label>
@@ -336,7 +336,7 @@ export default function ForgetPasswordPage() {
                     placeholder={t(
                       "volunteerForgotPassword.newPasswordPlaceholder",
                     )}
-                    className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                    className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                     required
                     minLength={6}
                     disabled={loading}
@@ -345,7 +345,7 @@ export default function ForgetPasswordPage() {
 
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
-                    <FaLock className="text-emerald-600" />
+                    <FaLock className="text-red-600" />
                     {t("volunteerForgotPassword.confirmPassword")}{" "}
                     <span className="text-red-500">*</span>
                   </label>
@@ -356,7 +356,7 @@ export default function ForgetPasswordPage() {
                     placeholder={t(
                       "volunteerForgotPassword.confirmPasswordPlaceholder",
                     )}
-                    className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                    className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                     required
                     minLength={6}
                     disabled={loading}
@@ -372,7 +372,7 @@ export default function ForgetPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  className="w-full px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>
@@ -392,7 +392,7 @@ export default function ForgetPasswordPage() {
                     setConfirmPassword("");
                     setError(null);
                   }}
-                  className="w-full text-center text-slate-600 hover:text-emerald-600 font-bold text-sm transition-colors"
+                  className="w-full text-center text-slate-600 hover:text-red-600 font-bold text-sm transition-colors"
                 >
                   <FaArrowLeft className="inline mr-2" />
                   {t("volunteerForgotPassword.backToOtp")}
@@ -408,7 +408,7 @@ export default function ForgetPasswordPage() {
               animate={{ opacity: 1, scale: 1 }}
               className="text-center"
             >
-              <div className="inline-flex p-6 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full mb-6">
+              <div className="inline-flex p-6 bg-gradient-to-br from-red-500 to-red-600 rounded-full mb-6">
                 <FaCheckCircle className="text-6xl text-white" />
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">
@@ -419,7 +419,7 @@ export default function ForgetPasswordPage() {
               </p>
               <Link
                 href="/volunteer/login"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105"
               >
                 <FaArrowLeft />
                 {t("volunteerForgotPassword.backToLogin")}

@@ -133,7 +133,7 @@ export default function SurveysPage() {
       <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
             <p className="text-slate-600 font-bold">
               {t("surveysPage.loading")}
             </p>
@@ -146,19 +146,19 @@ export default function SurveysPage() {
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <section className="relative py-32 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50">
+      <section className="relative py-32 px-4 bg-gradient-to-br from-red-50 via-white to-red-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
+            <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaClipboardList className="inline mr-2" />
               {t("surveysPage.heroTag")}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
-              <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
                 {t("surveysPage.heroTitle")}
               </span>
             </h1>
@@ -190,7 +190,7 @@ export default function SurveysPage() {
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
                   className="group relative"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-red-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all"></div>
                   <div className="relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all border border-slate-200 overflow-hidden h-full flex flex-col">
                     {/* Thumbnail */}
                     {survey.image && (
@@ -218,7 +218,7 @@ export default function SurveysPage() {
 
                       <Link
                         href={`/surveys/${survey.uuid || survey.id}`}
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 group-hover:gap-3"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 group-hover:gap-3"
                       >
                         {t("surveysPage.viewSurvey")} <FaArrowRight />
                       </Link>
@@ -240,7 +240,7 @@ export default function SurveysPage() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
                 {t("surveysPage.ctaTitle")}
@@ -251,7 +251,7 @@ export default function SurveysPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/contact"
-                  className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105"
+                  className="px-10 py-4 bg-gradient-to-r from-red-600 to-red-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-red-700 hover:to-red-700 transition-all transform hover:scale-105"
                 >
                   {t("surveysPage.contactUs")}
                 </Link>

@@ -26,7 +26,7 @@ const defaultColors = [
   "from-teal-500 to-cyan-600",
   "from-pink-500 to-rose-600",
   "from-indigo-500 to-purple-600",
-  "from-emerald-500 to-green-600",
+  "from-red-500 to-red-600",
   "from-blue-500 to-cyan-600",
   "from-purple-500 to-pink-600",
   "from-orange-500 to-red-600",
@@ -280,7 +280,7 @@ export default function ProgramsClient({
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
                 {endCmsData?.description || t("programs.joinPrograms")}
               </p>
-              <button className="px-10 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105">
+              <button className="px-10 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105">
                 {t("nav.contactUs")}
               </button>
             </div>

@@ -78,7 +78,7 @@ export default function VolunteerDashboardPage() {
   if (loading || fetchingProfile) {
     return (
       <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
       </main>
     );
   }
@@ -91,7 +91,7 @@ export default function VolunteerDashboardPage() {
             <p className="text-red-600 font-bold text-lg mb-4">{error}</p>
             <button
               onClick={() => router.push("/volunteer/login")}
-              className="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all"
+              className="px-6 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all"
             >
               {t("dashboard.loginAgain")}
             </button>
@@ -115,7 +115,7 @@ export default function VolunteerDashboardPage() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-            <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
               {t("dashboard.title")}
             </span>
           </h1>
@@ -138,7 +138,7 @@ export default function VolunteerDashboardPage() {
             {/* Personal Information */}
             <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
               <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
-                <FaUser className="text-emerald-600" />
+                <FaUser className="text-red-600" />
                 {t("dashboard.personalInfo")}
               </h2>
 
@@ -155,7 +155,7 @@ export default function VolunteerDashboardPage() {
 
                   <div>
                     <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider flex items-center gap-2">
-                      <FaEnvelope className="text-emerald-600" />
+                      <FaEnvelope className="text-red-600" />
                       {t("dashboard.email")}
                     </label>
                     <p className="text-xl font-bold text-slate-900">
@@ -165,7 +165,7 @@ export default function VolunteerDashboardPage() {
 
                   <div>
                     <label className="block text-slate-600 font-bold mb-2 text-sm uppercase tracking-wider flex items-center gap-2">
-                      <FaPhone className="text-emerald-600" />
+                      <FaPhone className="text-red-600" />
                       {t("dashboard.mobile")}
                     </label>
                     <p className="text-xl font-bold text-slate-900">
@@ -179,7 +179,7 @@ export default function VolunteerDashboardPage() {
             {/* Area Assignment */}
             <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
               <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
-                <FaMapMarkerAlt className="text-emerald-600" />
+                <FaMapMarkerAlt className="text-red-600" />
                 {t("dashboard.areaAssignment")}
               </h2>
 
@@ -217,14 +217,14 @@ export default function VolunteerDashboardPage() {
             {skills.length > 0 && (
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
-                  <FaTools className="text-emerald-600" />
+                  <FaTools className="text-red-600" />
                   {t("dashboard.skills")}
                 </h2>
                 <div className="flex flex-wrap gap-3">
                   {skills.map((skill, index) => (
                     <span
                       key={index}
-                      className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-xl font-bold text-sm"
+                      className="px-4 py-2 bg-red-100 text-red-700 rounded-xl font-bold text-sm"
                     >
                       {skill}
                     </span>
@@ -237,7 +237,7 @@ export default function VolunteerDashboardPage() {
             {preferredTasks.length > 0 && (
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
-                  <FaTasks className="text-emerald-600" />
+                  <FaTasks className="text-red-600" />
                   {t("dashboard.preferredTasks")}
                 </h2>
                 <div className="flex flex-wrap gap-3">
@@ -257,7 +257,7 @@ export default function VolunteerDashboardPage() {
             {availability.length > 0 && (
               <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
-                  <FaCalendarAlt className="text-emerald-600" />
+                  <FaCalendarAlt className="text-red-600" />
                   {t("dashboard.availability")}
                 </h2>
                 <div className="space-y-2">
@@ -281,7 +281,7 @@ export default function VolunteerDashboardPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="space-y-6"
           >
-            <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-3xl p-8 shadow-2xl text-white">
+            <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-3xl p-8 shadow-2xl text-white">
               <h3 className="text-2xl font-black mb-4">
                 {t("dashboard.quickActions")}
               </h3>

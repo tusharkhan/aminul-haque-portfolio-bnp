@@ -223,7 +223,7 @@ export default function TaskDetailPage() {
       case "medium":
         return "bg-yellow-100 text-yellow-700 border-yellow-300";
       case "low":
-        return "bg-green-100 text-green-700 border-green-300";
+        return "bg-red-100 text-red-700 border-red-300";
       default:
         return "bg-slate-100 text-slate-700 border-slate-300";
     }
@@ -232,7 +232,7 @@ export default function TaskDetailPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "completed":
-        return "bg-emerald-100 text-emerald-700 border-emerald-300";
+        return "bg-red-100 text-red-700 border-red-300";
       case "in_progress":
         return "bg-blue-100 text-blue-700 border-blue-300";
       case "pending":
@@ -245,7 +245,7 @@ export default function TaskDetailPage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "completed":
-        return <FaCheckCircle className="text-emerald-600" />;
+        return <FaCheckCircle className="text-red-600" />;
       case "in_progress":
         return <FaPlayCircle className="text-blue-600" />;
       case "pending":
@@ -285,7 +285,7 @@ export default function TaskDetailPage() {
     return (
       <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-6xl text-emerald-600 mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-6xl text-red-600 mx-auto mb-4" />
           <p className="text-xl font-bold text-slate-700">
             {t("tasks.loading")}
           </p>
@@ -307,7 +307,7 @@ export default function TaskDetailPage() {
           className="w-full max-w-md text-center"
         >
           <div className="bg-white rounded-3xl p-12 shadow-2xl border border-slate-200">
-            <div className="inline-flex p-6 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full mb-6">
+            <div className="inline-flex p-6 bg-gradient-to-br from-red-500 to-red-600 rounded-full mb-6">
               <FaCheckCircle className="text-6xl text-white" />
             </div>
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">
@@ -331,7 +331,7 @@ export default function TaskDetailPage() {
         {/* Back Button */}
         <Link
           href="/volunteer/tasks"
-          className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-bold mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold mb-8 transition-colors"
         >
           <FaArrowLeft />
           {t("taskDetail.backToList")}
@@ -369,7 +369,7 @@ export default function TaskDetailPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="flex items-center gap-3 text-slate-700">
-              <FaCalendarAlt className="text-emerald-600 text-xl" />
+              <FaCalendarAlt className="text-red-600 text-xl" />
               <div>
                 <p className="font-bold text-sm uppercase tracking-wider text-slate-500">
                   {t("taskDetail.deadlineLabel")}
@@ -383,7 +383,7 @@ export default function TaskDetailPage() {
 
             {task.location != null && task.location !== "" && (
               <div className="flex items-center gap-3 text-slate-700">
-                <FaMapMarkerAlt className="text-emerald-600 text-xl" />
+                <FaMapMarkerAlt className="text-red-600 text-xl" />
                 <div>
                   <p className="font-bold text-sm uppercase tracking-wider text-slate-500">
                     {t("taskDetail.locationLabel")}
@@ -445,8 +445,8 @@ export default function TaskDetailPage() {
                     onClick={() => setNewStatus("completed")}
                     className={`px-6 py-4 rounded-xl font-bold transition-all border-2 ${
                       newStatus === "completed"
-                        ? "bg-emerald-100 text-emerald-700 border-emerald-500"
-                        : "bg-slate-50 text-slate-700 border-slate-200 hover:border-emerald-300"
+                        ? "bg-red-100 text-red-700 border-red-500"
+                        : "bg-slate-50 text-slate-700 border-slate-200 hover:border-red-300"
                     }`}
                   >
                     <FaCheckCircle className="inline mr-2" />
@@ -467,7 +467,7 @@ export default function TaskDetailPage() {
                       onChange={(e) => setCompletionNotes(e.target.value)}
                       placeholder={t("taskDetail.completionNotesPlaceholder")}
                       rows={5}
-                      className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
+                      className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                     />
                   </div>
 
@@ -489,7 +489,7 @@ export default function TaskDetailPage() {
                         htmlFor="evidence-upload"
                         className="flex flex-col items-center justify-center cursor-pointer"
                       >
-                        <FaUpload className="text-4xl text-emerald-600 mb-3" />
+                        <FaUpload className="text-4xl text-red-600 mb-3" />
                         <p className="text-slate-700 font-bold mb-1">
                           {t("taskDetail.uploadFiles")}
                         </p>
@@ -536,7 +536,7 @@ export default function TaskDetailPage() {
               <button
                 onClick={handleStatusUpdate}
                 disabled={submitting}
-                className="w-full px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                className="w-full px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>
@@ -560,13 +560,13 @@ export default function TaskDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-8 text-center"
+            className="bg-red-50 border-2 border-red-200 rounded-xl p-8 text-center"
           >
-            <FaCheckCircle className="text-6xl text-emerald-600 mx-auto mb-4" />
-            <h3 className="text-2xl font-black text-emerald-900 mb-2">
+            <FaCheckCircle className="text-6xl text-red-600 mx-auto mb-4" />
+            <h3 className="text-2xl font-black text-red-900 mb-2">
               {t("taskDetail.alreadyCompletedTitle")}
             </h3>
-            <p className="text-emerald-700">
+            <p className="text-red-700">
               {t("taskDetail.alreadyCompletedMessage")}
             </p>
           </motion.div>

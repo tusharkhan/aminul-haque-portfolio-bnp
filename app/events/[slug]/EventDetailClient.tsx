@@ -18,7 +18,7 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
       <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center px-4">
         <div className="text-center">
           <h1 className="text-4xl font-black text-slate-900 mb-4">{t('eventDetail.eventNotFound')}</h1>
-          <Link href="/events" className="text-emerald-600 hover:underline font-bold">
+          <Link href="/events" className="text-red-600 hover:underline font-bold">
             {t('eventDetail.backToEventsPage')}
           </Link>
         </div>
@@ -33,7 +33,7 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Link 
             href="/events"
-            className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+            className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold transition-colors"
           >
             <FaArrowLeft />
             {t('eventDetail.backToAllEvents')}
@@ -65,7 +65,7 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
                 </div>
               )}
               {!event.isPast && (
-                <div className="absolute top-6 left-6 px-4 py-2 bg-emerald-600 text-white rounded-full font-bold shadow-lg">
+                <div className="absolute top-6 left-6 px-4 py-2 bg-red-600 text-white rounded-full font-bold shadow-lg">
                   {t('eventDetail.upcomingEvent')}
                 </div>
               )}
@@ -89,7 +89,7 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
 
             {/* Meta Info */}
             <div className="flex flex-wrap gap-4 mb-8">
-              <div className="flex items-center gap-3 px-5 py-3 bg-emerald-50 text-emerald-700 rounded-xl font-bold border border-emerald-200">
+              <div className="flex items-center gap-3 px-5 py-3 bg-red-50 text-red-700 rounded-xl font-bold border border-red-200">
                 <FaCalendar className="text-xl" />
                 <span>{event.date}</span>
               </div>
@@ -223,14 +223,14 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-3xl p-8 border-2 border-emerald-200"
+              className="bg-gradient-to-r from-red-50 to-red-50 rounded-3xl p-8 border-2 border-red-200"
             >
               <div className="flex items-start gap-4">
-                <FaCheckCircle className="text-3xl text-emerald-600 mt-1 flex-shrink-0" />
+                <FaCheckCircle className="text-3xl text-red-600 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-2xl font-black text-slate-900 mb-3 flex items-center gap-3">
                     স্বয়ংক্রিয় নিশ্চিতকরণ
-                    <FaEnvelope className="text-emerald-600" />
+                    <FaEnvelope className="text-red-600" />
                     <FaSms className="text-blue-600" />
                   </h3>
                   <p className="text-lg text-slate-700">
@@ -252,7 +252,7 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl blur-2xl opacity-20"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-500 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
                 {t('eventDetail.forMoreInfo')}
@@ -263,13 +263,13 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/contact"
-                  className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105"
+                  className="px-10 py-4 bg-gradient-to-r from-red-600 to-red-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-red-700 hover:to-red-700 transition-all transform hover:scale-105"
                 >
                   {t('eventDetail.contactUs')}
                 </a>
                 <Link
                   href="/events"
-                  className="px-10 py-4 bg-white text-emerald-600 font-bold rounded-xl shadow-xl hover:shadow-2xl border-2 border-emerald-600 hover:bg-emerald-50 transition-all transform hover:scale-105"
+                  className="px-10 py-4 bg-white text-red-600 font-bold rounded-xl shadow-xl hover:shadow-2xl border-2 border-red-600 hover:bg-red-50 transition-all transform hover:scale-105"
                 >
                   {t('eventDetail.viewAllEvents')}
                 </Link>

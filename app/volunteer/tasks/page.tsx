@@ -120,7 +120,7 @@ export default function VolunteerTasksPage() {
       case "medium":
         return "bg-yellow-100 text-yellow-700 border-yellow-300";
       case "low":
-        return "bg-green-100 text-green-700 border-green-300";
+        return "bg-red-100 text-red-700 border-red-300";
       default:
         return "bg-slate-100 text-slate-700 border-slate-300";
     }
@@ -129,7 +129,7 @@ export default function VolunteerTasksPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "completed":
-        return "bg-emerald-100 text-emerald-700 border-emerald-300";
+        return "bg-red-100 text-red-700 border-red-300";
       case "in_progress":
         return "bg-blue-100 text-blue-700 border-blue-300";
       case "pending":
@@ -142,7 +142,7 @@ export default function VolunteerTasksPage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "completed":
-        return <FaCheckCircle className="text-emerald-600" />;
+        return <FaCheckCircle className="text-red-600" />;
       case "in_progress":
         return <FaPlayCircle className="text-blue-600" />;
       case "pending":
@@ -185,7 +185,7 @@ export default function VolunteerTasksPage() {
     return (
       <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-6xl text-emerald-600 mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-6xl text-red-600 mx-auto mb-4" />
           <p className="text-xl font-bold text-slate-700">
             {t("tasks.loading")}
           </p>
@@ -208,7 +208,7 @@ export default function VolunteerTasksPage() {
           className="mb-12"
         >
           <h1 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-            <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
               {t("tasks.title")}
             </span>
           </h1>
@@ -229,7 +229,7 @@ export default function VolunteerTasksPage() {
                 onClick={() => setFilter(filterOption)}
                 className={`px-6 py-3 rounded-xl font-bold transition-all ${
                   filter === filterOption
-                    ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg"
+                    ? "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg"
                     : "bg-white text-slate-700 hover:bg-slate-100 shadow-md"
                 }`}
               >
@@ -298,7 +298,7 @@ export default function VolunteerTasksPage() {
 
                     <div className="space-y-3 pt-4 border-t border-slate-200">
                       <div className="flex items-center gap-2 text-slate-600">
-                        <FaCalendarAlt className="text-emerald-600" />
+                        <FaCalendarAlt className="text-red-600" />
                         <span className="font-semibold">
                           {t("tasks.deadline")}
                         </span>
@@ -310,7 +310,7 @@ export default function VolunteerTasksPage() {
 
                       {task.location != null && task.location !== "" && (
                         <div className="flex items-center gap-2 text-slate-600">
-                          <FaMapMarkerAlt className="text-emerald-600" />
+                          <FaMapMarkerAlt className="text-red-600" />
                           <span className="font-semibold">
                             {t("tasks.location")}
                           </span>

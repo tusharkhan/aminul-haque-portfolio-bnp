@@ -58,7 +58,7 @@ interface KheladhulaEvent {
 // Default color gradients for albums
 const defaultColors = [
   "from-amber-500 to-orange-600",
-  "from-emerald-500 to-green-600",
+  "from-red-500 to-red-600",
   "from-purple-500 to-pink-600",
   "from-blue-500 to-cyan-600",
   "from-rose-500 to-red-600",

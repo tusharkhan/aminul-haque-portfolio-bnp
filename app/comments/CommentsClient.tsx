@@ -377,7 +377,7 @@ export default function CommentsClient({
                     </div>
 
                     {submitted && (
-                      <div className="mb-4 p-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-xl text-center font-semibold shadow-lg">
+                      <div className="mb-4 p-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl text-center font-semibold shadow-lg">
                         ✓ {t("comments.commentAdded")}
                       </div>
                     )}

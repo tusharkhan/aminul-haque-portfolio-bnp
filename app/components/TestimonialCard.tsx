@@ -21,12 +21,12 @@ export default function TestimonialCard({
   return (
     <div className={`relative rounded-3xl bg-white p-8 md:p-10 shadow-xl hover:shadow-2xl transition-all duration-300 ${isActive ? 'scale-100' : 'scale-95 opacity-80'}`}>
       {/* Background Gradient Accent */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500 to-green-700 opacity-10 rounded-full blur-3xl" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500 to-red-700 opacity-10 rounded-full blur-3xl" />
       
       <div className="relative z-10">
         {/* Quote Icon */}
         <div className="mb-6">
-          <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-700 rounded-2xl flex items-center justify-center">
+          <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center">
             <FaQuoteLeft className="text-2xl text-white" />
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function TestimonialCard({
             alt={author}
             width={56}
             height={56}
-            className="w-14 h-14 rounded-full object-cover ring-4 ring-green-100"
+            className="w-14 h-14 rounded-full object-cover ring-4 ring-red-100"
             unoptimized
             loading="lazy"
           />
