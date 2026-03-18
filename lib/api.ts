@@ -1,7 +1,9 @@
 import { IconType } from "react-icons";
-import { waitForLanguageSync } from './languageSync';
+import { waitForLanguageSync } from "./languageSync";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.nurul-haque-nur.com/api/v1';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "https://admin.nurul-haque-nur.com/api/v1";
 
 // ─── Settings ──────────────────────────────────────────────
 
@@ -38,7 +40,9 @@ export interface SiteSettings {
 export async function fetchSettings(): Promise<SiteSettings | null> {
   try {
     await waitForLanguageSync();
-    const response = await fetch(`${API_BASE_URL}/settings`, { cache: 'no-store' });
+    const response = await fetch(`${API_BASE_URL}/settings`, {
+      cache: "no-store",
+    });
     if (!response.ok) return null;
 
     const data = await response.json();
@@ -47,7 +51,7 @@ export async function fetchSettings(): Promise<SiteSettings | null> {
     }
     return null;
   } catch (err) {
-    console.error('Error fetching settings:', err);
+    console.error("Error fetching settings:", err);
     return null;
   }
 }
@@ -69,10 +73,14 @@ export type ComplaintHearYourVoice = HearYourVoiceData;
  * Generic fetcher for "hear your voice" / "we hear you" style endpoints.
  * @param endpoint - e.g. 'complaint-hear-your-voice' or 'comments-we-hear-you'
  */
-export async function fetchHearYourVoice(endpoint: string): Promise<HearYourVoiceData | null> {
+export async function fetchHearYourVoice(
+  endpoint: string,
+): Promise<HearYourVoiceData | null> {
   try {
     await waitForLanguageSync();
-    const response = await fetch(`${API_BASE_URL}/${endpoint}`, { cache: 'no-store' });
+    const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
+      cache: "no-store",
+    });
     if (!response.ok) return null;
 
     const data = await response.json();
@@ -88,12 +96,12 @@ export async function fetchHearYourVoice(endpoint: string): Promise<HearYourVoic
 
 /** Shortcut: Fetch "Hear Your Voice" section data for the complaints page. */
 export async function fetchComplaintHearYourVoice(): Promise<HearYourVoiceData | null> {
-  return fetchHearYourVoice('complaint-hear-your-voice');
+  return fetchHearYourVoice("complaint-hear-your-voice");
 }
 
 /** Shortcut: Fetch "We Hear You" section data for the comments page. */
 export async function fetchCommentsWeHearYou(): Promise<HearYourVoiceData | null> {
-  return fetchHearYourVoice('comments-we-hear-you');
+  return fetchHearYourVoice("comments-we-hear-you");
 }
 
 // ─── Manifesto CMS (page content sections) ─────────────────
@@ -141,7 +149,9 @@ export interface ManifestoCms {
 export async function fetchManifestoCms(): Promise<ManifestoCms | null> {
   try {
     await waitForLanguageSync();
-    const response = await fetch(`${API_BASE_URL}/manifesto-cms`, { cache: 'no-store' });
+    const response = await fetch(`${API_BASE_URL}/manifesto-cms`, {
+      cache: "no-store",
+    });
     if (!response.ok) return null;
 
     const data = await response.json();
@@ -150,7 +160,7 @@ export async function fetchManifestoCms(): Promise<ManifestoCms | null> {
     }
     return null;
   } catch (err) {
-    console.error('Error fetching manifesto CMS:', err);
+    console.error("Error fetching manifesto CMS:", err);
     return null;
   }
 }
@@ -181,16 +191,18 @@ export interface ManifestoApi {
 export async function fetchManifestos(): Promise<ManifestoApi[]> {
   try {
     await waitForLanguageSync();
-    const response = await fetch(`${API_BASE_URL}/manifestos`, { cache: 'no-store' });
+    const response = await fetch(`${API_BASE_URL}/manifestos`, {
+      cache: "no-store",
+    });
     if (!response.ok) return [];
 
     const data = await response.json();
     if (data.success && data.data?.data && Array.isArray(data.data.data)) {
-      return data.data.data.filter((m: ManifestoApi) => m.status === 'active');
+      return data.data.data.filter((m: ManifestoApi) => m.status === "active");
     }
     return [];
   } catch (err) {
-    console.error('Error fetching manifestos:', err);
+    console.error("Error fetching manifestos:", err);
     return [];
   }
 }
@@ -223,12 +235,15 @@ export interface CmsPage {
  * Fetch a CMS page by page_for and slug (unique combination).
  * Returns the first matching CMS page or null if not found.
  */
-export async function fetchCmsPage(pageFor: string, slug: string): Promise<CmsPage | null> {
+export async function fetchCmsPage(
+  pageFor: string,
+  slug: string,
+): Promise<CmsPage | null> {
   try {
     await waitForLanguageSync();
     const response = await fetch(
       `${API_BASE_URL}/cms-pages?page_for=${encodeURIComponent(pageFor)}&slug=${encodeURIComponent(slug)}`,
-      { cache: 'no-store' }
+      { cache: "no-store" },
     );
 
     if (!response.ok) return null;
@@ -243,5 +258,53 @@ export async function fetchCmsPage(pageFor: string, slug: string): Promise<CmsPa
   } catch (err) {
     console.error(`Error fetching CMS page (${pageFor}/${slug}):`, err);
     return null;
+  }
+}
+
+// ─── Biographies ────────────────────────────────────────────
+
+export interface BiographyPage {
+  id: number;
+  biography_id: number;
+  title: string;
+  content: string;
+  status: string;
+  page_number: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Biography {
+  id: number;
+  title: string;
+  slug: string;
+  description: string | null;
+  status: string;
+  pages_count: number;
+  pages: BiographyPage[];
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Fetch all biographies from the /biographies endpoint.
+ */
+export async function fetchBiographies(): Promise<Biography[]> {
+  try {
+    await waitForLanguageSync();
+    const response = await fetch(`${API_BASE_URL}/biographies`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) return [];
+
+    const data = await response.json();
+    if (data.success && data.data?.data && Array.isArray(data.data.data)) {
+      return data.data.data.filter((b: Biography) => b.status === "active");
+    }
+    return [];
+  } catch (err) {
+    console.error("Error fetching biographies:", err);
+    return [];
   }
 }

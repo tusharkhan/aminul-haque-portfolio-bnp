@@ -42,7 +42,7 @@ export default function AminulManifestoPage() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-              {language === "bd" ? "ঢাকা-১৬" : "Dhaka-16"}
+              {language === "bd" ? "পটুয়াখালী-৩" : "Patuakhali-3"}
             </span>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 mb-4">
               <span className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
@@ -63,30 +63,7 @@ export default function AminulManifestoPage() {
           </motion.div>
         </div>
       </section>
-      {/* Manifesto Image Section */}
-      <section className="relative w-full">
-        <div className="mx-auto max-w-5xl px-4 py-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200"
-          >
-            <Image
-              src="/aminul Haque/menifesto.jpeg"
-              alt={
-                language === "bd"
-                  ? "নুরুল হকের নির্বাচনী ইশতেহার"
-                  : "Nurul Haque Election Manifesto"
-              }
-              width={1200}
-              height={1600}
-              className="w-full h-auto object-contain"
-              priority
-            />
-          </motion.div>
-        </div>
-      </section>
+
       {/* Introduction Section */}
       <section className="py-16 md:py-20 px-4">
         <div className="mx-auto max-w-4xl">

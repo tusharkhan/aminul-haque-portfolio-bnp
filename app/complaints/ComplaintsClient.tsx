@@ -273,9 +273,7 @@ export default function ComplaintsClient({
               <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
-                  src={
-                    hearVoiceData?.main_image || "/aminul Haque/complain.jpeg"
-                  }
+                  src={hearVoiceData?.main_image || "/aminul Haque/image2.jpg"}
                   alt={hearVoiceData?.title || t("hero.title")}
                   width={600}
                   height={800}

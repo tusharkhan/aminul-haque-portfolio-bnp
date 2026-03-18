@@ -18,7 +18,7 @@ export default function Hero() {
   const tagline = heroData?.image_description || t("hero.tagline");
   const titleImage =
     heroData?.title_image || "/aminul Haque/sobarAgeBangladesh.jpeg";
-  const mainImage = heroData?.main_image || "/aminul Haque/hero2.jpeg";
+  const mainImage = heroData?.main_image || "/aminul Haque/hero2.png";
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white to-slate-50">

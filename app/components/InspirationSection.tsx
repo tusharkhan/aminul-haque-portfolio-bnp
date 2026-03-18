@@ -62,7 +62,7 @@ export default function InspirationSection() {
 
   const sectionTitle = cmsData?.title || t("home.quotesTitle");
   const sectionDesc = cmsData?.description || t("home.quotesDesc");
-  const sectionImage = cmsData?.title_image || "/aminul Haque/quotes.jpeg";
+  const sectionImage = cmsData?.title_image || "/aminul Haque/hero2.png";
 
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">

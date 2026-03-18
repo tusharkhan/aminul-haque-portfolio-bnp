@@ -289,7 +289,7 @@ export default function CommentsClient({
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-rose-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
-                  src={hearYouData?.main_image || "/aminul Haque/complain.jpeg"}
+                  src={hearYouData?.main_image || "/aminul Haque/image3.jpg"}
                   alt={hearYouData?.title || t("hero.title")}
                   width={600}
                   height={800}

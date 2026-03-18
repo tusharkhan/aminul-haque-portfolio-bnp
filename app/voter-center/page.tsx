@@ -220,7 +220,7 @@ export default function VoterCenterPage() {
         
         <!-- Banner Image -->
         <div style="width: 100%; background: linear-gradient(135deg, #006A4E 0%, #00A86B 100%); padding: 20px; text-align: center;">
-          <img src="/aminul Haque/hero.jpeg" alt="Nurul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; object-position: center top; margin-bottom: 10px;" />
+          <img src="/aminul Haque/image4.jpg" alt="Nurul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; object-position: center top; margin-bottom: 10px;" />
           <h2 style="color: white; margin: 0; font-size: 24px;">নুরুল হক</h2>
           <p style="color: #90EE90; margin: 5px 0 0; font-size: 14px;">ধানের শীষে ভোট দিন</p>
         </div>
@@ -610,10 +610,7 @@ export default function VoterCenterPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
-                  src={
-                    serviceCmsData?.main_image ||
-                    "/aminul Haque/voter-center.jpeg"
-                  }
+                  src={serviceCmsData?.main_image || "/aminul Haque/image4.jpg"}
                   alt={language === "bd" ? "নুরুল হক" : "Nurul Haque"}
                   width={600}
                   height={800}
