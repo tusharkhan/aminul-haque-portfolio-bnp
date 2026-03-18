@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-# Aminul Haque Portfolio - BNP
+# Nurul Haque Portfolio - BNP
 
 A modern political portfolio website built with Next.js, React, and Tailwind CSS.
 
@@ -78,4 +78,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ---
 
-**Made with ❤️ for Aminul Haque's Political Campaign**
+**Made with ❤️ for Nurul Haque's Political Campaign**

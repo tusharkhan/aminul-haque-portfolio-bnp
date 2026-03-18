@@ -1,23 +1,24 @@
 "use client";
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { useTranslation } from '../i18n/I18nProvider';
-import { fetchCmsPage, type CmsPage } from '@/lib/api';
+import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useTranslation } from "../i18n/I18nProvider";
+import { fetchCmsPage, type CmsPage } from "@/lib/api";
 
 export default function Hero() {
   const { t } = useTranslation();
   const [heroData, setHeroData] = useState<CmsPage | null>(null);
 
   useEffect(() => {
-    fetchCmsPage('home', 'hero').then(setHeroData);
+    fetchCmsPage("home", "hero").then(setHeroData);
   }, []);
 
-  const description = heroData?.description || t('hero.description');
-  const tagline = heroData?.image_description || t('hero.tagline');
-  const titleImage = heroData?.title_image || '/aminul Haque/sobarAgeBangladesh.jpeg';
-  const mainImage = heroData?.main_image || '/aminul Haque/hero.jpeg';
+  const description = heroData?.description || t("hero.description");
+  const tagline = heroData?.image_description || t("hero.tagline");
+  const titleImage =
+    heroData?.title_image || "/aminul Haque/sobarAgeBangladesh.jpeg";
+  const mainImage = heroData?.main_image || "/aminul Haque/hero2.jpeg";
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white to-slate-50">
@@ -47,13 +48,13 @@ export default function Hero() {
               href="/about"
               className="px-8 py-4 bg-emerald-600 text-white font-bold rounded-xl shadow-xl hover:bg-emerald-700 hover:shadow-2xl transition-all transform hover:scale-105"
             >
-              {t('hero.learnMore')}
+              {t("hero.learnMore")}
             </Link>
             <Link
               href="/contact"
               className="px-8 py-4 bg-slate-100 text-slate-900 font-bold rounded-xl hover:bg-slate-200 transition-all"
             >
-              {t('hero.contactUs')}
+              {t("hero.contactUs")}
             </Link>
           </div>
         </motion.div>
@@ -68,10 +69,10 @@ export default function Hero() {
           <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white h-[400px] sm:h-[500px] md:h-[600px] bg-gradient-to-b from-emerald-200 to-emerald-300">
             <Image
               src={mainImage}
-              alt={t('hero.title')}
+              alt={t("hero.title")}
               className="object-contain object-bottom"
               priority
-              style={{ height: 'auto' }}
+              style={{ height: "auto" }}
               width={600}
               height={800}
               unoptimized

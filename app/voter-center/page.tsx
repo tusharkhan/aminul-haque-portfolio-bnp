@@ -220,14 +220,14 @@ export default function VoterCenterPage() {
         
         <!-- Banner Image -->
         <div style="width: 100%; background: linear-gradient(135deg, #006A4E 0%, #00A86B 100%); padding: 20px; text-align: center;">
-          <img src="/aminul Haque/hero.jpeg" alt="Aminul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; object-position: center top; margin-bottom: 10px;" />
-          <h2 style="color: white; margin: 0; font-size: 24px;">আমিনুল হক</h2>
+          <img src="/aminul Haque/hero.jpeg" alt="Nurul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; object-position: center top; margin-bottom: 10px;" />
+          <h2 style="color: white; margin: 0; font-size: 24px;">নুরুল হক</h2>
           <p style="color: #90EE90; margin: 5px 0 0; font-size: 14px;">ধানের শীষে ভোট দিন</p>
         </div>
 
         <!-- Slogan Section -->
         <div style="background: linear-gradient(to right, #FFF8DC, #FFFACD); padding: 15px; text-align: center; border-bottom: 2px solid #006A4E;">
-          <p style="color: #C41E3A; font-weight: bold; margin: 0; font-size: 16px;">আমিনুল হক এর সালাম নিন, ধানের শীষে ভোট দিন।</p>
+          <p style="color: #C41E3A; font-weight: bold; margin: 0; font-size: 16px;">নুরুল হক এর সালাম নিন, ধানের শীষে ভোট দিন।</p>
           <p style="color: #006A4E; font-weight: bold; margin: 5px 0 0; font-size: 14px;">তারুণ্যের প্রথম ভোট, ধানের শীষের পক্ষে হোক।</p>
         </div>
 
@@ -299,14 +299,14 @@ export default function VoterCenterPage() {
       <div style="border: 3px solid #006A4E; border-radius: 12px; overflow: hidden;">
         <!-- Banner Image -->
         <div style="width: 100%; background: linear-gradient(135deg, #006A4E 0%, #00A86B 100%); padding: 20px; text-align: center;">
-          <img src="/aminul Haque/hero.jpeg" alt="Aminul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; object-position: center top; margin-bottom: 10px;" />
-          <h2 style="color: white; margin: 0; font-size: 24px;">আমিনুল হক</h2>
+          <img src="/aminul Haque/hero.jpeg" alt="Nurul Haque" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; object-position: center top; margin-bottom: 10px;" />
+          <h2 style="color: white; margin: 0; font-size: 24px;">নুরুল হক</h2>
           <p style="color: #90EE90; margin: 5px 0 0; font-size: 14px;">ধানের শীষে ভোট দিন</p>
         </div>
 
         <!-- Slogan Section -->
         <div style="background: linear-gradient(to right, #FFF8DC, #FFFACD); padding: 15px; text-align: center; border-bottom: 2px solid #006A4E;">
-          <p style="color: #C41E3A; font-weight: bold; margin: 0; font-size: 16px;">আমিনুল হক এর সালাম নিন, ধানের শীষে ভোট দিন।</p>
+          <p style="color: #C41E3A; font-weight: bold; margin: 0; font-size: 16px;">নুরুল হক এর সালাম নিন, ধানের শীষে ভোট দিন।</p>
           <p style="color: #006A4E; font-weight: bold; margin: 5px 0 0; font-size: 14px;">তারুণ্যের প্রথম ভোট, ধানের শীষের পক্ষে হোক।</p>
         </div>
 
@@ -614,7 +614,7 @@ export default function VoterCenterPage() {
                     serviceCmsData?.main_image ||
                     "/aminul Haque/voter-center.jpeg"
                   }
-                  alt={language === "bd" ? "আমিনুল হক" : "Aminul Haque"}
+                  alt={language === "bd" ? "নুরুল হক" : "Nurul Haque"}
                   width={600}
                   height={800}
                   className="w-full h-auto"

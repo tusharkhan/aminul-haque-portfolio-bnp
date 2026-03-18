@@ -16,19 +16,19 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "Aminul Haque — Political Portfolio",
-    template: "%s | Aminul Haque",
+    default: "Nurul Haque — Political Portfolio",
+    template: "%s | Nurul Haque",
   },
   description:
-    "Official political portfolio of Aminul Haque — vision, programs, blog, and contact.",
+    "Official political portfolio of Nurul Haque — vision, programs, blog, and contact.",
   openGraph: {
-    title: "Aminul Haque — Political Portfolio",
+    title: "Nurul Haque — Political Portfolio",
     description:
-      "Official political portfolio of Aminul Haque — vision, programs, blog, and contact.",
+      "Official political portfolio of Nurul Haque — vision, programs, blog, and contact.",
     url: "https://example.com/",
-    siteName: "Aminul Haque Portfolio",
+    siteName: "Nurul Haque Portfolio",
     images: [
-      { url: "/next.svg", width: 1200, height: 630, alt: "Aminul Haque" },
+      { url: "/next.svg", width: 1200, height: 630, alt: "Nurul Haque" },
     ],
     locale: "en_US",
     type: "website",

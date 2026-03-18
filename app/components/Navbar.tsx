@@ -25,7 +25,7 @@ const navItems = [
     hasDropdown: true,
     dropdownItems: [
       { href: "/programs", labelKey: "nav.programs" },
-      { href: "/manifesto", labelKey: "nav.sportsdev" },
+      // { href: "/manifesto", labelKey: "nav.sportsdev" },
       { href: "/bnp-31-point", labelKey: "nav.bnp31" },
       { href: "/bnp-19-point", labelKey: "nav.bnp19" },
       { href: "/bnp-8-points", labelKey: "nav.bnp8" },
@@ -49,7 +49,7 @@ const navItems = [
       { href: "/volunteer", labelKey: "nav.volunteer" },
       { href: "/complaints", labelKey: "nav.complaints" },
       { href: "/comments", labelKey: "nav.comments" },
-      { href: "/tournament", labelKey: "nav.tournament" },
+      // { href: "/tournament", labelKey: "nav.tournament" },
     ],
   },
 ];
