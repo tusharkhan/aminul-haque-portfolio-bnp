@@ -18,7 +18,7 @@ import { useTranslation } from "../i18n/I18nProvider";
 const navItems = [
   { href: "/", labelKey: "nav.home" },
   { href: "/about", labelKey: "nav.about" },
-  { href: "/aminul-manifesto", labelKey: "nav.manifesto" },
+  { href: "/nuru-manifesto", labelKey: "nav.manifesto" },
   { href: "/voter-center", labelKey: "nav.voterCenter" },
   {
     labelKey: "nav.policy",
