@@ -72,7 +72,7 @@ export default function ManifestoHighlightsSection() {
 
   const sectionTitle = cmsData?.title || t('home.manifestoPrograms');
   const sectionDesc = cmsData?.description || t('home.manifestoDesc');
-  const rawVideoUrl = cmsData?.video_url || 'https://www.youtube.com/embed/AyL-WF3Uryo';
+  const rawVideoUrl = cmsData?.video_url || '';
   const videoUrl = toYouTubeEmbedUrl(rawVideoUrl);
 
   return (
