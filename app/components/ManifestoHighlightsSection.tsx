@@ -17,7 +17,7 @@ const manifestos = [
     descKey: "home.aminulManifestoDesc",
     icon: FaFileAlt,
     color: "from-red-500 to-red-600",
-    link: "/aminul-manifesto"
+    link: "/nuru-manifesto"
   },
   {
     titleKey: "home.bnp31Points",
