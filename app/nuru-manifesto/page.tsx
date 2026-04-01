@@ -93,8 +93,8 @@ export default function AminulManifestoPage() {
                 <div className="space-y-6 text-base md:text-lg text-slate-700 leading-relaxed">
                   <p>
                     {language === "bd"
-                      ? "আমি, নুরুল হক, আপনাদেরই একজন সন্তান। পল্লবী ও রুপনগর আমার ঘর ও আমার পরিবার। এ এলাকার ভবিষ্যৎ আমি নিজের মত করে অনুভব করি। বিগত ১৭ বছর আমরা সবাই একসাথে এক কঠিন সময় পার করেছি।"
-                      : "I, Nurul Haque, am one of your own children. Pallabi and Rupnagar are my home and my family. I feel the future of this area as my own. For the past 17 years, we have all gone through difficult times together."}
+                      ? "আমি, নুরুল হক, আপনাদেরই একজন সন্তান। পটুয়াখালী-৩ আমার ঘর ও আমার পরিবার। এ এলাকার ভবিষ্যৎ আমি নিজের মত করে অনুভব করি। বিগত ১৭ বছর আমরা সবাই একসাথে এক কঠিন সময় পার করেছি।"
+                      : "I, Nurul Haque, am one of your own children. Patuakhali-3 is my home and my family. I feel the future of this area as my own. For the past 17 years, we have all gone through difficult times together."}
                   </p>
                   <p>
                     {language === "bd"

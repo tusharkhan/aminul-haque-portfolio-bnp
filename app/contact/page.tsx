@@ -70,8 +70,7 @@ export default function ContactPage() {
   // Build social links from settings with fallbacks
   const socialLinks: { icon: IconType; color: string; link: string }[] = [];
 
-  const fbUrl =
-    settings?.social_media?.facebook || "https://www.facebook.com/AminulBd07";
+  const fbUrl = settings?.social_media?.facebook || "";
   if (fbUrl)
     socialLinks.push({
       icon: FaFacebook,
@@ -79,9 +78,7 @@ export default function ContactPage() {
       link: fbUrl,
     });
 
-  const igUrl =
-    settings?.social_media?.instagram ||
-    "https://www.instagram.com/captain_aminul_haque";
+  const igUrl = settings?.social_media?.instagram || "";
   if (igUrl)
     socialLinks.push({
       icon: FaInstagram,
@@ -89,8 +86,7 @@ export default function ContactPage() {
       link: igUrl,
     });
 
-  const xUrl =
-    settings?.social_media?.x_twitter || "https://x.com/Aminulhaque1980";
+  const xUrl = settings?.social_media?.x_twitter || "";
   if (xUrl)
     socialLinks.push({
       icon: FaXTwitter,
@@ -98,9 +94,7 @@ export default function ContactPage() {
       link: xUrl,
     });
 
-  const tiktokUrl =
-    settings?.social_media?.tiktok ||
-    "https://www.tiktok.com/@aminulhoqueofficial";
+  const tiktokUrl = settings?.social_media?.tiktok || "";
   if (tiktokUrl)
     socialLinks.push({
       icon: FaTiktok,
@@ -108,9 +102,7 @@ export default function ContactPage() {
       link: tiktokUrl,
     });
 
-  const ytUrl =
-    settings?.social_media?.youtube ||
-    "https://youtube.com/@captainaminulhaquedhaka16";
+  const ytUrl = settings?.social_media?.youtube || "";
   if (ytUrl)
     socialLinks.push({
       icon: FaYoutube,
@@ -171,27 +163,22 @@ export default function ContactPage() {
               </div>
               <h3 className="text-2xl font-black text-slate-900">
                 {language === "bd"
-                  ? "ঢাকা-১৬ নির্বাচনী এলাকা"
-                  : "Dhaka-16 Constituency"}
+                  ? "পটুয়াখালী-৩ নির্বাচনী এলাকা"
+                  : "Patuakhali-3 Constituency"}
               </h3>
             </div>
             <div className="relative w-full aspect-square max-w-md mx-auto py-6">
               <Image
-                src="/aminul Haque/ঢাকা-১৬.svg.png"
+                src="/aminul Haque/পটুয়াখালী-৩.svg.png"
                 alt={
                   language === "bd"
-                    ? "ঢাকা-১৬ নির্বাচনী এলাকার মানচিত্র"
-                    : "Dhaka-16 Constituency Map"
+                    ? "পটুয়াখালী-৩ নির্বাচনী এলাকার মানচিত্র"
+                    : "Patuakhali-3 Constituency Map"
                 }
                 fill
                 className="object-contain"
               />
             </div>
-            <p className="text-center text-slate-600 text-sm mt-4">
-              {language === "bd"
-                ? "পল্লবী ও রুপনগর থানা এলাকা"
-                : "Pallabi & Rupnagar Police Station Area"}
-            </p>
           </div>
         </div>
       </section>
